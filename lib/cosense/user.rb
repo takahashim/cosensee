@@ -23,7 +23,7 @@ module Cosense
                      elsif kwargs.keys.size == 1 && kwargs.key?(:displayName)
                        kwargs[:displayName]
                      else
-                       raise ArgumentError, 'Cosense::User.new need an argument :display_name or :displayName'
+                       raise Cosense::Error, 'Cosense::User.new need an argument :display_name or :displayName'
                      end
 
       @id = id
