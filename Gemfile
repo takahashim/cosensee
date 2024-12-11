@@ -9,5 +9,6 @@ group :test, :development do
   gem 'rake'
   gem 'rspec'
   gem 'rubocop'
-  gem 'rubocop-rspec'
+  gem 'rubocop-rake', require: false
+  gem 'rubocop-rspec', require: false
 end

@@ -4,6 +4,10 @@ AllCops:
   TargetRubyVersion: '3.3'
   NewCops: enable
 
+require:
+  - rubocop-rake
+  - rubocop-rspec
+
 Layout/LineLength:
   Max: 300
 
