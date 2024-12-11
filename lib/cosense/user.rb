@@ -17,9 +17,17 @@ module Cosense
 
     attr_reader :id, :name, :display_name, :email
 
-    def initialize(id:, name:, displayName:, email:) # rubocop:disable Naming/MethodParameterName, Naming/VariableName
+    def initialize(id:, name:, email:, **kwargs)
+      display_name = if kwargs.keys.size == 1 && kwargs.key?(:display_name)
+                       kwargs[:display_name]
+                     elsif kwargs.keys.size == 1 && kwargs.key?(:displayName)
+                       kwargs[:displayName]
+                     else
+                       raise ArgumentError, 'Cosense::User.new need an argument :display_name or :displayName'
+                     end
+
       @id = id
-      @display_name = displayName # rubocop:disable Naming/VariableName
+      @display_name = display_name
       @name = name
       @email = email
     end
