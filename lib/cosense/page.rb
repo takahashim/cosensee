@@ -41,6 +41,10 @@ module Cosense
       end
     end
 
+    def link_path
+      "#{title}.html"
+    end
+
     def ==(other)
       other.id == id &&
         other.title == title &&
