@@ -24,7 +24,7 @@ module Cosense
       @created = Time.at(created)
       @updated = Time.at(updated)
       @views = views
-      @lines = lines
+      @lines = Cosense::Line.create(lines)
     end
 
     def body_lines
@@ -32,12 +32,12 @@ module Cosense
     end
 
     def some_images?
-      lines.any? { |line| line.strip.match?(/\A\[.*\.(png|jpg)\]\z/) }
+      lines.any?(&:some_image?)
     end
 
     def first_image
       lines.each do |line|
-        return line.strip.gsub(/\A\[/).gsub(/\]\z/) if line.strip.match?(/\A\[.*\.(png|jpg)\]\z/)
+        return line.first_image if line.some_image?
       end
     end
 
