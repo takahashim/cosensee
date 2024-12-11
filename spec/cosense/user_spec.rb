@@ -18,6 +18,14 @@ RSpec.describe Cosense::User do
         email: '2taro@example.jp'
       }
     end
+    let(:user_hash_rubyish) do
+      {
+        id: '12ab34cd',
+        name: 'test_taro',
+        display_name: 'テスト太郎',
+        email: 'taro@example.jp'
+      }
+    end
 
     it 'is a Hash' do
       user = Cosense::User.create(user_hash)
@@ -35,6 +43,27 @@ RSpec.describe Cosense::User do
       expect(user.name).to eq 'test_taro'
       expect(user.display_name).to eq 'テスト太郎'
       expect(user.email).to eq 'taro@example.jp'
+    end
+
+    it 'allows a rubyish Hash' do
+      user = Cosense::User.create(user_hash_rubyish)
+
+      expect(user.id).to eq '12ab34cd'
+      expect(user.name).to eq 'test_taro'
+      expect(user.display_name).to eq 'テスト太郎'
+      expect(user.email).to eq 'taro@example.jp'
+    end
+
+    it 'is not allowed duplicated display_name' do
+      expect {
+        Cosense::User.create(id: '123', name: 'foo', display_name: 'name1', displayName: 'name2', email: 'foo@example.jp')
+      }.to raise_error(Cosense::Error)
+    end
+
+    it 'is not allowed no display_name' do
+      expect {
+        Cosense::User.create(id: '123', name: 'foo', email: 'foo@example.jp')
+      }.to raise_error(Cosense::Error)
     end
 
     it 'is an Array' do
