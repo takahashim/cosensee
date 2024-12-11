@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require 'cosense'
+
+project = Cosense::Project.parse_file('togetogebox.json')
+builder = Cosense::HtmlBuilder.new(project)
+builder.build_all

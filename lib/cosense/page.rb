@@ -6,9 +6,10 @@ module Cosense
   # for Page
   class Page
     def self.create(obj)
-      if obj.is_a?(Array)
+      case obj
+      when Array
         obj.map { |args| new(**args) }
-      elsif obj.is_a?(Hash)
+      when Hash
         new(**obj)
       else
         raise Cosense::Error, "invalid data: #{obj}"
@@ -24,6 +25,20 @@ module Cosense
       @updated = Time.at(updated)
       @views = views
       @lines = lines
+    end
+
+    def body_lines
+      lines.drop(1)
+    end
+
+    def some_images?
+      lines.any? { |line| line.strip.match?(/\A\[.*\.(png|jpg)\]\z/) }
+    end
+
+    def first_image
+      lines.each do |line|
+        return line.strip.gsub(/\A\[/).gsub(/\]\z/) if line.strip.match?(/\A\[.*\.(png|jpg)\]\z/)
+      end
     end
 
     def ==(other)

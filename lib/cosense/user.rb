@@ -7,9 +7,10 @@ module Cosense
   class User
     # allow Array and Hash (Object in JSON)
     def self.create(obj)
-      if obj.is_a?(Array)
+      case obj
+      when Array
         obj.map { |args| new(**args) }
-      elsif obj.is_a?(Hash)
+      when Hash
         new(**obj)
       else
         raise Cosense::Error, "invalid data: #{obj}"
