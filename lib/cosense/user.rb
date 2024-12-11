@@ -5,6 +5,7 @@ require 'json'
 module Cosense
   # for User
   class User
+    # allow Array and Hash (Object in JSON)
     def self.create(obj)
       if obj.is_a?(Array)
         obj.map { |args| new(**args) }
@@ -17,6 +18,7 @@ module Cosense
 
     attr_reader :id, :name, :display_name, :email
 
+    # allow both `:display_key` and `:displayKey`
     def initialize(id:, name:, email:, **kwargs)
       display_name = if kwargs.keys.size == 1 && kwargs.key?(:display_name)
                        kwargs[:display_name]

@@ -55,15 +55,15 @@ RSpec.describe Cosense::User do
     end
 
     it 'is not allowed duplicated display_name' do
-      expect {
+      expect do
         Cosense::User.create(id: '123', name: 'foo', display_name: 'name1', displayName: 'name2', email: 'foo@example.jp')
-      }.to raise_error(Cosense::Error)
+      end.to raise_error(Cosense::Error)
     end
 
     it 'is not allowed no display_name' do
-      expect {
+      expect do
         Cosense::User.create(id: '123', name: 'foo', email: 'foo@example.jp')
-      }.to raise_error(Cosense::Error)
+      end.to raise_error(Cosense::Error)
     end
 
     it 'is an Array' do

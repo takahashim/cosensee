@@ -18,7 +18,15 @@ module Cosense
 
     attr_reader :name, :display_name, :exported, :users, :pages
 
-    def initialize(name:, display_name:, exported:, users:, pages:, source:)
+    def initialize(name:, exported:, users:, pages:, source:, **kwargs)
+      display_name = if kwargs.keys.size == 1 && kwargs.key?(:display_name)
+                       kwargs[:display_name]
+                     elsif kwargs.keys.size == 1 && kwargs.key?(:displayName)
+                       kwargs[:displayName]
+                     else
+                       raise Cosense::Error, 'Cosense::User.new need an argument :display_name or :displayName'
+                     end
+
       @source = source
       @name = name
       @display_name = display_name
