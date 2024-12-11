@@ -4,15 +4,9 @@ require 'json'
 
 module Cosense
   class Project
-    def self.parse(src)
-      json = JSON.parse(src, symbolize_names: true)
-      source = src
-      name = json[:name]
-      display_name = json[:displayName]
-      exported = json[:exported]
-      users = json[:users]
-      pages = json[:pages]
-
+    def self.parse(source)
+      json = JSON.parse(source, symbolize_names: true)
+      name, display_name, exported, users, pages = json.values_at(:name, :displayName, :exported, :users, :pages)
       Cosense::Project.new(name:, display_name:, exported:, users:, pages:, source:)
     end
 
@@ -34,11 +28,11 @@ module Cosense
     end
 
     def to_obj
-      {name:, display_name:, exported: exported.to_i, users:, pages:}
+      {name:, displayName: display_name, exported: exported.to_i, users:, pages:}
     end
 
-    def to_json
-      to_obj.to_json
+    def to_json(*args)
+      to_obj.to_json(*args)
     end
   end
 end

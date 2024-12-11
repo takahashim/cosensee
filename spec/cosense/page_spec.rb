@@ -1,30 +1,5 @@
 # frozen_string_literal: true
 
-=begin
-    {
-      "title": "海老塚智",
-      "created": 1732018591,
-      "updated": 1732031800,
-      "id": "673c819d2c4025540236d6af",
-      "views": 7,
-      "lines": [
-        "海老塚智",
-        "[トゲナシトゲアリ(ガルクラ)]のキーボード担当。",
-        "[ルパ]と共に[beni-shouga]としてプロデビューを目指して活動してながら、吉野家にてアルバイトしていた。",
-        "そこで出会った[新川崎（仮）]のライブに行き、合流し[トゲナシトゲアリ(ガルクラ)]のメンバーとなった。",
-        "爬虫類が好きで、ヤモリを飼っている。",
-        "",
-        "CV: [凪都]",
-        "",
-        "キャラクターPV",
-        "[https://www.youtube.com/watch?v=TDDbjkRcgvI]",
-        "",
-        "https://girls-band-cry.com/character/tomo/",
-        ""
-      ]
-    },
-=end
-
 RSpec.describe Cosense::Page do
   describe '.create' do
     let(:page_hash) do

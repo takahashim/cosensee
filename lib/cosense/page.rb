@@ -25,12 +25,21 @@ module Cosense
       @lines = lines
     end
 
+    def ==(other)
+      other.id == id &&
+        other.title == title &&
+        other.created == created &&
+        other.updated == updated &&
+        other.views == views &&
+        other.lines == lines
+    end
+
     def to_obj
       {id:, title:, created: created.to_i, updated: updated.to_i, views:, lines:}
     end
 
-    def to_json
-      to_obj.to_json
+    def to_json(*args)
+      to_obj.to_json(*args)
     end
   end
 end
