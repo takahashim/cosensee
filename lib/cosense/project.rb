@@ -3,6 +3,7 @@
 require 'json'
 
 module Cosense
+  # for Project
   class Project
     def self.parse(source)
       json = JSON.parse(source, symbolize_names: true)
@@ -12,7 +13,7 @@ module Cosense
 
     def self.parse_file(filename)
       src = File.read(filename)
-      self.parse(src)
+      parse(src)
     end
 
     attr_reader :name, :display_name, :exported, :users, :pages
@@ -28,11 +29,11 @@ module Cosense
     end
 
     def to_obj
-      {name:, displayName: display_name, exported: exported.to_i, users:, pages:}
+      { name:, displayName: display_name, exported: exported.to_i, users:, pages: }
     end
 
-    def to_json(*args)
-      to_obj.to_json(*args)
+    def to_json(*)
+      to_obj.to_json(*)
     end
   end
 end

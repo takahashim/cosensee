@@ -3,12 +3,13 @@
 require 'json'
 
 module Cosense
+  # for Page
   class Page
     def self.create(obj)
-      if obj.kind_of?(Array)
-        obj.map{|args| self.new(**args)}
-      elsif obj.kind_of?(Hash)
-        self.new(**obj)
+      if obj.is_a?(Array)
+        obj.map { |args| new(**args) }
+      elsif obj.is_a?(Hash)
+        new(**obj)
       else
         raise Cosense::Error, "invalid data: #{obj}"
       end
@@ -35,11 +36,11 @@ module Cosense
     end
 
     def to_obj
-      {id:, title:, created: created.to_i, updated: updated.to_i, views:, lines:}
+      { id:, title:, created: created.to_i, updated: updated.to_i, views:, lines: }
     end
 
-    def to_json(*args)
-      to_obj.to_json(*args)
+    def to_json(*)
+      to_obj.to_json(*)
     end
   end
 end
