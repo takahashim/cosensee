@@ -48,6 +48,17 @@ RSpec.describe Cosense::Page do
     end
 
     it 'is a Hash' do
+      page = Cosense::Page.create(page_hash)
+
+      expect(page.id).to eq "673c819d2c4025543126d6af"
+      expect(page.created).to eq Time.new("2024-11-19 21:06:40")
+      expect(page.updated).to eq Time.new("2024-11-19 21:40:00")
+      expect(page.title).to eq "テストページ1"
+      expect(page.views).to eq 12
+      expect(page.lines).to eq ["テスト1", "", "[テスト2]と[test3]", "", "\tテスト4", "\tテスト5", "https://expample.com/test/", ""]
+    end
+
+    it 'is keyword arguments' do
       page = Cosense::Page.create(**page_hash)
 
       expect(page.id).to eq "673c819d2c4025543126d6af"

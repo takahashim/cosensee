@@ -20,6 +20,15 @@ RSpec.describe Cosense::User do
     end
 
     it 'is a Hash' do
+      user = Cosense::User.create(user_hash)
+
+      expect(user.id).to eq "12ab34cd"
+      expect(user.name).to eq "test_taro"
+      expect(user.display_name).to eq "テスト太郎"
+      expect(user.email).to eq "taro@example.jp"
+    end
+
+    it 'is keyword arguments' do
       user = Cosense::User.create(**user_hash)
 
       expect(user.id).to eq "12ab34cd"
