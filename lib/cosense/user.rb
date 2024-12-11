@@ -20,9 +20,9 @@ module Cosense
 
     # allow both `:display_key` and `:displayKey`
     def initialize(id:, name:, email:, **kwargs)
-      display_name = if kwargs.keys.size == 1 && kwargs.key?(:display_name)
+      display_name = if kwargs.keys == [:display_name]
                        kwargs[:display_name]
-                     elsif kwargs.keys.size == 1 && kwargs.key?(:displayName)
+                     elsif kwargs.keys == [:displayName]
                        kwargs[:displayName]
                      else
                        raise Cosense::Error, 'Cosense::User.new need an argument :display_name or :displayName'
