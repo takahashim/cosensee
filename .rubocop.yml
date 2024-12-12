@@ -22,3 +22,12 @@ Metrics/ParameterLists:
 
 Style/NumericLiterals:
   Enabled: false
+
+RSpec/DescribedClass:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 30
+
+RSpec/MultipleExpectations:
+  Enabled: false
