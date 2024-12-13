@@ -4,7 +4,7 @@ require 'json'
 require 'erubi'
 require 'tilt'
 
-module Cosense
+module Cosensee
   # generate HTML files
   class HtmlBuilder
     def initialize(project, root_dir: nil)

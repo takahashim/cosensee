@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Cosense::Page do
+RSpec.describe Cosensee::Page do
   describe '.create' do
     let(:page_hash) do
       {
@@ -23,7 +23,7 @@ RSpec.describe Cosense::Page do
     end
 
     it 'is a Hash' do
-      page = Cosense::Page.create(page_hash)
+      page = Cosensee::Page.create(page_hash)
 
       expect(page.id).to eq '673c819d2c4025543126d6af'
       expect(page.created).to eq Time.new('2024-11-19 21:06:40')
@@ -34,7 +34,7 @@ RSpec.describe Cosense::Page do
     end
 
     it 'is keyword arguments' do
-      page = Cosense::Page.create(**page_hash)
+      page = Cosensee::Page.create(**page_hash)
 
       expect(page.id).to eq '673c819d2c4025543126d6af'
       expect(page.created).to eq Time.new('2024-11-19 21:06:40')
@@ -45,7 +45,7 @@ RSpec.describe Cosense::Page do
     end
 
     it 'is an Array' do
-      pages = Cosense::Page.create([page_hash])
+      pages = Cosensee::Page.create([page_hash])
       expect(pages.size).to eq 1
 
       expect(pages[0].id).to eq '673c819d2c4025543126d6af'

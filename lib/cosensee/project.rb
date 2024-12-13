@@ -2,13 +2,13 @@
 
 require 'json'
 
-module Cosense
+module Cosensee
   # for Project
   class Project
     def self.parse(source)
       json = JSON.parse(source, symbolize_names: true)
       name, display_name, exported, users, pages = json.values_at(:name, :displayName, :exported, :users, :pages)
-      Cosense::Project.new(name:, display_name:, exported:, users:, pages:, source:)
+      Cosensee::Project.new(name:, display_name:, exported:, users:, pages:, source:)
     end
 
     def self.parse_file(filename)
@@ -24,15 +24,15 @@ module Cosense
                      elsif kwargs.keys.size == 1 && kwargs.key?(:displayName)
                        kwargs[:displayName]
                      else
-                       raise Cosense::Error, 'Cosense::User.new need an argument :display_name or :displayName'
+                       raise Cosensee::Error, 'Cosensee::User.new need an argument :display_name or :displayName'
                      end
 
       @source = source
       @name = name
       @display_name = display_name
       @exported = Time.at(exported)
-      @users = Cosense::User.create(users)
-      @pages = Cosense::Page.create(pages)
+      @users = Cosensee::User.create(users)
+      @pages = Cosensee::Page.create(pages)
       @source = source
     end
 

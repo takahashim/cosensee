@@ -2,7 +2,7 @@
 
 require 'json'
 
-module Cosense
+module Cosensee
   # for Page
   class Page
     def self.create(obj)
@@ -12,7 +12,7 @@ module Cosense
       when Hash
         new(**obj)
       else
-        raise Cosense::Error, "invalid data: #{obj}"
+        raise Cosensee::Error, "invalid data: #{obj}"
       end
     end
 
@@ -24,7 +24,7 @@ module Cosense
       @created = Time.at(created)
       @updated = Time.at(updated)
       @views = views
-      @lines = Cosense::Line.create(lines)
+      @lines = Cosensee::Line.create(lines)
     end
 
     def body_lines

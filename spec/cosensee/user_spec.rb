@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Cosense::User do
+RSpec.describe Cosensee::User do
   describe '.create' do
     let(:user_hash) do
       {
@@ -28,7 +28,7 @@ RSpec.describe Cosense::User do
     end
 
     it 'is a Hash' do
-      user = Cosense::User.create(user_hash)
+      user = Cosensee::User.create(user_hash)
 
       expect(user.id).to eq '12ab34cd'
       expect(user.name).to eq 'test_taro'
@@ -37,7 +37,7 @@ RSpec.describe Cosense::User do
     end
 
     it 'is keyword arguments' do
-      user = Cosense::User.create(**user_hash)
+      user = Cosensee::User.create(**user_hash)
 
       expect(user.id).to eq '12ab34cd'
       expect(user.name).to eq 'test_taro'
@@ -46,7 +46,7 @@ RSpec.describe Cosense::User do
     end
 
     it 'allows a rubyish Hash' do
-      user = Cosense::User.create(user_hash_rubyish)
+      user = Cosensee::User.create(user_hash_rubyish)
 
       expect(user.id).to eq '12ab34cd'
       expect(user.name).to eq 'test_taro'
@@ -56,18 +56,18 @@ RSpec.describe Cosense::User do
 
     it 'is not allowed duplicated display_name' do
       expect do
-        Cosense::User.create(id: '123', name: 'foo', display_name: 'name1', displayName: 'name2', email: 'foo@example.jp')
-      end.to raise_error(Cosense::Error)
+        Cosensee::User.create(id: '123', name: 'foo', display_name: 'name1', displayName: 'name2', email: 'foo@example.jp')
+      end.to raise_error(Cosensee::Error)
     end
 
     it 'is not allowed no display_name' do
       expect do
-        Cosense::User.create(id: '123', name: 'foo', email: 'foo@example.jp')
-      end.to raise_error(Cosense::Error)
+        Cosensee::User.create(id: '123', name: 'foo', email: 'foo@example.jp')
+      end.to raise_error(Cosensee::Error)
     end
 
     it 'is an Array' do
-      users = Cosense::User.create([user_hash])
+      users = Cosensee::User.create([user_hash])
       expect(users.size).to eq 1
 
       expect(users[0].id).to eq '12ab34cd'
@@ -77,7 +77,7 @@ RSpec.describe Cosense::User do
     end
 
     it 'is an Array of 2 items' do
-      users = Cosense::User.create([user_hash, user_hash2])
+      users = Cosensee::User.create([user_hash, user_hash2])
       expect(users.size).to eq 2
 
       expect(users[0].id).to eq '12ab34cd'

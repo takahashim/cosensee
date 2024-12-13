@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-module Cosense
+module Cosensee
   class Error < StandardError; end
 end

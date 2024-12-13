@@ -2,7 +2,7 @@
 
 require 'json'
 
-module Cosense
+module Cosensee
   # for User
   class User
     # allow Array and Hash (Object in JSON)
@@ -13,7 +13,7 @@ module Cosense
       when Hash
         new(**obj)
       else
-        raise Cosense::Error, "invalid data: #{obj}"
+        raise Cosensee::Error, "invalid data: #{obj}"
       end
     end
 
@@ -26,7 +26,7 @@ module Cosense
                      elsif kwargs.keys == [:displayName]
                        kwargs[:displayName]
                      else
-                       raise Cosense::Error, 'Cosense::User.new need an argument :display_name or :displayName'
+                       raise Cosensee::Error, 'Cosensee::User.new need an argument :display_name or :displayName'
                      end
 
       @id = id

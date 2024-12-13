@@ -2,8 +2,8 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
-require 'cosense'
+require 'cosensee'
 
-project = Cosense::Project.parse_file('togetogebox.json')
-builder = Cosense::HtmlBuilder.new(project)
+project = Cosensee::Project.parse_file('togetogebox.json')
+builder = Cosensee::HtmlBuilder.new(project)
 builder.build_all

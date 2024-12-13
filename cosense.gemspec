@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'lib/cosense/version'
+require_relative 'lib/cosensee/version'
 
 Gem::Specification.new do |spec|
-  spec.name = 'cosense'
-  spec.version = Cosense::VERSION
+  spec.name = 'cosensee'
+  spec.version = Cosensee::VERSION
   spec.authors = ['takahashim']
   spec.email = ['takahashimm@gmail.com']
 

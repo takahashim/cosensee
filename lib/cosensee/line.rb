@@ -2,7 +2,7 @@
 
 require 'json'
 
-module Cosense
+module Cosensee
   # for Line
   class Line
     def self.create(obj)
@@ -12,7 +12,7 @@ module Cosense
       when String
         new(obj)
       else
-        raise Cosense::Error, "invalid data: #{obj}"
+        raise Cosensee::Error, "invalid data: #{obj}"
       end
     end
 
@@ -37,7 +37,7 @@ module Cosense
     end
 
     def ==(other)
-      if other.is_a?(Cosense::Line)
+      if other.is_a?(Cosensee::Line)
         other.content == content
       else # String
         other == content

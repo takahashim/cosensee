@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in cosense.gemspec
+# Specify your gem's dependencies in cosensee.gemspec
 gemspec
 
 group :test, :development do
