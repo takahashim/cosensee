@@ -20,6 +20,7 @@ module Cosensee
 
     def initialize(content)
       @content = content
+      @parsed = LineParser.parse(content)
     end
 
     def brackets
@@ -36,12 +37,24 @@ module Cosensee
       end
     end
 
+    def indent_level
+      content.match(/\A([\t ]*)/)[1].size
+    end
+
+    def indented?
+      content.match?(/\A[\t ]/)
+    end
+
     def ==(other)
       if other.is_a?(Cosensee::Line)
         other.content == content
       else # String
         other == content
       end
+    end
+
+    def to_html
+      content
     end
 
     def to_obj

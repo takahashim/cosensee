@@ -24,7 +24,7 @@ module Cosensee
       @created = Time.at(created)
       @updated = Time.at(updated)
       @views = views
-      @lines = Cosensee::Line.create(lines)
+      @lines = lines
     end
 
     def body_lines
