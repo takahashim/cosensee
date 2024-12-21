@@ -42,6 +42,18 @@ RSpec.describe Cosensee::LineParser do
     end
   end
 
+  describe '#parse_hastag' do
+    it 'parse hashtag segments' do
+      expect(parser.parse_hashtag([''])).to eq ['']
+      expect(parser.parse_hashtag(['#'])).to eq ['#']
+      expect(parser.parse_hashtag(['#a'])).to eq ['', Cosensee::HashTag.new('a'), '']
+      expect(parser.parse_hashtag([' #a!#b'])).to eq [' ', Cosensee::HashTag.new('a!#b'), '']
+      expect(parser.parse_hashtag([' #abc '])).to eq [' ', Cosensee::HashTag.new('abc'), ' ']
+      expect(parser.parse_hashtag([' #あいうえお '])).to eq [' ', Cosensee::HashTag.new('あいうえお'), ' ']
+      expect(parser.parse_hashtag(['#a #b #c'])).to eq ['', Cosensee::HashTag.new('a'), ' ', Cosensee::HashTag.new('b'), ' ', Cosensee::HashTag.new('c'), '']
+    end
+  end
+
   describe '#parse_code' do
     it 'parse code segments' do
       expect(parser.parse_code('')).to eq []
@@ -51,6 +63,18 @@ RSpec.describe Cosensee::LineParser do
       expect(parser.parse_code('a`b`c')).to eq ['a', Cosensee::Code.new('b'), 'c']
       expect(parser.parse_code('a`b`c`d')).to eq ['a', Cosensee::Code.new('b'), 'c`d']
       expect(parser.parse_code('a`b`c`d`')).to eq ['a', Cosensee::Code.new('b'), 'c', Cosensee::Code.new('d'), '']
+    end
+  end
+
+  describe '#parse_double_bracket' do
+    it 'parse double bracket segments' do
+      expect(parser.parse_double_bracket([''])).to eq []
+      expect(parser.parse_double_bracket(['['])).to eq ['[']
+      expect(parser.parse_double_bracket(['[]'])).to eq ['[]']
+      expect(parser.parse_double_bracket(['[[]]'])).to eq ['[[]]']
+      expect(parser.parse_double_bracket(['[[a]]'])).to eq [Cosensee::DoubleBracket.new('a')]
+      expect(parser.parse_double_bracket(['[[a[b]c]]'])).to eq [Cosensee::DoubleBracket.new('a[b]c')]
+      expect(parser.parse_double_bracket(['[[a[[[[a[[]aa` ]]'])).to eq [Cosensee::DoubleBracket.new('a[[[[a[[]aa` ')]
     end
   end
 
@@ -88,6 +112,9 @@ RSpec.describe Cosensee::LineParser do
       expect(parser.parse('[]')).to eq [Cosensee::Indent.new(''), '', [Cosensee::Bracket.new([''])]]
       expect(parser.parse('[abc]')).to eq [Cosensee::Indent.new(''), '', [Cosensee::Bracket.new(['abc'])]]
       expect(parser.parse('12[abc]34')).to eq [Cosensee::Indent.new(''), '', ['12', Cosensee::Bracket.new(['abc']), '34']]
+      expect(parser.parse('a[[b[]c]]d[e]f')).to eq [Cosensee::Indent.new(''), '', ['a', Cosensee::DoubleBracket.new('b[]c'), 'd', Cosensee::Bracket.new(['e']), 'f']]
+      expect(parser.parse('12 #abc 34')).to eq [Cosensee::Indent.new(''), '', ['12 ', Cosensee::HashTag.new('abc'), ' 34']]
+      expect(parser.parse('12[a`bc]34')).to eq [Cosensee::Indent.new(''), '', ['12', Cosensee::Bracket.new(['a`bc']), '34']]
       expect(parser.parse('12[a`bc]34')).to eq [Cosensee::Indent.new(''), '', ['12', Cosensee::Bracket.new(['a`bc']), '34']]
       expect(parser.parse('12[a`b`c]34')).to eq [Cosensee::Indent.new(''), '', ['12', Cosensee::Bracket.new(['a', Cosensee::Code.new('b'), 'c']), '34']]
     end

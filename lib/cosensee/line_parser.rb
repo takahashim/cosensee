@@ -18,10 +18,12 @@ module Cosensee
     # codeblockが使われる場合はrest3やrest5は存在しない
     def parse(line)
       indent, rest = parse_indent(line)
-      whole_line, rest3 = parse_whole_line(rest)
-      rest4 = parse_code(rest3)
+      whole_line, rest2 = parse_whole_line(rest)
+      rest3 = parse_code(rest2)
+      rest4 = parse_double_bracket(rest3)
       rest5 = parse_bracket(rest4)
-      [indent, whole_line, rest5]
+      rest6 = parse_hashtag(rest5)
+      [indent, whole_line, rest6]
     end
 
     def parse_indent(line)
@@ -84,13 +86,61 @@ module Cosensee
       end
     end
 
+    def parse_hashtag(rest)
+      parsed = []
+
+      rest.each do |elem|
+        if elem.is_a?(String)
+          loop do
+            matched = elem.match(/(^|\s)#(\S+)/)
+            if matched
+              parsed << "#{matched.pre_match}#{matched[1]}"
+              parsed << Cosensee::HashTag.new(matched[2])
+              elem = matched.post_match
+            else
+              parsed << elem
+              break # loop
+            end
+          end
+        else
+          parsed << elem
+        end
+      end
+
+      parsed
+    end
+
+    def parse_double_bracket(rest)
+      parsed = []
+
+      rest.each do |elem|
+        if elem.is_a?(String)
+          loop do
+            matched = elem.match(/\[\[(.+?)\]\]/)
+            if matched
+              parsed << "#{matched.pre_match}"
+              parsed << Cosensee::DoubleBracket.new(matched[1])
+              elem = matched.post_match
+            else
+              parsed << elem
+              break # loop
+            end
+          end
+        else
+          parsed << elem
+        end
+      end
+
+      clean_elements(parsed)
+    end
+
     def parse_bracket(rest)
       parsed = []
       stack = nil
       target_char = '[' # or "]"
 
       rest.each do |elem|
-        if elem.is_a?(Cosensee::Code)
+        if elem.is_a?(Cosensee::Code) || elem.is_a?(Cosensee::DoubleBracket)
           if target_char == '['
             parsed << elem
           else
