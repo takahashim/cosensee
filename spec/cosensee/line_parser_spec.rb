@@ -19,10 +19,10 @@ RSpec.describe Cosensee::LineParser do
       expect(parser.parse_whole_line('')).to eq ['', '']
       expect(parser.parse_whole_line('a$')).to eq ['', 'a$']
       expect(parser.parse_whole_line('$ ')).to eq ['', '$ ']
-      expect(parser.parse_whole_line('$ a')).to eq [Cosensee::CommandLine.new('$'), 'a']
-      expect(parser.parse_whole_line('% ab')).to eq [Cosensee::CommandLine.new('%'), 'ab']
+      expect(parser.parse_whole_line('$ a')).to eq [Cosensee::CommandLine.new('a', prompt: '$'), '']
+      expect(parser.parse_whole_line('% ab')).to eq [Cosensee::CommandLine.new('ab', prompt: '%'), '']
       expect(parser.parse_whole_line('%% a')).to eq ['', '%% a']
-      expect(parser.parse_whole_line('% a $ b')).to eq [Cosensee::CommandLine.new('%'), 'a $ b']
+      expect(parser.parse_whole_line('% a $ b')).to eq [Cosensee::CommandLine.new('a $ b', prompt: '%'), '']
     end
 
     it 'parse quote segments' do
@@ -81,8 +81,9 @@ RSpec.describe Cosensee::LineParser do
       expect(parser.parse('> a`b`c')).to eq [Cosensee::Indent.new(''), Cosensee::Quote.new('>'), [' a', Cosensee::Code.new('b'), 'c']]
       expect(parser.parse('code:')).to eq [Cosensee::Indent.new(''), '', ['code:']]
       expect(parser.parse('code:a`b`c')).to eq [Cosensee::Indent.new(''), Cosensee::Codeblock.new('a`b`c'), []]
-      expect(parser.parse('$ a b c')).to eq [Cosensee::Indent.new(''), Cosensee::CommandLine.new('$'), ['a b c']]
-      expect(parser.parse('$ a `b` c')).to eq [Cosensee::Indent.new(''), Cosensee::CommandLine.new('$'), ['a ', Cosensee::Code.new('b'), ' c']]
+      expect(parser.parse('$ a b c')).to eq [Cosensee::Indent.new(''), Cosensee::CommandLine.new('a b c', prompt: '$'), []]
+      expect(parser.parse('$ a [b] c')).to eq [Cosensee::Indent.new(''), Cosensee::CommandLine.new('a [b] c', prompt: '$'), []]
+      expect(parser.parse('$ a `b` c')).to eq [Cosensee::Indent.new(''), Cosensee::CommandLine.new('a `b` c', prompt: '$'), []]
       expect(parser.parse('[')).to eq [Cosensee::Indent.new(''), '', ['[']]
       expect(parser.parse('[]')).to eq [Cosensee::Indent.new(''), '', [Cosensee::Bracket.new([''])]]
       expect(parser.parse('[abc]')).to eq [Cosensee::Indent.new(''), '', [Cosensee::Bracket.new(['abc'])]]
