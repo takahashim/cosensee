@@ -18,16 +18,31 @@ module Cosensee
     # codeblockが使われる場合はrest3やrest5は存在しない
     def parse(line)
       indent, rest = parse_indent(line)
-      quote, rest2 = parse_quote(rest)
-      codeblock, rest3 = parse_codeblock(rest2)
+      whole_line, rest3 = parse_whole_line(rest)
       rest4 = parse_code(rest3)
       rest5 = parse_bracket(rest4)
-      [indent, quote, codeblock, rest5]
+      [indent, whole_line, rest5]
     end
 
     def parse_indent(line)
       matched = line.match(/\A([\t ]*)(.*)\z/)
       [Cosensee::Indent.new(matched[1]), matched[2]]
+    end
+
+    def parse_whole_line(line)
+      # parse quote
+      matched = line.match(/\A(>)(.*)\z/)
+      return [Cosensee::Quote.new(matched[1]), matched[2]] if matched
+
+      # parse codeblock
+      matched = line.match(/\A(code:)(.+)\z/)
+      return [Cosensee::Codeblock.new(matched[2]), ''] if matched
+
+      # parse command line
+      matched = line.match(/\A([$%]) (.+)\z/)
+      return [Cosensee::CommandLine.new(matched[1]), matched[2]] if matched
+
+      ['', line]
     end
 
     def parse_quote(line)
