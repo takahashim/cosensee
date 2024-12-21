@@ -3,8 +3,8 @@
 require 'json'
 
 module Cosensee
-  # for blockquote
-  class Blockquote
+  # for quote
+  class Quote
     def initialize(content)
       @content = content
     end
@@ -12,7 +12,7 @@ module Cosensee
     attr_reader :content
 
     def ==(other)
-      if other.is_a?(Cosensee::Blockquote)
+      if other.is_a?(Cosensee::Quote)
         other.content == content
       else # String
         other == content

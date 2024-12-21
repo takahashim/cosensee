@@ -14,15 +14,15 @@ module Cosensee
     def initialize; end
 
     # Rule:
-    # blockquoteとcodeblockは併存しない
+    # quoteとcodeblockは併存しない
     # codeblockが使われる場合はrest3やrest5は存在しない
     def parse(line)
       indent, rest = parse_indent(line)
-      blockquote, rest2 = parse_blockquote(rest)
+      quote, rest2 = parse_quote(rest)
       codeblock, rest3 = parse_codeblock(rest2)
       rest4 = parse_code(rest3)
       rest5 = parse_bracket(rest4)
-      [indent, blockquote, codeblock, rest5]
+      [indent, quote, codeblock, rest5]
     end
 
     def parse_indent(line)
@@ -30,10 +30,10 @@ module Cosensee
       [Cosensee::Indent.new(matched[1]), matched[2]]
     end
 
-    def parse_blockquote(line)
+    def parse_quote(line)
       matched = line.match(/\A(>)(.*)\z/)
       if matched
-        [Cosensee::Blockquote.new(matched[1]), matched[2]]
+        [Cosensee::Quote.new(matched[1]), matched[2]]
       else
         ['', line]
       end

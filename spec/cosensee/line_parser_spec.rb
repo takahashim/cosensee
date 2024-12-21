@@ -14,13 +14,13 @@ RSpec.describe Cosensee::LineParser do
     end
   end
 
-  describe '#parse_blockquote' do
-    it 'parse blockquote segments' do
-      expect(parser.parse_blockquote('')).to eq ['', '']
-      expect(parser.parse_blockquote('a>')).to eq ['', 'a>']
-      expect(parser.parse_blockquote('>')).to eq [Cosensee::Blockquote.new('>'), '']
-      expect(parser.parse_blockquote('>ab')).to eq [Cosensee::Blockquote.new('>'), 'ab']
-      expect(parser.parse_blockquote('>>b')).to eq [Cosensee::Blockquote.new('>'), '>b']
+  describe '#parse_quote' do
+    it 'parse quote segments' do
+      expect(parser.parse_quote('')).to eq ['', '']
+      expect(parser.parse_quote('a>')).to eq ['', 'a>']
+      expect(parser.parse_quote('>')).to eq [Cosensee::Quote.new('>'), '']
+      expect(parser.parse_quote('>ab')).to eq [Cosensee::Quote.new('>'), 'ab']
+      expect(parser.parse_quote('>>b')).to eq [Cosensee::Quote.new('>'), '>b']
     end
   end
 
@@ -70,7 +70,7 @@ RSpec.describe Cosensee::LineParser do
       expect(parser.parse(" \tabc")).to eq [Cosensee::Indent.new(" \t"), '', '', ['abc']]
       expect(parser.parse(' `a`bc')).to eq [Cosensee::Indent.new(' '), '', '', [Cosensee::Code.new('a'), 'bc']]
       expect(parser.parse('a`b`c')).to eq [Cosensee::Indent.new(''), '', '', ['a', Cosensee::Code.new('b'), 'c']]
-      expect(parser.parse('> a`b`c')).to eq [Cosensee::Indent.new(''), Cosensee::Blockquote.new('>'), '', [' a', Cosensee::Code.new('b'), 'c']]
+      expect(parser.parse('> a`b`c')).to eq [Cosensee::Indent.new(''), Cosensee::Quote.new('>'), '', [' a', Cosensee::Code.new('b'), 'c']]
       expect(parser.parse('code:')).to eq [Cosensee::Indent.new(''), '', '', ['code:']]
       expect(parser.parse('code:a`b`c')).to eq [Cosensee::Indent.new(''), '', Cosensee::Codeblock.new('a`b`c'), []]
       expect(parser.parse('[')).to eq [Cosensee::Indent.new(''), '', '', ['[']]
