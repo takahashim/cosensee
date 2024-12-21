@@ -24,11 +24,8 @@ module Cosensee
     end
 
     def ==(other)
-      if other.is_a?(Cosensee::Bracket)
+      other.is_a?(Cosensee::Bracket) &&
         other.content == content
-      else # String
-        other == content
-      end
     end
 
     def to_obj

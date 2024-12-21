@@ -13,9 +13,8 @@ module Cosensee
     attr_reader :content, :prompt
 
     def ==(other)
-      if other.is_a?(Cosensee::CommandLine)
+      other.is_a?(Cosensee::CommandLine) &&
         other.content == content && other.prompt == prompt
-      end
     end
 
     def to_obj

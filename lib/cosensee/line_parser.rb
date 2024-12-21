@@ -118,7 +118,7 @@ module Cosensee
           loop do
             matched = elem.match(/\[\[(.+?)\]\]/)
             if matched
-              parsed << "#{matched.pre_match}"
+              parsed << matched.pre_match
               parsed << Cosensee::DoubleBracket.new(matched[1])
               elem = matched.post_match
             else

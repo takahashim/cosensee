@@ -46,7 +46,8 @@ module Cosensee
     end
 
     def ==(other)
-      other.id == id &&
+      other.is_a?(Cosensee::Page) &&
+        other.id == id &&
         other.title == title &&
         other.created == created &&
         other.updated == updated &&

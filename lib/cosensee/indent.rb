@@ -13,11 +13,8 @@ module Cosensee
     attr_reader :content, :level
 
     def ==(other)
-      if other.is_a?(Cosensee::Indent)
+      other.is_a?(Cosensee::Indent) &&
         other.content == content
-      else # String
-        other == content
-      end
     end
 
     def to_obj

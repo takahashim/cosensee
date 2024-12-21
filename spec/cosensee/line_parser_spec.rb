@@ -36,9 +36,9 @@ RSpec.describe Cosensee::LineParser do
     it 'parse codeblock segments' do
       expect(parser.parse_whole_line('')).to eq ['', '']
       expect(parser.parse_whole_line('code:')).to eq ['', 'code:']
-      expect(parser.parse_whole_line('code:abc')).to eq ['abc', '']
-      expect(parser.parse_whole_line('code:abc def')).to eq ['abc def', '']
-      expect(parser.parse_whole_line('code:abc[] `de`f')).to eq ['abc[] `de`f', '']
+      expect(parser.parse_whole_line('code:abc')).to eq [Cosensee::Codeblock.new('abc'), '']
+      expect(parser.parse_whole_line('code:abc def')).to eq [Cosensee::Codeblock.new('abc def'), '']
+      expect(parser.parse_whole_line('code:abc[] `de`f')).to eq [Cosensee::Codeblock.new('abc[] `de`f'), '']
     end
   end
 

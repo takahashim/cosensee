@@ -46,11 +46,8 @@ module Cosensee
     end
 
     def ==(other)
-      if other.is_a?(Cosensee::Line)
+      other.is_a?(Cosensee::Line) &&
         other.content == content
-      else # String
-        other == content
-      end
     end
 
     def to_html

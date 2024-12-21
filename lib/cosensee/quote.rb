@@ -12,11 +12,8 @@ module Cosensee
     attr_reader :content
 
     def ==(other)
-      if other.is_a?(Cosensee::Quote)
+      other.is_a?(Cosensee::Quote) &&
         other.content == content
-      else # String
-        other == content
-      end
     end
 
     def to_obj

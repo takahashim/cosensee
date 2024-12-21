@@ -16,9 +16,8 @@ module Cosensee
     end
 
     def ==(other)
-      if other.is_a?(Cosensee::DoubleBracket)
+      other.is_a?(Cosensee::DoubleBracket) &&
         other.content == content
-      end
     end
 
     def to_obj
