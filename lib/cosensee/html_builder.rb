@@ -10,7 +10,7 @@ module Cosensee
     def initialize(project, root_dir: nil)
       @project = project
       @templates_dir = File.join(__dir__, '../../templates')
-      @root_dir = root_dir || Dir.pwd
+      @root_dir = root_dir || File.join(Dir.pwd, "out")
     end
 
     attr_reader :project, :root_dir, :templates_dir
@@ -18,7 +18,7 @@ module Cosensee
     def build_all
       build_index(project)
       project.pages.each do |page|
-        build_page(page)
+        # build_page(page)
       end
     end
 
@@ -28,7 +28,11 @@ module Cosensee
       File.write(File.join(root_dir, 'index.html'), output)
     end
 
-    def build_page(page); end
+    def build_page(page)
+      template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'page.html.erb'))
+      output = template.render(nil, project:, page:)
+      File.write(File.join(root_dir, page.link_path), output)
+    end
 
     def page_title(page)
       "#{page.title} | #{project.title}"

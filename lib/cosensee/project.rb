@@ -36,6 +36,21 @@ module Cosensee
       @source = source
     end
 
+    def find_page(title)
+      unless @page_index_list
+        collect_page_titles
+      end
+
+      pages[@page_index_list[title]]
+    end
+
+    def collect_page_titles
+      @page_index_list = {}
+      pages.each_with_index do |page, ind|
+        @page_index_list[page.title] = ind
+      end
+    end
+
     def to_obj
       { name:, displayName: display_name, exported: exported.to_i, users:, pages: }
     end

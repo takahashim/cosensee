@@ -16,7 +16,7 @@ module Cosensee
       end
     end
 
-    attr_reader :content
+    attr_reader :content, :parsed
 
     def initialize(content)
       @content = content
@@ -48,10 +48,6 @@ module Cosensee
     def ==(other)
       other.is_a?(Cosensee::Line) &&
         other.content == content
-    end
-
-    def to_html
-      content
     end
 
     def to_obj

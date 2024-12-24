@@ -5,8 +5,6 @@ require 'json'
 module Cosensee
   # parse a line
   class LineParser
-    INDENT_PATTERN = /\A([\t ]*)/
-
     def self.parse(line)
       new.parse(line)
     end
@@ -23,7 +21,8 @@ module Cosensee
       rest4 = parse_double_bracket(rest3)
       rest5 = parse_bracket(rest4)
       rest6 = parse_hashtag(rest5)
-      [indent, whole_line, rest6]
+
+      ParsedLine.new(indent:, line_content: whole_line, content: rest6)
     end
 
     def parse_indent(line)

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'json'
+# require 'uri'
 
 module Cosensee
   # for Page
@@ -27,6 +28,10 @@ module Cosensee
       @lines = lines
     end
 
+    def parsed_lines
+      Cosensee::Line.create(body_lines).map(&:parsed)
+    end
+
     def body_lines
       lines.drop(1)
     end
@@ -42,7 +47,10 @@ module Cosensee
     end
 
     def link_path
-      "#{title}.html"
+      # body = URI.encode_www_form_component(title.gsub(/ /, '_'))
+      body = title.gsub(/ /, '_').gsub(/\//, '%2F')
+
+      "#{body}.html"
     end
 
     def ==(other)

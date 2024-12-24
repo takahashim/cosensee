@@ -16,7 +16,7 @@ RSpec.describe Cosensee::Page do
           '',
           "\tテスト4",
           "\tテスト5",
-          'https://expample.com/test/',
+          'https://example.com/test/',
           ''
         ]
       }
@@ -30,7 +30,7 @@ RSpec.describe Cosensee::Page do
       expect(page.updated).to eq Time.new('2024-11-19 21:40:00')
       expect(page.title).to eq 'テストページ1'
       expect(page.views).to eq 12
-      expect(page.lines).to eq ['テスト1', '', '[テスト2]と[test3]', '', "\tテスト4", "\tテスト5", 'https://expample.com/test/', '']
+      expect(page.lines).to eq ['テスト1', '', '[テスト2]と[test3]', '', "\tテスト4", "\tテスト5", 'https://example.com/test/', '']
     end
 
     it 'is keyword arguments' do
@@ -41,7 +41,7 @@ RSpec.describe Cosensee::Page do
       expect(page.updated).to eq Time.new('2024-11-19 21:40:00')
       expect(page.title).to eq 'テストページ1'
       expect(page.views).to eq 12
-      expect(page.lines).to eq ['テスト1', '', '[テスト2]と[test3]', '', "\tテスト4", "\tテスト5", 'https://expample.com/test/', '']
+      expect(page.lines).to eq ['テスト1', '', '[テスト2]と[test3]', '', "\tテスト4", "\tテスト5", 'https://example.com/test/', '']
     end
 
     it 'is an Array' do
@@ -53,8 +53,55 @@ RSpec.describe Cosensee::Page do
       expect(pages[0].updated).to eq Time.new('2024-11-19 21:40:00')
       expect(pages[0].title).to eq 'テストページ1'
       expect(pages[0].views).to eq 12
-      expect(pages[0].lines).to eq ['テスト1', '', '[テスト2]と[test3]', '', "\tテスト4", "\tテスト5", 'https://expample.com/test/',
+      expect(pages[0].lines).to eq ['テスト1', '', '[テスト2]と[test3]', '', "\tテスト4", "\tテスト5", 'https://example.com/test/',
                                     '']
     end
+
+    it 'is a Hash' do
+      page = Cosensee::Page.create(page_hash)
+
+      expect(page.parsed_lines).to eq [
+                                     Cosensee::ParsedLine.new(
+                                       indent: Cosensee::Indent.new(''),
+                                       line_content: '',
+                                       content: []
+                                     ),
+                                     Cosensee::ParsedLine.new(
+                                       indent: Cosensee::Indent.new(''),
+                                       line_content: '',
+                                       content: [
+                                         Cosensee::Bracket.new(['テスト2']),
+                                         'と',
+                                         Cosensee::Bracket.new(['test3']),
+                                       ]
+                                     ),
+                                     Cosensee::ParsedLine.new(
+                                       indent: Cosensee::Indent.new(''),
+                                       line_content: '',
+                                       content: []
+                                     ),
+                                     Cosensee::ParsedLine.new(
+                                       indent: Cosensee::Indent.new("\t"),
+                                       line_content: '',
+                                       content: ['テスト4']
+                                     ),
+                                     Cosensee::ParsedLine.new(
+                                       indent: Cosensee::Indent.new("\t"),
+                                       line_content: '',
+                                       content: ['テスト5']
+                                     ),
+                                     Cosensee::ParsedLine.new(
+                                       indent: Cosensee::Indent.new(""),
+                                       line_content: '',
+                                       content: ['https://example.com/test/']
+                                     ),
+                                     Cosensee::ParsedLine.new(
+                                       indent: Cosensee::Indent.new(''),
+                                       line_content: '',
+                                       content: []
+                                     )
+                                   ]
+    end
+
   end
 end
