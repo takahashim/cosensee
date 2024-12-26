@@ -4,23 +4,16 @@ require 'json'
 
 module Cosensee
   # for Line
-  class Line
-    def self.create(obj)
-      case obj
-      when Array
-        obj.map { |arg| new(arg) }
-      when String
-        new(obj)
-      else
-        raise Cosensee::Error, "invalid data: #{obj}"
-      end
+  Line = Data.define(:content, :parsed) do
+    def self.from_array(lines_args)
+      lines_args.map { |arg| new(arg) }
     end
 
-    attr_reader :content, :parsed
-
-    def initialize(content)
-      @content = content
-      @parsed = LineParser.parse(content)
+    def initialize(content:)
+      super(
+        content:,
+        parsed: LineParser.parse(content)
+      )
     end
 
     def brackets
@@ -43,11 +36,6 @@ module Cosensee
 
     def indented?
       content.match?(/\A[\t ]/)
-    end
-
-    def ==(other)
-      other.is_a?(Cosensee::Line) &&
-        other.content == content
     end
 
     def to_obj

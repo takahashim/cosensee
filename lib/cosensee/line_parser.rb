@@ -41,7 +41,7 @@ module Cosensee
 
       # parse command line
       matched = line.match(/\A([$%]) (.+)\z/)
-      return [Cosensee::CommandLine.new(matched[2], prompt: matched[1]), ''] if matched
+      return [Cosensee::CommandLine.new(content: matched[2], prompt: matched[1]), ''] if matched
 
       ['', line]
     end

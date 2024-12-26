@@ -4,18 +4,7 @@ require 'json'
 
 module Cosensee
   # parse a hash tag
-  class HashTag
-    def initialize(content)
-      @content = content
-    end
-
-    attr_reader :content
-
-    def ==(other)
-      other.is_a?(Cosensee::HashTag) &&
-        other.content == content
-    end
-
+  HashTag = Data.define(:content) do
     def to_obj
       "##{content}"
     end

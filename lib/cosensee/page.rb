@@ -5,31 +5,28 @@ require 'json'
 
 module Cosensee
   # for Page
-  class Page
-    def self.create(obj)
-      case obj
-      when Array
-        obj.map { |args| new(**args) }
-      when Hash
-        new(**obj)
-      else
-        raise Cosensee::Error, "invalid data: #{obj}"
-      end
+  Page = Data.define(:id, :title, :created, :updated, :views, :lines) do
+    def self.from_array(args_list)
+      args_list.map { |args| new(**args) }
     end
 
-    attr_reader :id, :title, :created, :updated, :views, :lines
+    def self.from_hash(obj)
+      new(**obj)
+    end
 
     def initialize(id:, title:, created:, updated:, views:, lines:)
-      @id = id
-      @title = title
-      @created = Time.at(created)
-      @updated = Time.at(updated)
-      @views = views
-      @lines = lines
+      super(
+        id:,
+        title:,
+        created: Time.at(created),
+        updated: Time.at(updated),
+        views:,
+        lines:
+      )
     end
 
     def parsed_lines
-      Cosensee::Line.create(body_lines).map(&:parsed)
+      Cosensee::Line.from_array(body_lines).map(&:parsed)
     end
 
     def body_lines
@@ -48,19 +45,9 @@ module Cosensee
 
     def link_path
       # body = URI.encode_www_form_component(title.gsub(/ /, '_'))
-      body = title.gsub(/ /, '_').gsub(/\//, '%2F')
+      body = title.gsub(/ /, '_').gsub('/', '%2F')
 
       "#{body}.html"
-    end
-
-    def ==(other)
-      other.is_a?(Cosensee::Page) &&
-        other.id == id &&
-        other.title == title &&
-        other.created == created &&
-        other.updated == updated &&
-        other.views == views &&
-        other.lines == lines
     end
 
     def to_obj

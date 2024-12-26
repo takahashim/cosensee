@@ -4,7 +4,7 @@ require 'json'
 
 module Cosensee
   # for Bracket
-  class Bracket
+  Bracket = Data.define(:content) do
     DECORATE_PATTERN = %r{\A([_\*/\-"#%&'\(\)~\|\+<>{},\.]+) (.*)\z}
     MATH_PATTERN = /\A$ (.*)\z/
     HTTP_PATTERN = %r{\A(https?://.*)(\s.*)?\z}
@@ -13,19 +13,8 @@ module Cosensee
 
     # If the content contains Cosensee::Code, the above patterns will not be applied.
 
-    attr_reader :content
-
-    def initialize(content)
-      @content = content
-    end
-
     def image?
       @content.match?(/\.(png|jpg)$/)
-    end
-
-    def ==(other)
-      other.is_a?(Cosensee::Bracket) &&
-        other.content == content
     end
 
     def match_math

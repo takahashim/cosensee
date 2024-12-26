@@ -4,18 +4,7 @@ require 'json'
 
 module Cosensee
   # parse a line
-  class Code
-    def initialize(content)
-      @content = content
-    end
-
-    attr_reader :content
-
-    def ==(other)
-      other.is_a?(Cosensee::Code) &&
-        other.content == content
-    end
-
+  Code = Data.define(:content) do
     def to_obj
       "`#{content}`"
     end

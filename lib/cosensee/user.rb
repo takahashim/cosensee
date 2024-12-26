@@ -4,20 +4,10 @@ require 'json'
 
 module Cosensee
   # for User
-  class User
-    # allow Array and Hash (Object in JSON)
-    def self.create(obj)
-      case obj
-      when Array
-        obj.map { |args| new(**args) }
-      when Hash
-        new(**obj)
-      else
-        raise Cosensee::Error, "invalid data: #{obj}"
-      end
+  User = Data.define(:id, :name, :display_name, :email) do
+    def self.from_array(users_args)
+      users_args.map { |args| new(**args) }
     end
-
-    attr_reader :id, :name, :display_name, :email
 
     # allow both `:display_key` and `:displayKey`
     def initialize(id:, name:, email:, **kwargs)
@@ -28,18 +18,12 @@ module Cosensee
                      else
                        raise Cosensee::Error, 'Cosensee::User.new need an argument :display_name or :displayName'
                      end
-
-      @id = id
-      @display_name = display_name
-      @name = name
-      @email = email
-    end
-
-    def ==(other)
-      other.id == id &&
-        other.display_name == display_name &&
-        other.name == name &&
-        other.email == email
+      super(
+        id:,
+        display_name:,
+        name:,
+        email:
+      )
     end
 
     def to_obj

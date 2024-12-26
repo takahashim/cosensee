@@ -4,18 +4,7 @@ require 'json'
 
 module Cosensee
   # for codeblock
-  class Codeblock
-    def initialize(content)
-      @content = content
-    end
-
-    attr_reader :content
-
-    def ==(other)
-      other.is_a?(Cosensee::Codeblock) &&
-        other.content == content
-    end
-
+  Codeblock = Data.define(:content) do
     def to_obj
       "code:#{content}"
     end

@@ -4,17 +4,9 @@ require 'json'
 
 module Cosensee
   # for normal Text
-  class Indent
-    def initialize(content)
-      @content = content
-      @level = content.size
-    end
-
-    attr_reader :content, :level
-
-    def ==(other)
-      other.is_a?(Cosensee::Indent) &&
-        other.content == content
+  Indent = Data.define(:content) do
+    def level
+      @level ||= content.size
     end
 
     def to_obj

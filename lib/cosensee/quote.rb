@@ -4,18 +4,7 @@ require 'json'
 
 module Cosensee
   # for quote
-  class Quote
-    def initialize(content)
-      @content = content
-    end
-
-    attr_reader :content
-
-    def ==(other)
-      other.is_a?(Cosensee::Quote) &&
-        other.content == content
-    end
-
+  Quote = Data.define(:content) do
     def to_obj
       content
     end

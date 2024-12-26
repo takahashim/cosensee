@@ -4,7 +4,7 @@ require 'json'
 
 module Cosensee
   # for Project
-  class Project
+  Project = Data.define(:name, :display_name, :exported, :users, :pages, :source) do
     def self.parse(source)
       json = JSON.parse(source, symbolize_names: true)
       name, display_name, exported, users, pages = json.values_at(:name, :displayName, :exported, :users, :pages)
@@ -16,8 +16,6 @@ module Cosensee
       parse(src)
     end
 
-    attr_reader :name, :display_name, :exported, :users, :pages
-
     def initialize(name:, exported:, users:, pages:, source:, **kwargs)
       display_name = if kwargs.keys.size == 1 && kwargs.key?(:display_name)
                        kwargs[:display_name]
@@ -27,19 +25,18 @@ module Cosensee
                        raise Cosensee::Error, 'Cosensee::User.new need an argument :display_name or :displayName'
                      end
 
-      @source = source
-      @name = name
-      @display_name = display_name
-      @exported = Time.at(exported)
-      @users = Cosensee::User.create(users)
-      @pages = Cosensee::Page.create(pages)
-      @source = source
+      super(
+        name:,
+        display_name:,
+        exported: Time.at(exported),
+        users: Cosensee::User.from_array(users),
+        pages: Cosensee::Page.from_array(pages),
+        source:
+      )
     end
 
     def find_page(title)
-      unless @page_index_list
-        collect_page_titles
-      end
+      collect_page_titles unless @page_index_list
 
       pages[@page_index_list[title]]
     end

@@ -4,20 +4,9 @@ require 'json'
 
 module Cosensee
   # for double Bracket
-  class DoubleBracket
-    attr_reader :content
-
-    def initialize(content)
-      @content = content
-    end
-
+  DoubleBracket = Data.define(:content) do
     def image?
       @content.match?(/\.(png|jpg)$/)
-    end
-
-    def ==(other)
-      other.is_a?(Cosensee::DoubleBracket) &&
-        other.content == content
     end
 
     def to_obj
