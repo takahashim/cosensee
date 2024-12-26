@@ -10,7 +10,7 @@ module Cosensee
     def initialize(project, root_dir: nil)
       @project = project
       @templates_dir = File.join(__dir__, '../../templates')
-      @root_dir = root_dir || File.join(Dir.pwd, "out")
+      @root_dir = root_dir || File.join(Dir.pwd, 'out')
     end
 
     attr_reader :project, :root_dir, :templates_dir
