@@ -38,9 +38,7 @@ module Cosensee
     end
 
     def first_image
-      lines.each do |line|
-        return line.first_image if line.some_image?
-      end
+      lines.find(&:some_image?)&.first_image
     end
 
     def link_path

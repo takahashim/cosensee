@@ -25,9 +25,7 @@ module Cosensee
     end
 
     def first_image
-      brackets.each do |item|
-        return item if item.match?(/\.(png|jpg)$/)
-      end
+      brackets.find { |item| item.match?(/\.(png|jpg)$/) }
     end
 
     def indent_level
