@@ -5,7 +5,7 @@ RSpec.describe Cosensee::LineParser do
 
   describe '#parse_indent' do
     it 'parse indent segments' do
-      expect(parser.parse_indent('')).to eq [Cosensee::Indent.new(''), '']
+      expect(parser.parse_indent('')).to eq [Cosensee::Indent.new, '']
       expect(parser.parse_indent(' ')).to eq [Cosensee::Indent.new(' '), '']
       expect(parser.parse_indent(' a')).to eq [Cosensee::Indent.new(' '), 'a']
       expect(parser.parse_indent(" \t")).to eq [Cosensee::Indent.new(" \t"), '']
@@ -99,7 +99,7 @@ RSpec.describe Cosensee::LineParser do
         [
           '',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
+            indent: Cosensee::Indent.new,
             line_content: nil,
             content: []
           )
@@ -114,7 +114,7 @@ RSpec.describe Cosensee::LineParser do
         [
           'a',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
+            indent: Cosensee::Indent.new,
             content: ['a']
           )
         ],
@@ -142,14 +142,14 @@ RSpec.describe Cosensee::LineParser do
         [
           'a`b`c',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
+            indent: Cosensee::Indent.new,
             content: ['a', Cosensee::Code.new('b'), 'c']
           )
         ],
         [
           '> a`b`c',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
+            indent: Cosensee::Indent.new,
             line_content: Cosensee::Quote.new('>'),
             content: [' a', Cosensee::Code.new('b'), 'c']
           )
@@ -157,91 +157,91 @@ RSpec.describe Cosensee::LineParser do
         [
           'code:',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
+            indent: Cosensee::Indent.new,
             content: ['code:']
           )
         ],
         [
           'code:a`b`c',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
-            line_content: Cosensee::Codeblock.new('a`b`c'),
+            indent: Cosensee::Indent.new,
+            line_content: Cosensee::Codeblock.new('a`b`c')
           )
         ],
         [
           '$ a b c',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
-            line_content: Cosensee::CommandLine.new(content: 'a b c', prompt: '$'),
+            indent: Cosensee::Indent.new,
+            line_content: Cosensee::CommandLine.new(content: 'a b c', prompt: '$')
           )
         ],
         [
           '$ a [b] c',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
-            line_content: Cosensee::CommandLine.new(content: 'a [b] c', prompt: '$'),
+            indent: Cosensee::Indent.new,
+            line_content: Cosensee::CommandLine.new(content: 'a [b] c', prompt: '$')
           )
         ],
         [
           '$ a `b` c',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
-            line_content: Cosensee::CommandLine.new(content: 'a `b` c', prompt: '$'),
+            indent: Cosensee::Indent.new,
+            line_content: Cosensee::CommandLine.new(content: 'a `b` c', prompt: '$')
           )
         ],
         [
           '[',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
+            indent: Cosensee::Indent.new,
             content: ['[']
           )
         ],
         [
           '[]',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
+            indent: Cosensee::Indent.new,
             content: [Cosensee::Bracket.new([''])]
           )
         ],
         [
           '[abc]',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
+            indent: Cosensee::Indent.new,
             content: [Cosensee::Bracket.new(['abc'])]
           )
         ],
         [
           '12[abc]34',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
+            indent: Cosensee::Indent.new,
             content: ['12', Cosensee::Bracket.new(['abc']), '34']
           )
         ],
         [
           'a[[b[]c]]d[e]f',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
+            indent: Cosensee::Indent.new,
             content: ['a', Cosensee::DoubleBracket.new('b[]c'), 'd', Cosensee::Bracket.new(['e']), 'f']
           )
         ],
         [
           '12 #abc 34',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
+            indent: Cosensee::Indent.new,
             content: ['12 ', Cosensee::HashTag.new('abc'), ' 34']
           )
         ],
         [
           '12[a`bc]34',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
+            indent: Cosensee::Indent.new,
             content: ['12', Cosensee::Bracket.new(['a`bc']), '34']
           )
         ],
         [
           '12[a`bc]34',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(''),
+            indent: Cosensee::Indent.new,
             content: ['12', Cosensee::Bracket.new(['a`bc']), '34']
           )
         ],

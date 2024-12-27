@@ -5,6 +5,10 @@ require 'json'
 module Cosensee
   # for normal Text
   Indent = Data.define(:content) do
+    def initialize(content: '')
+      super
+    end
+
     def level
       @level ||= content.size
     end

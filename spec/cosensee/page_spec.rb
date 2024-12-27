@@ -67,11 +67,11 @@ RSpec.describe Cosensee::Page do
 
       expect(page.parsed_lines).to eq [
         Cosensee::ParsedLine.new(
-          indent: Cosensee::Indent.new(''),
+          indent: Cosensee::Indent.new,
           content: []
         ),
         Cosensee::ParsedLine.new(
-          indent: Cosensee::Indent.new(''),
+          indent: Cosensee::Indent.new,
           content: [
             Cosensee::Bracket.new(['テスト2']),
             'と',
@@ -79,7 +79,7 @@ RSpec.describe Cosensee::Page do
           ]
         ),
         Cosensee::ParsedLine.new(
-          indent: Cosensee::Indent.new(''),
+          indent: Cosensee::Indent.new,
           content: []
         ),
         Cosensee::ParsedLine.new(
@@ -91,11 +91,11 @@ RSpec.describe Cosensee::Page do
           content: ['テスト5']
         ),
         Cosensee::ParsedLine.new(
-          indent: Cosensee::Indent.new(''),
+          indent: Cosensee::Indent.new,
           content: ['https://example.com/test/']
         ),
         Cosensee::ParsedLine.new(
-          indent: Cosensee::Indent.new(''),
+          indent: Cosensee::Indent.new,
           content: []
         )
       ]
