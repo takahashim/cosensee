@@ -7,8 +7,12 @@ gemspec
 
 group :test, :development do
   gem 'rake'
-  gem 'rspec'
   gem 'rubocop'
   gem 'rubocop-rake', require: false
   gem 'rubocop-rspec', require: false
+end
+
+group :test do
+  gem 'rspec'
+  gem 'rspec-parameterized'
 end

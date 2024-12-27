@@ -43,7 +43,7 @@ module Cosensee
       matched = line.match(/\A([$%]) (.+)\z/)
       return [Cosensee::CommandLine.new(content: matched[2], prompt: matched[1]), ''] if matched
 
-      ['', line]
+      [nil, line]
     end
 
     def parse_quote(line)

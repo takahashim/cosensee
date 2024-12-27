@@ -5,7 +5,7 @@ require 'json'
 module Cosensee
   # parse a line
   class ParsedLine
-    def initialize(indent:, line_content:, content:)
+    def initialize(indent:, line_content: nil, content: [])
       @indent = indent
       @line_content = line_content
       @content = content
