@@ -6,7 +6,7 @@ module Cosensee
       def render
         case
         when matched = content.match_math
-          "<div class='math-container'>$#{matched}$</div>"
+          "<span class='math-container'>$#{matched}$</span>"
 
         when matched = content.match_external_link_precede
           anchor = if matched[2].empty?
@@ -14,7 +14,7 @@ module Cosensee
                    else
                      matched[2].strip
                    end
-          "<div><a href='#{matched[1]}'>#{CGI.escape_html(anchor)}</a></div>"
+          "<span><a href='#{matched[1]}'>#{CGI.escape_html(anchor)}</a></span>"
 
         when matched = content.match_external_link_succeed
           anchor = if matched[1].empty?
@@ -22,7 +22,7 @@ module Cosensee
                    else
                      matched[1].strip
                    end
-          "<div><a href='#{matched[2]}'>#{CGI.escape_html(anchor)}</a></div>"
+          "<span><a href='#{matched[2]}'>#{CGI.escape_html(anchor)}</a></span>"
 
         when matched = content.match_decorate
           deco = matched[1]
@@ -38,7 +38,7 @@ module Cosensee
           classes << 'italic' if slanted
           classes << 'line-through' if deleted
 
-          '<div class=' # {classes.join(' ')}">#{str}</div>"
+          '<span class=' # {classes.join(' ')}">#{str}</span>"
 
         when matched = content.match_icon
           return unless matched
@@ -48,10 +48,10 @@ module Cosensee
                    else
                      matched[1].strip
                    end
-          "<div><a href='#{matched[2]}'>#{CGI.escape_html(anchor)}</a></div>"
+          "<span><a href='#{matched[2]}'>#{CGI.escape_html(anchor)}</a></span>"
         else
           link = CGI.escape_html(content.first_content)
-          "<div><a href='#{link}'>#{link}</a></div>"
+          "<span><a href='#{link}'>#{link}</a></span>"
         end
       end
 
