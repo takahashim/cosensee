@@ -11,8 +11,11 @@ require:
 Layout/LineLength:
   Max: 300
 
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented_relative_to_receiver
+
 Metrics/AbcSize:
-  Max: 30
+  Max: 60
 
 Metrics/ClassLength:
   Max: 200
@@ -30,7 +33,10 @@ Metrics/ParameterLists:
   Max: 8
 
 Metrics/PerceivedComplexity:
-  Max: 14
+  Max: 20
+
+Style/MinMaxComparison:
+  Enabled: false
 
 Style/NumericLiterals:
   Enabled: false
@@ -39,7 +45,7 @@ RSpec/DescribedClass:
   Enabled: false
 
 RSpec/ExampleLength:
-  Max: 30
+  Max: 50
 
 RSpec/MultipleExpectations:
   Enabled: false

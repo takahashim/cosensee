@@ -17,9 +17,7 @@ module Cosensee
       indent, rest = parse_indent(line)
       line_content, rest2 = parse_whole_line(rest)
 
-      unless rest2
-        return ParsedLine.new(indent:, line_content:)
-      end
+      return ParsedLine.new(indent:, line_content:) unless rest2
 
       content = rest2
                   .then { |data| parse_code(data) }
