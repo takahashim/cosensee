@@ -7,32 +7,58 @@ module Cosensee
   Bracket = Data.define(:content) do
     # If the content contains Cosensee::Code, the above patterns will not be applied.
 
+    def single_text?
+      content.size == 1 && content.is_a?(String)
+    end
+
+    def first_content
+      content.first
+    end
+
     def image?
-      content.match?(/\.(png|jpg)$/)
+      single_text? && first_content.match?(/\.(png|jpg)$/)
     end
 
     def match_math
-      /\A$ (.*)\z/.match(content)
+      return unless single_text?
+
+      /\A$ (.*)\z/.match(first_content)
     end
 
     def match_external_link_precede
-      %r{\A(https?://.*)(\s.*)?\z}.match(content)
+      return unless single_text?
+
+      %r{\A(https?://.*)(\s.*)?\z}.match(first_content)
     end
 
     def match_external_link_succeed
-      %r{\A((.*\s)?https?://.*)\z}.match(content)
+      return unless single_text?
+
+      %r{\A((.*\s)?https?://.*)\z}.match(first_content)
     end
 
     def match_decorate
-      %r{\A([_\*/\-"#%&'\(\)~\|\+<>{},\.]+) (.*)\z}.match(content)
+      return unless single_text?
+
+      %r{\A([_\*/\-"#%&'\(\)~\|\+<>{},\.]+) (.*)\z}.match(first_content)
     end
 
     def match_icon
-      /\A(.*).icon\z/.match(content)
+      return unless single_text?
+
+      /\A(.*).icon\z/.match(first_content)
     end
 
     def to_obj
-      "[#{content}]"
+      unparsed = content.map do |elem|
+        if elem.is_a?(String)
+          elem
+        else
+          elem.to_obj
+        end
+      end
+
+      "[#{unparsed}]"
     end
 
     def to_json(*)

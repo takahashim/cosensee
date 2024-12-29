@@ -13,16 +13,21 @@ module Cosensee
 
     # Rule:
     # quoteとcodeblockは併存しない
-    # codeblockが使われる場合はrest3やrest5は存在しない
     def parse(line)
       indent, rest = parse_indent(line)
-      whole_line, rest2 = parse_whole_line(rest)
-      rest3 = parse_code(rest2)
-      rest4 = parse_double_bracket(rest3)
-      rest5 = parse_bracket(rest4)
-      rest6 = parse_hashtag(rest5)
+      line_content, rest2 = parse_whole_line(rest)
 
-      ParsedLine.new(indent:, line_content: whole_line, content: rest6)
+      unless rest2
+        return ParsedLine.new(indent:, line_content:)
+      end
+
+      content = rest2
+                  .then { |data| parse_code(data) }
+                  .then { |data| parse_double_bracket(data) }
+                  .then { |data| parse_bracket(data) }
+                  .then { |data| parse_hashtag(data) }
+
+      ParsedLine.new(indent:, line_content:, content:)
     end
 
     def parse_indent(line)
@@ -37,31 +42,13 @@ module Cosensee
 
       # parse codeblock
       matched = line.match(/\A(code:)(.+)\z/)
-      return [Cosensee::Codeblock.new(matched[2]), ''] if matched
+      return [Cosensee::Codeblock.new(matched[2]), nil] if matched
 
       # parse command line
       matched = line.match(/\A([$%]) (.+)\z/)
-      return [Cosensee::CommandLine.new(content: matched[2], prompt: matched[1]), ''] if matched
+      return [Cosensee::CommandLine.new(content: matched[2], prompt: matched[1]), nil] if matched
 
       [nil, line]
-    end
-
-    def parse_quote(line)
-      matched = line.match(/\A(>)(.*)\z/)
-      if matched
-        [Cosensee::Quote.new(matched[1]), matched[2]]
-      else
-        ['', line]
-      end
-    end
-
-    def parse_codeblock(line)
-      matched = line.match(/\A(code:)(.+)\z/)
-      if matched
-        [Cosensee::Codeblock.new(matched[2]), '']
-      else
-        ['', line]
-      end
     end
 
     def parse_code(line)

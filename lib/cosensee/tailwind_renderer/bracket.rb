@@ -52,7 +52,8 @@ module Cosensee
                    end
           return "<div><a href='#{matched[2]}'>#{CGI.escape_html(anchor)}</a></div>"
         else
-          return "<div><a href='#{matched[2]}'>#{CGI.escape_html(anchor)}</a></div>"
+          link = CGI.escape_html(content.first_content)
+          return "<div><a href='#{link}'>#{link}</a></div>"
         end
       end
     end
