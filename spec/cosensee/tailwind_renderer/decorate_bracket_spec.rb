@@ -3,7 +3,7 @@
 require 'rspec'
 
 RSpec.describe Cosensee::TailwindRenderer::DecorateBracket do
-  subject { Cosensee::TailwindRenderer::DecorateBracket.new(bracket) }
+  subject(:renderer) { Cosensee::TailwindRenderer::DecorateBracket.new(bracket) }
 
   let(:font_size) { nil }
   let(:underlined) { nil }
@@ -14,7 +14,7 @@ RSpec.describe Cosensee::TailwindRenderer::DecorateBracket do
   describe '#render' do
     context 'when no styles are applied' do
       it 'returns the text wrapped in a span with no class' do
-        expect(subject.render).to eq('<span class="">Sample Text</span>')
+        expect(renderer.render).to eq('<span class="">Sample Text</span>')
       end
     end
 
@@ -22,7 +22,7 @@ RSpec.describe Cosensee::TailwindRenderer::DecorateBracket do
       let(:font_size) { 2 }
 
       it 'applies the correct font size class' do
-        expect(subject.render).to eq('<span class="text-xl">Sample Text</span>')
+        expect(renderer.render).to eq('<span class="text-xl">Sample Text</span>')
       end
     end
 
@@ -30,7 +30,7 @@ RSpec.describe Cosensee::TailwindRenderer::DecorateBracket do
       let(:underlined) { true }
 
       it 'applies the underline class' do
-        expect(subject.render).to eq('<span class="underline">Sample Text</span>')
+        expect(renderer.render).to eq('<span class="underline">Sample Text</span>')
       end
     end
 
@@ -38,7 +38,7 @@ RSpec.describe Cosensee::TailwindRenderer::DecorateBracket do
       let(:slanted) { true }
 
       it 'applies the italic class' do
-        expect(subject.render).to eq('<span class="italic">Sample Text</span>')
+        expect(renderer.render).to eq('<span class="italic">Sample Text</span>')
       end
     end
 
@@ -46,7 +46,7 @@ RSpec.describe Cosensee::TailwindRenderer::DecorateBracket do
       let(:deleted) { true }
 
       it 'applies the line-through class' do
-        expect(subject.render).to eq('<span class="line-through">Sample Text</span>')
+        expect(renderer.render).to eq('<span class="line-through">Sample Text</span>')
       end
     end
 
@@ -57,7 +57,7 @@ RSpec.describe Cosensee::TailwindRenderer::DecorateBracket do
       let(:deleted) { true }
 
       it 'applies all relevant classes' do
-        expect(subject.render).to eq('<span class="text-2xl underline italic line-through">Sample Text</span>')
+        expect(renderer.render).to eq('<span class="text-2xl underline italic line-through">Sample Text</span>')
       end
     end
   end

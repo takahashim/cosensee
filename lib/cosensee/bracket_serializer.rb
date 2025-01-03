@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Cosensee
+  # serializer for brackets
   module BracketSerializer
     def to_obj
       unparsed = content.map do |elem|
