@@ -105,7 +105,7 @@ RSpec.describe Cosensee::LineParser do
       expect(parser.parse_bracket(['[abc]12[xyz'])).to eq [Cosensee::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc'), '12[xyz']
       expect(parser.parse_bracket(['[a', Cosensee::Code.new('b'), 'c]'])).to eq [Cosensee::TextBracket.new(['a', Cosensee::Code.new('b'), 'c'])]
       expect(parser.parse_bracket(['[a', Cosensee::Code.new('b'), 'c'])).to eq ['[a', Cosensee::Code.new('b'), 'c']
-      expect(parser.parse_bracket(['x[a', Cosensee::Code.new('b'), 'c', 'd]e'])).to eq ['x', Cosensee::TextBracket.new(['a', Cosensee::Code.new('b'), 'c', 'd']), 'e']
+      expect(parser.parse_bracket(['x[a', Cosensee::Code.new('b'), 'c', 'd]e'])).to eq ['x', Cosensee::TextBracket.new(['a', Cosensee::Code.new('b'), 'cd']), 'e']
     end
   end
 
@@ -266,6 +266,25 @@ RSpec.describe Cosensee::LineParser do
           Cosensee::ParsedLine.new(
             indent: Cosensee::Indent.new('   '),
             content: ['12', Cosensee::TextBracket.new(['a', Cosensee::Code.new('b'), 'c']), '34']
+          )
+        ],
+        [
+          '   12[ https://example.com #foo bar]34',
+          Cosensee::ParsedLine.new(
+            indent: Cosensee::Indent.new('   '),
+            content: [
+              '12',
+              Cosensee::TextBracket.new(
+                [
+                  ' ',
+                  Cosensee::Link.new('https://example.com'),
+                  ' ',
+                  Cosensee::HashTag.new('foo'),
+                  ' bar'
+                ]
+              ),
+              '34'
+            ]
           )
         ]
       ]

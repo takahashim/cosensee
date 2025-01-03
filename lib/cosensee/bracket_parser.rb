@@ -59,13 +59,18 @@ module Cosensee
           deleted:,
           text:
         )
-      elsif single_text?
-        anchor = first_content
-        link = "#{encode_link(anchor)}.html"
-        InternalLinkBracket.new(content:, link:, anchor:)
       else
-        # mixed content
-        TextBracket.new(content:)
+        line_parser = LineParser.new
+        parsed = content
+                   .then { |c| line_parser.parse_url(c) }
+                   .then { |c| line_parser.parse_hashtag(c) }
+        if single_text? && parsed == content
+          anchor = first_content
+          link = "#{encode_link(anchor)}.html"
+          InternalLinkBracket.new(content:, link:, anchor:)
+        else
+          TextBracket.new(content: parsed)
+        end
       end
     end
   end
