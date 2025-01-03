@@ -200,14 +200,13 @@ module Cosensee
     end
 
     def clean_elements(elements)
-      prev = nil
       fixed = []
       elements.each do |elem|
-        if prev.is_a?(String) && elem.is_a?(String)
-          prev.concat(elem)
+        last_elem = fixed.last
+        if last_elem.is_a?(String) && elem.is_a?(String)
+          last_elem.concat(elem)
         else
           fixed << elem
-          prev = elem
         end
       end
 
