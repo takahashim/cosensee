@@ -204,7 +204,7 @@ module Cosensee
       elements.each do |elem|
         last_elem = fixed.last
         if last_elem.is_a?(String) && elem.is_a?(String)
-          last_elem.concat(elem)
+          fixed[-1] = "#{last_elem}#{elem}"
         else
           fixed << elem
         end
