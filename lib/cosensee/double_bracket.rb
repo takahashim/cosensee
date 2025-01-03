@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'json'
-
 module Cosensee
   # for double Bracket
   DoubleBracket = Data.define(:content) do

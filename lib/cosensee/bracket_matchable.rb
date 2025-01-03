@@ -57,5 +57,27 @@ module Cosensee
 
       /\A(.*).icon\z/.match(first_content)
     end
+
+    def match_image
+      return unless single_text?
+
+      if (matched = link_first_image_regexp.match(first_content))
+        [matched[1], matched[2]]
+      elsif (matched = src_first_image_regexp.match(first_content))
+        [matched[4], matched[1]]
+      end
+    end
+
+    def image_url_regexp
+      %r{\A(https?://[^\s\]]*\.(png|jpe?g|gif|svg|webp)(\?[^\s\]]+)?)\z}
+    end
+
+    def link_first_image_regexp
+      %r{\A(https?://[^\s]+)\s+(https?://[^\s\]]*\.(png|jpe?g|gif|svg|webp)(\?[^\s\]]+)?)\z}
+    end
+
+    def src_first_image_regexp
+      %r{\A(https?://[^\s\]]*\.(png|jpe?g|gif|svg|webp)(\?[^\s\]]+)?)\s+(https?://[^\s]+)\z}
+    end
   end
 end

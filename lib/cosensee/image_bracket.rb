@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Cosensee
-  # for bracket only spaces
-  BlankBracket = Data.define(:content, :blank) do
+  # for Image
+  ImageBracket = Data.define(:content, :link, :src) do
     include BracketSerializer
   end
 end

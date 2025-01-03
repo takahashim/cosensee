@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'json'
+
 module Cosensee
   # serializer for brackets
   module BracketSerializer

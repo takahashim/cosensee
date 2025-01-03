@@ -154,5 +154,39 @@ RSpec.describe Cosensee::BracketParser do
         expect(result.content).to eq(content)
       end
     end
+
+    context 'when parsing an image bracket with link first' do
+      let(:content) { ['http://example.com/link https://example.com/example.jpg'] }
+      let(:result) { parser.parse(content) }
+
+      it 'returns an ImageBracket instance' do
+        expect(result.class).to eq Cosensee::ImageBracket
+      end
+
+      it 'has the correct link' do
+        expect(result.link).to eq('http://example.com/link')
+      end
+
+      it 'has the correct src' do
+        expect(result.src).to eq('https://example.com/example.jpg')
+      end
+    end
+
+    context 'when parsing an image bracket with src first' do
+      let(:content) { ['https://example.com/example.jpg http://example.com/link'] }
+      let(:result) { parser.parse(content) }
+
+      it 'returns an ImageBracket instance' do
+        expect(result.class).to eq Cosensee::ImageBracket
+      end
+
+      it 'has the correct link' do
+        expect(result.link).to eq('http://example.com/link')
+      end
+
+      it 'has the correct src' do
+        expect(result.src).to eq('https://example.com/example.jpg')
+      end
+    end
   end
 end

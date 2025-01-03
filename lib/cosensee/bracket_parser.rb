@@ -30,6 +30,9 @@ module Cosensee
         icon_name = matched[1]
         IconBracket.new(content:, icon_name:)
 
+      elsif (link, src = match_image)
+        ImageBracket.new(content:, link:, src:)
+
       elsif (matched = match_external_link_precede)
         anchor = matched[3] || matched[1]
         link = matched[1]
