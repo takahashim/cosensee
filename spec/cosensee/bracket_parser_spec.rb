@@ -43,6 +43,10 @@ RSpec.describe Cosensee::BracketParser do
       it 'returns a FormulaBracket instance' do
         expect(result.class).to eq Cosensee::FormulaBracket
       end
+
+      it 'has the correct formula' do
+        expect(result.formula).to eq('a+b')
+      end
     end
 
     context 'when parsing an external link with the link preceding the anchor' do

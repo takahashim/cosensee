@@ -15,7 +15,7 @@ module Cosensee
     def parse(content)
       @content = content
 
-      if (matched = match_empty)
+      if match_empty
         EmptyBracket.new(content:)
 
       elsif (matched = match_blank)
