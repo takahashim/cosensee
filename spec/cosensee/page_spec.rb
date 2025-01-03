@@ -73,9 +73,9 @@ RSpec.describe Cosensee::Page do
         Cosensee::ParsedLine.new(
           indent: Cosensee::Indent.new,
           content: [
-            Cosensee::Bracket.new(['テスト2']),
+            Cosensee::InternalLinkBracket.new(content: ['テスト2'], link: '%E3%83%86%E3%82%B9%E3%83%882.html', anchor: 'テスト2'),
             'と',
-            Cosensee::Bracket.new(['test3'])
+            Cosensee::InternalLinkBracket.new(content: ['test3'], link: 'test3.html', anchor: 'test3')
           ]
         ),
         Cosensee::ParsedLine.new(

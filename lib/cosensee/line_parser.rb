@@ -9,7 +9,9 @@ module Cosensee
       new.parse(line)
     end
 
-    def initialize; end
+    def initialize
+      @bracket_parser = Cosensee::BracketParser.new
+    end
 
     # Rule:
     # quoteとcodeblockは併存しない
@@ -124,7 +126,8 @@ module Cosensee
       target_char = '[' # or "]"
 
       rest.each do |elem|
-        if elem.is_a?(Cosensee::Code) || elem.is_a?(Cosensee::DoubleBracket)
+        case elem
+        when Cosensee::Code, Cosensee::DoubleBracket
           if target_char == '['
             parsed << elem
           else
@@ -141,7 +144,7 @@ module Cosensee
               else
                 stack << elem[0, n]
                 target_char = '['
-                parsed << Cosensee::Bracket.new(stack)
+                parsed << @bracket_parser.parse(stack)
                 stack = nil
               end
               elem = elem[(n + 1)..]
@@ -156,7 +159,9 @@ module Cosensee
           end
         end
       end
+
       if stack
+        # parsed += ['['] + stack
         parsed << '['
         parsed.concat(stack)
       end
