@@ -49,3 +49,6 @@ RSpec/ExampleLength:
 
 RSpec/MultipleExpectations:
   Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
