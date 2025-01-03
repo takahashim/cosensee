@@ -5,6 +5,11 @@ require 'json'
 module Cosensee
   # parse a line
   class LineParser
+    INDENT_PATTERN = /\A([\t ]*)(.*)\z/
+    QUOTE_PATTERN = /\A(>)(.*)\z/
+    CODEBLOCK_PATTERN = /\A(code:)(.+)\z/
+    COMMANDLINE_PATTERN = /\A([$%]) (.+)\z/
+
     def self.parse(line)
       new.parse(line)
     end
@@ -25,27 +30,28 @@ module Cosensee
                   .then { |data| parse_code(data) }
                   .then { |data| parse_double_bracket(data) }
                   .then { |data| parse_bracket(data) }
+                  .then { |data| parse_url(data) }
                   .then { |data| parse_hashtag(data) }
 
       ParsedLine.new(indent:, line_content:, content:)
     end
 
     def parse_indent(line)
-      matched = line.match(/\A([\t ]*)(.*)\z/)
+      matched = line.match(INDENT_PATTERN)
       [Cosensee::Indent.new(matched[1]), matched[2]]
     end
 
     def parse_whole_line(line)
       # parse quote
-      matched = line.match(/\A(>)(.*)\z/)
+      matched = line.match(QUOTE_PATTERN)
       return [Cosensee::Quote.new(matched[1]), matched[2]] if matched
 
       # parse codeblock
-      matched = line.match(/\A(code:)(.+)\z/)
+      matched = line.match(CODEBLOCK_PATTERN)
       return [Cosensee::Codeblock.new(matched[2]), nil] if matched
 
       # parse command line
-      matched = line.match(/\A([$%]) (.+)\z/)
+      matched = line.match(COMMANDLINE_PATTERN)
       return [Cosensee::CommandLine.new(content: matched[2], prompt: matched[1]), nil] if matched
 
       [nil, line]
@@ -93,7 +99,31 @@ module Cosensee
         end
       end
 
-      parsed
+      clean_elements(parsed)
+    end
+
+    def parse_url(rest)
+      parsed = []
+
+      rest.each do |elem|
+        if elem.is_a?(String)
+          loop do
+            matched = elem.match(%r{(^|\s)(https?://[^\s]+)})
+            if matched
+              parsed << "#{matched.pre_match}#{matched[1]}"
+              parsed << Cosensee::Link.new(matched[2])
+              elem = matched.post_match
+            else
+              parsed << elem
+              break # loop
+            end
+          end
+        else
+          parsed << elem
+        end
+      end
+
+      clean_elements(parsed)
     end
 
     def parse_double_bracket(rest)

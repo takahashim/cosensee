@@ -44,13 +44,13 @@ RSpec.describe Cosensee::LineParser do
 
   describe '#parse_hastag' do
     it 'parse hashtag segments' do
-      expect(parser.parse_hashtag([''])).to eq ['']
+      expect(parser.parse_hashtag([''])).to eq []
       expect(parser.parse_hashtag(['#'])).to eq ['#']
-      expect(parser.parse_hashtag(['#a'])).to eq ['', Cosensee::HashTag.new('a'), '']
-      expect(parser.parse_hashtag([' #a!#b'])).to eq [' ', Cosensee::HashTag.new('a!#b'), '']
+      expect(parser.parse_hashtag(['#a'])).to eq [Cosensee::HashTag.new('a')]
+      expect(parser.parse_hashtag([' #a!#b'])).to eq [' ', Cosensee::HashTag.new('a!#b')]
       expect(parser.parse_hashtag([' #abc '])).to eq [' ', Cosensee::HashTag.new('abc'), ' ']
       expect(parser.parse_hashtag([' #あいうえお '])).to eq [' ', Cosensee::HashTag.new('あいうえお'), ' ']
-      expect(parser.parse_hashtag(['#a #b #c'])).to eq ['', Cosensee::HashTag.new('a'), ' ', Cosensee::HashTag.new('b'), ' ', Cosensee::HashTag.new('c'), '']
+      expect(parser.parse_hashtag(['#a #b #c'])).to eq [Cosensee::HashTag.new('a'), ' ', Cosensee::HashTag.new('b'), ' ', Cosensee::HashTag.new('c')]
     end
   end
 
@@ -63,6 +63,18 @@ RSpec.describe Cosensee::LineParser do
       expect(parser.parse_code('a`b`c')).to eq ['a', Cosensee::Code.new('b'), 'c']
       expect(parser.parse_code('a`b`c`d')).to eq ['a', Cosensee::Code.new('b'), 'c`d']
       expect(parser.parse_code('a`b`c`d`')).to eq ['a', Cosensee::Code.new('b'), 'c', Cosensee::Code.new('d'), '']
+    end
+  end
+
+  describe '#parse_url' do
+    it 'parse code segments' do
+      expect(parser.parse_url([''])).to eq []
+      expect(parser.parse_url(['https://'])).to eq ['https://']
+      expect(parser.parse_url(['https://example.com'])).to eq [Cosensee::Link.new('https://example.com')]
+      expect(parser.parse_url(['https://example.com  '])).to eq [Cosensee::Link.new('https://example.com'), '  ']
+      expect(parser.parse_url([' https://example.com '])).to eq [' ', Cosensee::Link.new('https://example.com'), ' ']
+      expect(parser.parse_url([' https://example.com/あいうえお '])).to eq [' ', Cosensee::Link.new('https://example.com/あいうえお'), ' ']
+      expect(parser.parse_url(['https://example.com https://example.org'])).to eq [Cosensee::Link.new('https://example.com'), ' ', Cosensee::Link.new('https://example.org')]
     end
   end
 

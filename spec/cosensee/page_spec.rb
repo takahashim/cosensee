@@ -92,7 +92,7 @@ RSpec.describe Cosensee::Page do
         ),
         Cosensee::ParsedLine.new(
           indent: Cosensee::Indent.new,
-          content: ['https://example.com/test/']
+          content: [Cosensee::Link.new('https://example.com/test/')]
         ),
         Cosensee::ParsedLine.new(
           indent: Cosensee::Indent.new,
