@@ -15,32 +15,32 @@ module Cosensee
     def parse(content)
       @content = content
 
-      if matched = match_empty
+      if (matched = match_empty)
         EmptyBracket.new(content:)
 
-      elsif matched = match_blank
+      elsif (matched = match_blank)
         blank = matched[1]
         BlankBracket.new(content:, blank:)
 
-      elsif matched = match_math
+      elsif (matched = match_math)
         formula = matched[1]
         FormulaBracket.new(content:, formula:)
 
-      elsif matched = match_icon
+      elsif (matched = match_icon)
         icon_name = matched[1]
         IconBracket.new(content:, icon_name:)
 
-      elsif matched = match_external_link_precede
+      elsif (matched = match_external_link_precede)
         anchor = matched[3] || matched[1]
         link = matched[1]
         ExternalLinkBracket.new(content:, link:, anchor:)
 
-      elsif matched = match_external_link_succeed
+      elsif (matched = match_external_link_succeed)
         anchor = matched[2] || matched[3]
         link = matched[3]
         ExternalLinkBracket.new(content:, link:, anchor:)
 
-      elsif matched = match_decorate
+      elsif (matched = match_decorate)
         deco = matched[1]
         text = matched[2]
         font_size = deco.count('*') > 10 ? 10 : deco.count('*')
