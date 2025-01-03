@@ -78,10 +78,10 @@ module Cosensee
       end
     end
 
-    def parse_hashtag(rest)
+    def parse_hashtag(elements)
       parsed = []
 
-      rest.each do |elem|
+      elements.each do |elem|
         if elem.is_a?(String)
           loop do
             matched = elem.match(/(^|\s)#(\S+)/)
@@ -102,10 +102,10 @@ module Cosensee
       clean_elements(parsed)
     end
 
-    def parse_url(rest)
+    def parse_url(elements)
       parsed = []
 
-      rest.each do |elem|
+      elements.each do |elem|
         if elem.is_a?(String)
           loop do
             matched = elem.match(%r{(^|\s)(https?://[^\s]+)})
@@ -126,10 +126,10 @@ module Cosensee
       clean_elements(parsed)
     end
 
-    def parse_double_bracket(rest)
+    def parse_double_bracket(elements)
       parsed = []
 
-      rest.each do |elem|
+      elements.each do |elem|
         if elem.is_a?(String)
           loop do
             matched = elem.match(/\[\[(.+?)\]\]/)
@@ -150,12 +150,12 @@ module Cosensee
       clean_elements(parsed)
     end
 
-    def parse_bracket(rest)
+    def parse_bracket(elements)
       parsed = []
       stack = nil
       target_char = '[' # or "]"
 
-      rest.each do |elem|
+      elements.each do |elem|
         case elem
         when Cosensee::Code, Cosensee::DoubleBracket
           if target_char == '['
