@@ -277,14 +277,6 @@ RSpec.describe Cosensee::LineParser do
           )
         ],
         [
-          '12[a`bc]34',
-          Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new,
-            content: ['12', Cosensee::InternalLinkBracket.new(content: ['a`bc'], link: 'a%60bc.html', anchor: 'a`bc'), '34'],
-            parsed: true
-          )
-        ],
-        [
           '   12[a`b`c]34',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Indent.new('   '),

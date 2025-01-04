@@ -60,6 +60,30 @@ RSpec.describe Cosensee::TailwindRenderer::ParsedLine do
         [
           'a[[b[]c]]d[e]f',
           '<div class="relative pl-[0rem]">a<span class="font-bold">b[]c</span>d<span><a href="e.html">e</a></span>f</div>'
+        ],
+        [
+          'a[[b[]c]]d[e]f',
+          '<div class="relative pl-[0rem]">a<span class="font-bold">b[]c</span>d<span><a href="e.html">e</a></span>f</div>'
+        ],
+        [
+          '12 #abc 34',
+          '<div class="relative pl-[0rem]">12 <span><a href="abc">#abc</a></span> 34</div>'
+        ],
+        [
+          '12[a`bc]34',
+          '<div class="relative pl-[0rem]">12<span><a href="a%60bc.html">a`bc</a></span>34</div>'
+        ],
+        [
+          '   12[a`b`c]34',
+          '<div class="relative pl-[6rem]">12<span>[a<code class="bg-gray-100 text-red-500 px-1 py-0.5 rounded">b</code>c]</span>34</div>'
+        ],
+        [
+          '   12[ https://example.com #foo bar]34',
+          '<div class="relative pl-[6rem]">12<span>[ <span><a href="https://example.com">https://example.com</a></span> <span><a href="foo">#foo</a></span> bar]</span>34</div>'
+        ],
+        [
+          '>   12[ https://example.com #foo bar]34',
+          '<div class="relative pl-[0rem]"><blockquote class="border-l-4 border-gray-300 bg-gray-100 px-4 text-gray-800">&gt;</blockquote></div>'
         ]
       ]
     end

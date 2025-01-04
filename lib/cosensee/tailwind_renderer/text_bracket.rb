@@ -6,14 +6,8 @@ module Cosensee
   class TailwindRenderer
     TextBracket = Data.define(:content) do
       def render
-        rendered = content.map do |c|
-          if c.is_a?(String)
-            CGI.escape_html(c)
-          else
-            TailwindRenderer.new(c).render
-          end
-        end
-        %(<span>[#{rendered.join}]</span>)
+        rendered = TailwindRenderer.new(content: content.content).render
+        %(<span>[#{rendered}]</span>)
       end
     end
   end
