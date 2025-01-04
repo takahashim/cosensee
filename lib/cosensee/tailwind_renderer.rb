@@ -10,7 +10,17 @@ module Cosensee
     attr_reader :content
 
     def render
-      renderer_class(content).new(content).render
+      if content.is_a?(Array)
+        content.map do |c|
+          if c.is_a?(String)
+            CGI.escape_html(c)
+          else
+            renderer_class(c).new(content: c).render
+          end
+        end.join
+      else
+        renderer_class(content).new(content:).render
+      end
     end
 
     def renderer_class(content)

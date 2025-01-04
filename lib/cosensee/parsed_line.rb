@@ -11,6 +11,18 @@ module Cosensee
 
     attr_reader :indent, :line_content, :content
 
+    def codeblock?
+      line_content.is_a?(Cosensee::CodeBlock)
+    end
+
+    def line_content?
+      !!line_content
+    end
+
+    def indent_level
+      indent.level
+    end
+
     def ==(other)
       other.is_a?(Cosensee::ParsedLine) &&
         other.indent == indent &&
