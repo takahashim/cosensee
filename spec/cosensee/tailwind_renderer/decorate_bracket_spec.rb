@@ -22,7 +22,7 @@ RSpec.describe Cosensee::TailwindRenderer::DecorateBracket do
       let(:font_size) { 2 }
 
       it 'applies the correct font size class' do
-        expect(renderer.render).to eq('<span class="text-xl">Sample Text</span>')
+        expect(renderer.render).to eq('<span class="text-xl font-semibold">Sample Text</span>')
       end
     end
 
@@ -57,7 +57,7 @@ RSpec.describe Cosensee::TailwindRenderer::DecorateBracket do
       let(:deleted) { true }
 
       it 'applies all relevant classes' do
-        expect(renderer.render).to eq('<span class="text-2xl underline italic line-through">Sample Text</span>')
+        expect(renderer.render).to eq('<span class="text-2xl font-semibold underline italic line-through">Sample Text</span>')
       end
     end
   end

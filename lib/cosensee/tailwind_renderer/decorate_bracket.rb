@@ -6,6 +6,7 @@ module Cosensee
       def render
         classes = []
         classes << font_sizes[content.font_size] if content.font_size
+        classes << 'font-semibold' if content.font_size && content.font_size > 0
         classes << 'underline' if content.underlined
         classes << 'italic' if content.slanted
         classes << 'line-through' if content.deleted
