@@ -14,6 +14,17 @@ module Cosensee
       @parsed
     end
 
+    def update(**attributes)
+      attributes.each do |key, value|
+        # Check if the key is a valid accessor
+        raise ArgumentError, "Attribute #{key} is not allowed to be updated." unless self.class.method_defined?("#{key}=")
+
+        public_send("#{key}=", value)
+      end
+
+      self
+    end
+
     def single_text?
       content.size == 1 && content.first.is_a?(String)
     end

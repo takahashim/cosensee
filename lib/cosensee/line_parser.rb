@@ -49,19 +49,17 @@ module Cosensee
       # parse codeblock
       matched = line.match(CODEBLOCK_PATTERN)
       if matched
-        line.update(rest: nil,
-                    line_content: Cosensee::Codeblock.new(matched[2]),
-                    parsed: true)
-        return line
+        return line.update(rest: nil,
+                           line_content: Cosensee::Codeblock.new(matched[2]),
+                           parsed: true)
       end
 
       # parse command line
       matched = line.match(COMMANDLINE_PATTERN)
       if matched
-        line.update(rest: nil,
-                    line_content: Cosensee::CommandLine.new(content: matched[2], prompt: matched[1]),
-                    parsed: true)
-        return line
+        return line.update(rest: nil,
+                           line_content: Cosensee::CommandLine.new(content: matched[2], prompt: matched[1]),
+                           parsed: true)
       end
 
       line
@@ -75,9 +73,8 @@ module Cosensee
       loop do
         str = strs.shift
         unless str
-          line.update(rest: nil,
-                      content: parsed)
-          return line
+          return line.update(rest: nil,
+                             content: parsed)
         end
 
         parsed << str
@@ -91,9 +88,8 @@ module Cosensee
 
         if strs.empty?
           parsed.last.concat("`#{str}")
-          line.update(rest: nil,
-                      content: parsed)
-          return line
+          return line.update(rest: nil,
+                             content: parsed)
         else
           parsed << Code.new(str)
         end
@@ -123,8 +119,7 @@ module Cosensee
         end
       end
 
-      line.content = clean_elements(parsed)
-      line
+      line.update(content: clean_elements(parsed))
     end
 
     def parse_url(line)
@@ -150,8 +145,7 @@ module Cosensee
         end
       end
 
-      line.content = clean_elements(parsed)
-      line
+      line.update(content: clean_elements(parsed))
     end
 
     def parse_double_bracket(line)
@@ -177,8 +171,7 @@ module Cosensee
         end
       end
 
-      line.content = clean_elements(parsed)
-      line
+      line.update(content: clean_elements(parsed))
     end
 
     def parse_bracket(line)
@@ -229,13 +222,11 @@ module Cosensee
         parsed.concat(stack)
       end
 
-      line.content = clean_elements(parsed)
-      line
+      line.update(content: clean_elements(parsed))
     end
 
     def done_parsing(line)
-      line.parsed = true
-      line
+      line.update(parsed: true)
     end
 
     def clean_elements(elements)

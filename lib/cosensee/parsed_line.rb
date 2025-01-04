@@ -48,6 +48,8 @@ module Cosensee
 
         public_send("#{key}=", value)
       end
+
+      self
     end
 
     def ==(other)
