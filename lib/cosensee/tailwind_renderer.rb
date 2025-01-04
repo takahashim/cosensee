@@ -3,6 +3,7 @@
 module Cosensee
   # convert into html
   class TailwindRenderer
+    # content is Cosensee objects or an array of them
     def initialize(content:)
       @content = content
     end
@@ -23,6 +24,7 @@ module Cosensee
       end
     end
 
+    # ex. Cosensee::TailwindRenderer::Code for Cosensee::Code
     def renderer_class(content)
       name = content.class.name.split('::').last
 
