@@ -41,6 +41,15 @@ module Cosensee
       rest.split(str, -1)
     end
 
+    def update(**attributes)
+      attributes.each do |key, value|
+        # Check if the key is a valid accessor
+        raise ArgumentError, "Attribute #{key} is not allowed to be updated." unless self.class.method_defined?("#{key}=")
+
+        public_send("#{key}=", value)
+      end
+    end
+
     def ==(other)
       other.is_a?(Cosensee::ParsedLine) &&
         other.indent == indent &&

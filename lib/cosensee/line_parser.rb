@@ -33,33 +33,34 @@ module Cosensee
 
     def parse_indent(line)
       matched = line.match(INDENT_PATTERN)
-      ParsedLine.new(indent: Cosensee::Indent.new(matched[1]), rest: matched[2])
+      ParsedLine.new(indent: Cosensee::Indent.new(matched[1]),
+                     rest: matched[2])
     end
 
     def parse_whole_line(line)
       # parse quote
       matched = line.match(QUOTE_PATTERN)
       if matched
-        line.rest = matched[2]
-        line.line_content = Cosensee::Quote.new(matched[1])
+        line.update(rest: matched[2],
+                    line_content: Cosensee::Quote.new(matched[1]))
         return line
       end
 
       # parse codeblock
       matched = line.match(CODEBLOCK_PATTERN)
       if matched
-        line.rest = nil
-        line.line_content = Cosensee::Codeblock.new(matched[2])
-        line.parsed = true
+        line.update(rest: nil,
+                    line_content: Cosensee::Codeblock.new(matched[2]),
+                    parsed: true)
         return line
       end
 
       # parse command line
       matched = line.match(COMMANDLINE_PATTERN)
       if matched
-        line.rest = nil
-        line.line_content = Cosensee::CommandLine.new(content: matched[2], prompt: matched[1])
-        line.parsed = true
+        line.update(rest: nil,
+                    line_content: Cosensee::CommandLine.new(content: matched[2], prompt: matched[1]),
+                    parsed: true)
         return line
       end
 
@@ -74,8 +75,8 @@ module Cosensee
       loop do
         str = strs.shift
         unless str
-          line.rest = nil
-          line.content = parsed
+          line.update(rest: nil,
+                      content: parsed)
           return line
         end
 
@@ -83,15 +84,15 @@ module Cosensee
 
         str = strs.shift
         unless str
-          line.rest = nil
-          line.content = parsed
+          line.update(rest: nil,
+                      content: parsed)
           return line
         end
 
         if strs.empty?
           parsed.last.concat("`#{str}")
-          line.rest = nil
-          line.content = parsed
+          line.update(rest: nil,
+                      content: parsed)
           return line
         else
           parsed << Code.new(str)
