@@ -86,9 +86,9 @@ RSpec.describe Cosensee::LineParser do
       expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[']))).to eq Cosensee::ParsedLine.new(content: ['['])
       expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[]']))).to eq Cosensee::ParsedLine.new(content: ['[]'])
       expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[[]]']))).to eq Cosensee::ParsedLine.new(content: ['[[]]'])
-      expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[[a]]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::DoubleBracket.new('a')])
-      expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[[a[b]c]]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::DoubleBracket.new('a[b]c')])
-      expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[[a[[[[a[[]aa` ]]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::DoubleBracket.new('a[[[[a[[]aa` ')])
+      expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[[a]]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::DoubleBracket.new(['a'])])
+      expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[[a[b]c]]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::DoubleBracket.new(['a[b]c'])])
+      expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[[a[[[[a[[]aa` ]]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::DoubleBracket.new(['a[[[[a[[]aa` '])])
     end
   end
 
@@ -256,7 +256,7 @@ RSpec.describe Cosensee::LineParser do
           'a[[b[]c]]d[e]f',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Indent.new,
-            content: ['a', Cosensee::DoubleBracket.new('b[]c'), 'd', Cosensee::InternalLinkBracket.new(content: ['e'], link: 'e.html', anchor: 'e'), 'f'],
+            content: ['a', Cosensee::DoubleBracket.new(['b[]c']), 'd', Cosensee::InternalLinkBracket.new(content: ['e'], link: 'e.html', anchor: 'e'), 'f'],
             parsed: true
           )
         ],

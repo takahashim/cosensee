@@ -159,7 +159,7 @@ module Cosensee
             matched = elem.match(/\[\[(.+?)\]\]/)
             if matched
               parsed << matched.pre_match
-              parsed << Cosensee::DoubleBracket.new(matched[1])
+              parsed << Cosensee::DoubleBracket.new(content: [matched[1]])
               elem = matched.post_match
             else
               parsed << elem

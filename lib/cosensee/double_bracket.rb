@@ -4,7 +4,7 @@ module Cosensee
   # for double Bracket
   DoubleBracket = Data.define(:content) do
     def image?
-      @content.match?(/\.(png|jpg)$/)
+      content.size == 1 && content[0].match?(/\.(png|jpg)$/)
     end
 
     def to_obj
