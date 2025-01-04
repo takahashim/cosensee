@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# XXX: remove this file
 module Cosensee
   # matchers of Bracket
   module BracketMatchable

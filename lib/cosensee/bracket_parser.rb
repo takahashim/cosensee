@@ -4,7 +4,6 @@ module Cosensee
   # parser of Bracket
   class BracketParser
     include ::Cosensee::LinkEncodable
-    include ::Cosensee::BracketMatchable
 
     def self.parse(content)
       new.parse(content)
@@ -15,42 +14,37 @@ module Cosensee
     def parse(content)
       @content = content
 
-      if match_empty
+      case content
+      in [/\A\z/]
         EmptyBracket.new(content:)
-
-      elsif (matched = match_blank)
-        blank = matched[1]
-        BlankBracket.new(content:, blank:)
-
-      elsif (matched = match_math)
-        formula = matched[1]
-        FormulaBracket.new(content:, formula:)
-
-      elsif (matched = match_icon)
-        icon_name = matched[1]
-        IconBracket.new(content:, icon_name:)
-
-      elsif (link, src = match_image)
-        ImageBracket.new(content:, link:, src:)
-
-      elsif (matched = match_external_link_precede)
-        anchor = matched[3] || matched[1]
-        link = matched[1]
+      in [/\A([ \t])+\z/]
+        BlankBracket.new(content:, blank: Regexp.last_match(1))
+      in [/\A\$ (.*)\z/]
+        FormulaBracket.new(content:, formula: Regexp.last_match(1))
+      in [/\A(.*).icon\z/]
+        IconBracket.new(content:, icon_name: Regexp.last_match(1))
+      in [%r{\A(https?://[^\s]+)\s+(https?://[^\s\]]*\.(png|jpe?g|gif|svg|webp)(\?[^\s\]]+)?)\z}]
+        ImageBracket.new(content:, link: Regexp.last_match(1), src: Regexp.last_match(2))
+      in [%r{\A(https?://[^\s\]]*\.(png|jpe?g|gif|svg|webp)(\?[^\s\]]+)?)\s+(https?://[^\s]+)\z}]
+        ImageBracket.new(content:, link: Regexp.last_match(4), src: Regexp.last_match(1))
+      in [%r{\A(https?://[^ \t]*)(\s+(.+))?\z}]
+        # match_external_link_precede
+        anchor = Regexp.last_match(3) || Regexp.last_match(1)
+        link = Regexp.last_match(1)
         ExternalLinkBracket.new(content:, link:, anchor:)
-
-      elsif (matched = match_external_link_succeed)
-        anchor = matched[2] || matched[3]
-        link = matched[3]
+      in [%r{\A((.*\S)\s+)?(https?://[^\s]+)\z}]
+        # match_external_link_succeed
+        anchor = Regexp.last_match(2) || Regexp.last_match(3)
+        link = Regexp.last_match(3)
         ExternalLinkBracket.new(content:, link:, anchor:)
-
-      elsif (matched = match_decorate)
-        deco = matched[1]
-        text = matched[2]
+      in [%r{\A([_\*/\-"#%&'\(\)~\|\+<>{},\.]+) (.+)\z}]
+        # match_decorate
+        deco = Regexp.last_match(1)
+        text = Regexp.last_match(2)
         font_size = deco.count('*') > 10 ? 10 : deco.count('*')
         underlined = deco.include?('_')
         deleted = deco.include?('-')
         slanted = deco.include?('/')
-
         DecorateBracket.new(
           content:,
           font_size:,
