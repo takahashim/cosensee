@@ -34,13 +34,13 @@ module Cosensee
     end
 
     def parse_indent(line)
-      matched = line.rest.match(INDENT_PATTERN)
+      matched = line.match(INDENT_PATTERN)
       ParsedLine.new(indent: Cosensee::Indent.new(matched[1]), rest: matched[2])
     end
 
     def parse_whole_line(line)
       # parse quote
-      matched = line.rest.match(QUOTE_PATTERN)
+      matched = line.match(QUOTE_PATTERN)
       if matched
         line.rest = matched[2]
         line.line_content = Cosensee::Quote.new(matched[1])
@@ -48,7 +48,7 @@ module Cosensee
       end
 
       # parse codeblock
-      matched = line.rest.match(CODEBLOCK_PATTERN)
+      matched = line.match(CODEBLOCK_PATTERN)
       if matched
         line.rest = nil
         line.line_content = Cosensee::Codeblock.new(matched[2])
@@ -57,7 +57,7 @@ module Cosensee
       end
 
       # parse command line
-      matched = line.rest.match(COMMANDLINE_PATTERN)
+      matched = line.match(COMMANDLINE_PATTERN)
       if matched
         line.rest = nil
         line.line_content = Cosensee::CommandLine.new(content: matched[2], prompt: matched[1])
@@ -72,7 +72,7 @@ module Cosensee
       return line if line.parsed?
 
       parsed = []
-      strs = line.rest.split('`', -1)
+      strs = line.split_rest_by('`')
       loop do
         str = strs.shift
         unless str

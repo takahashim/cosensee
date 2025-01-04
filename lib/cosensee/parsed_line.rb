@@ -33,6 +33,14 @@ module Cosensee
       indent.level
     end
 
+    def match(pattern)
+      rest.match(pattern)
+    end
+
+    def split_rest_by(str)
+      rest.split(str, -1)
+    end
+
     def ==(other)
       other.is_a?(Cosensee::ParsedLine) &&
         other.indent == indent &&
