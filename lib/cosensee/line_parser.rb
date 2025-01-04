@@ -18,19 +18,17 @@ module Cosensee
       @bracket_parser = Cosensee::BracketParser.new
     end
 
-    # Rule:
-    # quoteとcodeblockは併存しない
     def parse(line)
       parsed_line = ParsedLine.new(rest: line)
       parsed_line
-        .then { |data| parse_indent(data) }
-        .then { |data| parse_whole_line(data) }
-        .then { |data| parse_code(data) }
-        .then { |data| parse_double_bracket(data) }
-        .then { |data| parse_bracket(data) }
-        .then { |data| parse_url(data) }
-        .then { |data| parse_hashtag(data) }
-        .then { |data| done_parsing(data) }
+        .then { parse_indent(it) }
+        .then { parse_whole_line(it) }
+        .then { parse_code(it) }
+        .then { parse_double_bracket(it) }
+        .then { parse_bracket(it) }
+        .then { parse_url(it) }
+        .then { parse_hashtag(it) }
+        .then { done_parsing(it) }
     end
 
     def parse_indent(line)
