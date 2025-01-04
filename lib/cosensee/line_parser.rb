@@ -21,67 +21,92 @@ module Cosensee
     # Rule:
     # quoteとcodeblockは併存しない
     def parse(line)
-      indent, rest = parse_indent(line)
-      line_content, rest2 = parse_whole_line(rest)
-
-      return ParsedLine.new(indent:, line_content:) unless rest2
-
-      content = rest2
-                  .then { |data| parse_code(data) }
-                  .then { |data| parse_double_bracket(data) }
-                  .then { |data| parse_bracket(data) }
-                  .then { |data| parse_url(data) }
-                  .then { |data| parse_hashtag(data) }
-
-      ParsedLine.new(indent:, line_content:, content:)
+      parsed_line = ParsedLine.new(rest: line)
+      parsed_line
+        .then { |data| parse_indent(data) }
+        .then { |data| parse_whole_line(data) }
+        .then { |data| parse_code(data) }
+        .then { |data| parse_double_bracket(data) }
+        .then { |data| parse_bracket(data) }
+        .then { |data| parse_url(data) }
+        .then { |data| parse_hashtag(data) }
+        .then { |data| done_parsing(data) }
     end
 
     def parse_indent(line)
-      matched = line.match(INDENT_PATTERN)
-      [Cosensee::Indent.new(matched[1]), matched[2]]
+      matched = line.rest.match(INDENT_PATTERN)
+      ParsedLine.new(indent: Cosensee::Indent.new(matched[1]), rest: matched[2])
     end
 
     def parse_whole_line(line)
       # parse quote
-      matched = line.match(QUOTE_PATTERN)
-      return [Cosensee::Quote.new(matched[1]), matched[2]] if matched
+      matched = line.rest.match(QUOTE_PATTERN)
+      if matched
+        line.rest = matched[2]
+        line.line_content = Cosensee::Quote.new(matched[1])
+        return line
+      end
 
       # parse codeblock
-      matched = line.match(CODEBLOCK_PATTERN)
-      return [Cosensee::Codeblock.new(matched[2]), nil] if matched
+      matched = line.rest.match(CODEBLOCK_PATTERN)
+      if matched
+        line.rest = nil
+        line.line_content = Cosensee::Codeblock.new(matched[2])
+        line.parsed = true
+        return line
+      end
 
       # parse command line
-      matched = line.match(COMMANDLINE_PATTERN)
-      return [Cosensee::CommandLine.new(content: matched[2], prompt: matched[1]), nil] if matched
+      matched = line.rest.match(COMMANDLINE_PATTERN)
+      if matched
+        line.rest = nil
+        line.line_content = Cosensee::CommandLine.new(content: matched[2], prompt: matched[1])
+        line.parsed = true
+        return line
+      end
 
-      [nil, line]
+      line
     end
 
     def parse_code(line)
+      return line if line.parsed?
+
       parsed = []
-      strs = line.split('`', -1)
+      strs = line.rest.split('`', -1)
       loop do
         str = strs.shift
-        return parsed unless str
+        unless str
+          line.rest = nil
+          line.content = parsed
+          return line
+        end
 
         parsed << str
 
         str = strs.shift
-        return parsed unless str
+        unless str
+          line.rest = nil
+          line.content = parsed
+          return line
+        end
 
         if strs.empty?
           parsed.last.concat("`#{str}")
-          return parsed
+          line.rest = nil
+          line.content = parsed
+          return line
         else
           parsed << Code.new(str)
         end
       end
     end
 
-    def parse_hashtag(elements)
+    def parse_hashtag(line)
+      return line if line.parsed?
+
       parsed = []
 
-      elements.each do |elem|
+      line.content.each do |elem|
         if elem.is_a?(String)
           loop do
             matched = elem.match(/(^|\s)#(\S+)/)
@@ -99,13 +124,16 @@ module Cosensee
         end
       end
 
-      clean_elements(parsed)
+      line.content = clean_elements(parsed)
+      line
     end
 
-    def parse_url(elements)
+    def parse_url(line)
+      return line if line.parsed?
+
       parsed = []
 
-      elements.each do |elem|
+      line.content.each do |elem|
         if elem.is_a?(String)
           loop do
             matched = elem.match(%r{(^|\s)(https?://[^\s]+)})
@@ -123,13 +151,16 @@ module Cosensee
         end
       end
 
-      clean_elements(parsed)
+      line.content = clean_elements(parsed)
+      line
     end
 
-    def parse_double_bracket(elements)
+    def parse_double_bracket(line)
+      return line if line.parsed?
+
       parsed = []
 
-      elements.each do |elem|
+      line.content.each do |elem|
         if elem.is_a?(String)
           loop do
             matched = elem.match(/\[\[(.+?)\]\]/)
@@ -147,15 +178,18 @@ module Cosensee
         end
       end
 
-      clean_elements(parsed)
+      line.content = clean_elements(parsed)
+      line
     end
 
-    def parse_bracket(elements)
+    def parse_bracket(line)
+      return line if line.parsed?
+
       parsed = []
       stack = nil
       target_char = '[' # or "]"
 
-      elements.each do |elem|
+      line.content.each do |elem|
         case elem
         when Cosensee::Code, Cosensee::DoubleBracket
           if target_char == '['
@@ -196,7 +230,13 @@ module Cosensee
         parsed.concat(stack)
       end
 
-      clean_elements(parsed)
+      line.content = clean_elements(parsed)
+      line
+    end
+
+    def done_parsing(line)
+      line.parsed = true
+      line
     end
 
     def clean_elements(elements)

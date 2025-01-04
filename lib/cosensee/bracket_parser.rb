@@ -61,15 +61,16 @@ module Cosensee
         )
       else
         line_parser = LineParser.new
-        parsed = content
-                   .then { |c| line_parser.parse_url(c) }
-                   .then { |c| line_parser.parse_hashtag(c) }
-        if single_text? && parsed == content
-          anchor = first_content
+        data = ParsedBracket.new(content: content)
+        parsed = data
+                   .then { |d| line_parser.parse_url(d) }
+                   .then { |d| line_parser.parse_hashtag(d) }
+        if parsed.single_text? && parsed.content == content
+          anchor = parsed.first_content
           link = "#{encode_link(anchor)}.html"
           InternalLinkBracket.new(content:, link:, anchor:)
         else
-          TextBracket.new(content: parsed)
+          TextBracket.new(content: parsed.content)
         end
       end
     end
