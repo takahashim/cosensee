@@ -6,12 +6,11 @@ module Cosensee
   # for normal Text
   Indent = Data.define(:content) do
     def initialize(content: '')
+      @level = content.size
       super
     end
 
-    def level
-      @level ||= content.size
-    end
+    attr_reader :level
 
     def to_obj
       content
