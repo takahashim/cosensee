@@ -64,7 +64,7 @@ module Cosensee
                    .then { |d| line_parser.parse_hashtag(d) }
         if parsed.single_text? && parsed.content == content
           anchor = parsed.first_content
-          link = "#{encode_link(anchor)}.html"
+          link = make_link(anchor)
           raw = raw_string
           InternalLinkBracket.new(content:, link:, anchor:, raw:)
         else

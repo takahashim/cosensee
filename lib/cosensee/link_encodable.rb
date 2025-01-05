@@ -7,6 +7,10 @@ module Cosensee
   module LinkEncodable
     UNESCAPED_REGEX = /[A-Za-z0-9!"\$&'\(\)\-\~@+;:*<>,._]/
 
+    def make_link(anchor)
+      "#{encode_link(anchor)}.html"
+    end
+
     def encode_link(str)
       str.chars.map do |char|
         if char.match?(UNESCAPED_REGEX)

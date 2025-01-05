@@ -67,7 +67,7 @@ RSpec.describe Cosensee::TailwindRenderer::ParsedLine do
         ],
         [
           '12 #abc 34',
-          '<div class="relative pl-[0rem]">12 <span><a href="abc">#abc</a></span> 34</div>'
+          '<div class="relative pl-[0rem]">12 <span><a href="abc.html">#abc</a></span> 34</div>'
         ],
         [
           '12[a`bc]34',
@@ -79,15 +79,15 @@ RSpec.describe Cosensee::TailwindRenderer::ParsedLine do
         ],
         [
           '   12[ https://example.com #foo bar]34',
-          '<div class="relative pl-[6rem]">12<span>[ <span><a href="https://example.com">https://example.com</a></span> <span><a href="foo">#foo</a></span> bar]</span>34</div>'
+          '<div class="relative pl-[6rem]">12<span>[ <span><a href="https://example.com">https://example.com</a></span> <span><a href="foo.html">#foo</a></span> bar]</span>34</div>'
         ],
         [
           '>   12[ https://example.com #foo bar]34',
-          '<div class="relative pl-[0rem]"><blockquote class="border-l-4 border-gray-300 bg-gray-100 px-4 text-gray-800">   12<span>[ <span><a href="https://example.com">https://example.com</a></span> <span><a href="foo">#foo</a></span> bar]</span>34</blockquote></div>'
+          '<div class="relative pl-[0rem]"><blockquote class="border-l-4 border-gray-300 bg-gray-100 px-4 text-gray-800">   12<span>[ <span><a href="https://example.com">https://example.com</a></span> <span><a href="foo.html">#foo</a></span> bar]</span>34</blockquote></div>'
         ],
         [
           '    >   12[ https://example.com #foo bar]34',
-          '<div class="relative pl-[8rem]"><blockquote class="border-l-4 border-gray-300 bg-gray-100 px-4 text-gray-800">   12<span>[ <span><a href="https://example.com">https://example.com</a></span> <span><a href="foo">#foo</a></span> bar]</span>34</blockquote></div>'
+          '<div class="relative pl-[8rem]"><blockquote class="border-l-4 border-gray-300 bg-gray-100 px-4 text-gray-800">   12<span>[ <span><a href="https://example.com">https://example.com</a></span> <span><a href="foo.html">#foo</a></span> bar]</span>34</blockquote></div>'
         ]
       ]
     end
