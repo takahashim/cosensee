@@ -4,7 +4,7 @@ require 'json'
 
 module Cosensee
   # for Project
-  Project = Data.define(:name, :display_name, :exported, :users, :pages, :source) do
+  class Project
     def self.parse(source)
       json = JSON.parse(source, symbolize_names: true)
       name, display_name, exported, users, pages = json.values_at(:name, :displayName, :exported, :users, :pages)
@@ -17,23 +17,23 @@ module Cosensee
     end
 
     def initialize(name:, exported:, users:, pages:, source:, **kwargs)
-      display_name = if kwargs.keys.size == 1 && kwargs.key?(:display_name)
-                       kwargs[:display_name]
-                     elsif kwargs.keys.size == 1 && kwargs.key?(:displayName)
-                       kwargs[:displayName]
-                     else
-                       raise Cosensee::Error, 'Cosensee::User.new need an argument :display_name or :displayName'
-                     end
+      @name = name
+      @display_name = if kwargs.keys.size == 1 && kwargs.key?(:display_name)
+                        kwargs[:display_name]
+                      elsif kwargs.keys.size == 1 && kwargs.key?(:displayName)
+                        kwargs[:displayName]
+                      else
+                        raise Cosensee::Error, 'Cosensee::User.new need an argument :display_name or :displayName'
+                      end
+      @users = Cosensee::User.from_array(users)
+      @pages = Cosensee::Page.from_array(pages)
+      @exported = Time.at(exported)
+      @source = source
 
-      super(
-        name:,
-        display_name:,
-        exported: Time.at(exported),
-        users: Cosensee::User.from_array(users),
-        pages: Cosensee::Page.from_array(pages),
-        source:
-      )
+      @page_store = PageStore.new(project: self)
     end
+
+    attr_reader :name, :display_name, :users, :pages, :exported, :source, :page_store
 
     def find_page(title)
       collect_page_titles unless @page_index_list
