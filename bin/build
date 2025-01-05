@@ -4,6 +4,14 @@
 require 'bundler/setup'
 require 'cosensee'
 
-project = Cosensee::Project.parse_file('togetogebox.json')
+filename = ARGV[0]
+
+if !filename || !File.exist?(filename)
+  puts "Error: file not found: #{filename}"
+  puts 'Usage: bin/build <filename>'
+  exit 1
+end
+
+project = Cosensee::Project.parse_file(filename)
 builder = Cosensee::HtmlBuilder.new(project)
 builder.build_all
