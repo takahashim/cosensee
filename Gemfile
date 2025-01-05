@@ -6,6 +6,7 @@ source 'https://rubygems.org'
 gemspec
 
 group :test, :development do
+  gem 'irb'
   gem 'rake'
   gem 'rubocop'
   gem 'rubocop-rake', require: false
