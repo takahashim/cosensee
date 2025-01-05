@@ -35,19 +35,6 @@ module Cosensee
 
     attr_reader :name, :display_name, :users, :pages, :exported, :source, :page_store
 
-    def find_page(title)
-      collect_page_titles unless @page_index_list
-
-      pages[@page_index_list[title]]
-    end
-
-    def collect_page_titles
-      @page_index_list = {}
-      pages.each_with_index do |page, ind|
-        @page_index_list[page.title] = ind
-      end
-    end
-
     def to_obj
       { name:, displayName: display_name, exported: exported.to_i, users:, pages: }
     end
