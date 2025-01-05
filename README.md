@@ -14,13 +14,17 @@ If you use bundler, add to the application's Gemfile by executing:
 
 ## Usage
 
-To output HTML, specify the JSON file from Cosense as an argument and run `bin/build`.
+To output HTML, specify the JSON file from Cosense as an argument and run `bin/build` with Cosense JSON dump file.
 
-    $ bin/build
+    $ bin/build <json file>
 
 The HTML files will be output to the .out directory. You can view them locally by using the bin/server command.
 
     $ $bin/server
+
+By adding a Cosense JSON file as an argument, the build process will be executed before starting the server.
+
+    $ $bin/server <json file>
 
 The default port used by bin/server is 1212.
 
