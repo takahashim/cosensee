@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'cgi/util'
-
 module Cosensee
   class TailwindRenderer
     TextBracket = Data.define(:content) do

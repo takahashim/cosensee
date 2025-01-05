@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require 'cgi/util'
-
 module Cosensee
   class TailwindRenderer
     FormulaBracket = Data.define(:content) do
+      include HtmlEncodable
+
       def render
-        %(<span class="math-container">$#{CGI.escape_html(content.formula)}$</span>)
+        %(<span class="math-container">$#{escape_html(content.formula)}$</span>)
       end
     end
   end

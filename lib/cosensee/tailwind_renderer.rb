@@ -3,6 +3,8 @@
 module Cosensee
   # convert into html
   class TailwindRenderer
+    include HtmlEncodable
+
     # content is Cosensee objects or an array of them
     def initialize(content:)
       @content = content
@@ -14,7 +16,7 @@ module Cosensee
       if content.is_a?(Array)
         content.map do |c|
           if c.is_a?(String)
-            CGI.escape_html(c)
+            escape_html(c)
           else
             renderer_class(c).new(content: c).render
           end

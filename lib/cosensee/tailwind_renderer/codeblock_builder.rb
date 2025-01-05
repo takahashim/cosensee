@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'cgi/util'
-
 module Cosensee
   class TailwindRenderer
     # connect parsed lines to a code block
     class CodeblockBuilder
+      include HtmlEncodable
+
       def initialize(parsed_line)
         @first_line = parsed_line
         @base_indent_level = parsed_line.indent_level
@@ -28,7 +28,7 @@ module Cosensee
         <<~HTML_BLOCK
           <div class="relative pl-[#{indent_level}rem]">
             <div class="bg-orange-300 text-gray-900 px-4 py-1 rounded-t-lg font-mono text-sm">#{title}</div>
-            <div class="px-4 bg-gray-300 text-gray-900 rounded-b-lg shadow-md"><pre class="overflow-x-auto"><code class="block font-mono text-sm leading-relaxed">#{CGI.escape_html(lines.map(&:raw).join("\n"))}</code></pre></div>
+            <div class="px-4 bg-gray-300 text-gray-900 rounded-b-lg shadow-md"><pre class="overflow-x-auto"><code class="block font-mono text-sm leading-relaxed">#{escape_html(lines.map(&:raw).join("\n"))}</code></pre></div>
           </div>
         HTML_BLOCK
       end
