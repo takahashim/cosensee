@@ -25,11 +25,11 @@
               <a href="<%= page.link_path %>">
                 <p class="pagetitle font-bold  overflow-hidden"><%= page.title %></p>
               </a>
-              <% page.body_lines.each do |line| %>
               <a href="<%= page.link_path %>">
+              <% page.body_lines.each do |line| %>
                 <p class="inline text-xs"><%= line.to_s %></p>
-              </a>
               <% end %>
+              </a>
             </div>
         </div>
         <% end %>
