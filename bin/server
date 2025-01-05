@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+
+require 'falcon'
+require 'async/http/endpoint'
+require 'async'
+require 'uri'
+
+DIRECTORY_TO_SERVE = './out'
+
+# for static files
+module StaticFileHandler
+  def self.call(env)
+    path_info = env['PATH_INFO']
+    path_info = if path_info.start_with?('/')
+                  '/' + URI.decode_www_form_component(path_info.slice(1..-1)).gsub('/', '%2F')
+                else
+                  URI.decode_www_form_component(path_info).gsub('/', '%2F')
+                end
+    path = File.join(DIRECTORY_TO_SERVE, path_info)
+    path = File.join(path, 'index.html') if File.directory?(path)
+
+    if File.exist?(path) && !File.directory?(path)
+      content = File.read(path)
+      [200, { 'Content-Type' => 'text/html', 'Content-Length' => content.bytesize.to_s }, [content]]
+    else
+      [404, { 'Content-Type' => 'text/plain' }, ["File not found: #{env['PATH_INFO']}"]]
+    end
+  end
+end
+
+Async do
+  endpoint = Async::HTTP::Endpoint.parse('http://localhost:1212')
+  app = Falcon::Server.middleware(StaticFileHandler)
+  server = Falcon::Server.new(app, endpoint)
+  server.run.wait
+end
+
+puts "Serving files from #{File.expand_path(DIRECTORY_TO_SERVE)} at http://localhost:1212"
