@@ -245,6 +245,14 @@ RSpec.describe Cosensee::LineParser do
           )
         ],
         [
+          '[https://example.com/foo/bar.jpg]',
+          Cosensee::ParsedLine.new(
+            indent: Cosensee::Indent.new,
+            content: [Cosensee::ImageBracket.new(content: ['https://example.com/foo/bar.jpg'], link: nil, src: 'https://example.com/foo/bar.jpg', raw: '[https://example.com/foo/bar.jpg]')],
+            parsed: true
+          )
+        ],
+        [
           '12[abc]34',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Indent.new,

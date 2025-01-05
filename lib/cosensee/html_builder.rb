@@ -18,7 +18,7 @@ module Cosensee
     def build_all
       build_index(project)
       project.pages.each do |page|
-        # build_page(page)
+        build_page(page)
       end
     end
 

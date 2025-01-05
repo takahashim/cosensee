@@ -10,6 +10,8 @@ group :test, :development do
   gem 'rubocop'
   gem 'rubocop-rake', require: false
   gem 'rubocop-rspec', require: false
+
+  gem "falcon"
 end
 
 group :test do

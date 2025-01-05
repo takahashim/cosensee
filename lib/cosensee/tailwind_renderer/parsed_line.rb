@@ -18,7 +18,12 @@ module Cosensee
                    end.join
                  end
         level = content.indent_level * 2
-        %(<div class="relative pl-[#{level}rem]">#{result}</div>)
+        result = '&nbsp;' if result == ''
+        if level > 0
+          %(<div class="relative pl-[#{level}rem]"><span class="absolute left-[#{level - 1}rem] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gray-800"></span>#{result}</div>)
+        else
+          %(<div class="relative pl-[#{level}rem]">#{result}</div>)
+        end
       end
     end
   end

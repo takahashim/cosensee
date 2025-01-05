@@ -48,6 +48,11 @@ module Cosensee
       "#{body}.html"
     end
 
+    def to_html
+      tailwind_renderer = Cosensee::TailwindRenderer.new(content: self)
+      tailwind_renderer.render
+    end
+
     def to_obj
       { id:, title:, created: created.to_i, updated: updated.to_i, views:, lines: }
     end

@@ -17,8 +17,8 @@ module Cosensee
               rendered_lines << current_block_builder.render
               rendered_lines << ParsedLine.new(parsed_line).render
             end
-          elsif parsed_line.coce_block?
-            current_block_builder = CodeBlockBuilder.new(parsed_line)
+          elsif parsed_line.codeblock?
+            current_block_builder = CodeblockBuilder.new(parsed_line)
           else
             rendered_lines << ParsedLine.new(parsed_line).render
           end

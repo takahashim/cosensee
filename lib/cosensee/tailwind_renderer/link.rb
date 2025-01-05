@@ -7,7 +7,7 @@ module Cosensee
 
       def render
         link = content.content
-        %(<span><a href="#{escape_html(link)}">#{escape_html(link)}</a></span>)
+        %(<span><a href="#{escape_html(link)}" class="text-blue-500 hover:text-blue-700">#{escape_html(link)}</a></span>)
       end
     end
   end
