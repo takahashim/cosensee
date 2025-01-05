@@ -129,6 +129,15 @@ RSpec.describe Cosensee::BracketParser do
       end
     end
 
+    context 'when parsing an youtube bracket' do
+      let(:content) { ['https://www.youtube.com/watch?v=ldP5dCBXvNM'] }
+      let(:result) { parser.parse(content) }
+
+      it 'returns an YoutubeBracket instance' do
+        expect(result.class).to eq(Cosensee::YoutubeBracket)
+      end
+    end
+
     context 'when parsing an internal link bracket' do
       let(:content) { ['internal'] }
       let(:result) { parser.parse(content) }
