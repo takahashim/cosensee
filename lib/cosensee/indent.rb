@@ -12,7 +12,7 @@ module Cosensee
 
     attr_reader :level
 
-    def to_s = raw
+    alias_method :to_s, :raw
 
     def to_obj
       content

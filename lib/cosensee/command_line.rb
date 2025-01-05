@@ -5,7 +5,7 @@ require 'json'
 module Cosensee
   # for command line
   CommandLine = Data.define(:content, :prompt, :raw) do
-    def to_s = raw
+    alias_method :to_s, :raw
 
     def to_obj
       "#{prompt} #{content}"

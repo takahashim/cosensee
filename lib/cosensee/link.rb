@@ -5,7 +5,7 @@ require 'json'
 module Cosensee
   # link node
   Link = Data.define(:content, :raw) do
-    def to_s = raw
+    alias_method :to_s, :raw
 
     def to_obj
       content

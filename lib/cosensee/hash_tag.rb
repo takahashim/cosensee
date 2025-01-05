@@ -5,7 +5,8 @@ require 'json'
 module Cosensee
   # parse a hash tag
   HashTag = Data.define(:content, :raw) do
-    def to_s = raw
+    alias_method :to_s, :raw
+    alias_method :anchor, :content
 
     def to_obj
       "##{content}"

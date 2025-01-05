@@ -15,6 +15,9 @@ module Cosensee
     end
 
     def initialize(id:, title:, created:, updated:, views:, lines:)
+      @parsed_lines = Cosensee::Line.from_array(lines.drop(1)).map(&:parsed)
+      @linking_page_titles = @parsed_lines.map(&:internal_links).flatten
+
       super(
         id:,
         title:,
@@ -25,9 +28,7 @@ module Cosensee
       )
     end
 
-    def parsed_lines
-      Cosensee::Line.from_array(body_lines).map(&:parsed)
-    end
+    attr_accessor :parsed_lines, :linking_page_titles
 
     def body_lines
       lines.drop(1)
@@ -49,8 +50,7 @@ module Cosensee
     end
 
     def to_html
-      tailwind_renderer = Cosensee::TailwindRenderer.new(content: self)
-      tailwind_renderer.render
+      Cosensee::TailwindRenderer.new(content: self).render
     end
 
     def to_obj
@@ -59,6 +59,10 @@ module Cosensee
 
     def to_json(*)
       to_obj.to_json(*)
+    end
+
+    def inspect
+      "#<data Cosensee::Page id: #{id}, title: #{title}>"
     end
   end
 end

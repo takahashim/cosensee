@@ -52,6 +52,10 @@ module Cosensee
       self
     end
 
+    def internal_links
+      content.select { |c| c.is_a?(Cosensee::InternalLinkBracket) || c.is_a?(Cosensee::HashTag) }.map(&:anchor)
+    end
+
     def raw
       if line_content?
         "#{indent.raw}#{line_content.raw}"

@@ -7,7 +7,7 @@ module Cosensee
       content.size == 1 && content[0].match?(/\.(png|jpg)$/)
     end
 
-    def to_s = raw
+    alias_method :to_s, :raw
 
     def to_obj
       "[[#{content}]]"

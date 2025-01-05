@@ -5,7 +5,7 @@ require 'json'
 module Cosensee
   # for codeblock
   Codeblock = Data.define(:content, :raw) do
-    def to_s = raw
+    alias_method :to_s, :raw
 
     def to_obj
       "code:#{content}"

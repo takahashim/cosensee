@@ -10,24 +10,46 @@ module Cosensee
       @project = project
       @pages = project.pages
       @pages_by_title = nil
-      @pages_by_links = nil
-      # @pages_by_links = create_link_index(project)
+      @linking_pages = nil
+      @linked_pages = nil
     end
 
     def pages_by_title
       @pages_by_title ||= create_title_index(@pages)
     end
 
-    def pages_by_links
-      # @pages_by_links ||= create_links_index(project)
+    def linking_pages
+      setup_link_indexes unless @linking_pages
+
+      @linking_pages
+    end
+
+    def linked_pages
+      setup_link_indexes unless @linked_pages
+
+      @linked_pages
     end
 
     def create_title_index(pages)
-      list = {}
-      pages.each_with_index do |page, ind|
-        list[page.title] = ind
+      pages.each_with_object({}) do |page, hash|
+        hash[page.title] = page
       end
-      list
+    end
+
+    def find_link_pages(page)
+      pages = linking_pages[page.title] + linked_pages[page.title]
+      pages.sort_by(&:updated)
+    end
+
+    def setup_link_indexes
+      @linking_pages = Hash.new { |h, k| h[k] = [] }
+      @linked_pages = Hash.new { |h, k| h[k] = [] }
+      @project.pages.each do |page|
+        page.linking_page_titles.each do |linking_title|
+          @linking_pages[page.title] << pages_by_title[linking_title] if pages_by_title[linking_title]
+          @linked_pages[linking_title] << page
+        end
+      end
     end
   end
 end
