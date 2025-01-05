@@ -15,7 +15,7 @@ module StaticFileHandler
   def self.call(env)
     path_info = env['PATH_INFO']
     path_info = if path_info.start_with?('/')
-                  '/' + URI.decode_www_form_component(path_info.slice(1..-1)).gsub('/', '%2F')
+                  "/#{URI.decode_www_form_component(path_info.slice(1..-1)).gsub('/', '%2F')}"
                 else
                   URI.decode_www_form_component(path_info).gsub('/', '%2F')
                 end

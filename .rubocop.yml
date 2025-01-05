@@ -10,6 +10,8 @@ require:
 
 Layout/LineLength:
   Max: 300
+  Exclude:
+    - 'spec/**/*'
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented_relative_to_receiver
