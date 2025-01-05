@@ -3,7 +3,6 @@
 require_relative 'cosensee/version'
 require_relative 'cosensee/error'
 require_relative 'cosensee/bracket_serializer'
-require_relative 'cosensee/bracket_matchable'
 require_relative 'cosensee/link_encodable'
 
 require_relative 'cosensee/blank_bracket'
