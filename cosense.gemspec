@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email = ['takahashimm@gmail.com']
 
   spec.summary = 'Cosense (Scrapbox) parser and renderer'
-  spec.description = 'Cosense (Scrapbox) parser and renderer'
+  spec.description = 'Cosensee is a tool that reads JSON data from Cosense (formerly Scrapbox) and outputs it in HTML format.'
   spec.homepage = 'https://github.com/takahashim/cosensee'
   spec.required_ruby_version = '>= 3.4.1'
 
