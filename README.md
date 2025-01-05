@@ -1,16 +1,16 @@
 # Cosensee
 
-Cosensee is a tool that reads JSON data from Cosensee (formerly Scrapbox) and outputs it in HTML format.
+Cosensee is a tool that reads JSON data from [Cosense](https://scrapbox.io) (formerly Scrapbox) and outputs it in HTML format.
 
 ## Installation
 
-Install the gem and add to the application's Gemfile by executing:
-
-    $ bundle add cosensee
-
-If bundler is not being used to manage dependencies, install the gem by executing:
+Install the gem:
 
     $ gem install cosensee
+
+If you use bundler, add to the application's Gemfile by executing:
+
+    $ bundle add cosensee
 
 ## Usage
 
