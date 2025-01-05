@@ -19,8 +19,15 @@ module Cosensee
 
     def build_all
       build_index(project)
+
+      # build all pages
       project.pages.each do |page|
         build_page(page)
+      end
+
+      # build all orphan (title only) pages
+      project.page_store.orphan_page_titles.each do |title|
+        build_page_only_title(title)
       end
     end
 
@@ -32,8 +39,17 @@ module Cosensee
 
     def build_page(page)
       template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'page.html.erb'))
-      output = template.render(nil, project:, page:)
+      output = template.render(nil, project:, page:, title: page.title)
       File.write(File.join(root_dir, page.link_path), output)
+    end
+
+    def build_page_only_title(title)
+      template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'page.html.erb'))
+      output = template.render(nil, project:, page: nil, title:)
+      path = File.join(root_dir, "#{title.gsub(/ /, '_').gsub('/', '%2F')}.html")
+      unless File.exist?(path)
+        File.write(path, output)
+      end
     end
 
     def page_title(page)

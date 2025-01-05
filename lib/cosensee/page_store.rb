@@ -30,14 +30,22 @@ module Cosensee
       @linked_pages
     end
 
+    def title_exist?(title)
+      !!pages_by_title[title]
+    end
+
+    def orphan_page_titles
+      linked_pages.keys.select{|title| !title_exist?(title)}
+    end
+
     def create_title_index(pages)
       pages.each_with_object({}) do |page, hash|
         hash[page.title] = page
       end
     end
 
-    def find_link_pages(page)
-      pages = linking_pages[page.title] + linked_pages[page.title]
+    def find_link_pages_by_title(title)
+      pages = linking_pages[title] + linked_pages[title]
       pages.sort_by(&:updated)
     end
 
