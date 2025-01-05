@@ -8,7 +8,7 @@ require 'async/http/endpoint'
 require 'async'
 require 'uri'
 
-DIRECTORY_TO_SERVE = './out'
+DIRECTORY_TO_SERVE = './.out'
 
 # for static files
 module StaticFileHandler

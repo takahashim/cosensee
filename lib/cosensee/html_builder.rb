@@ -3,6 +3,7 @@
 require 'json'
 require 'erubi'
 require 'tilt'
+require 'fileutils'
 
 module Cosensee
   # generate HTML files
@@ -10,7 +11,8 @@ module Cosensee
     def initialize(project, root_dir: nil)
       @project = project
       @templates_dir = File.join(__dir__, '../../templates')
-      @root_dir = root_dir || File.join(Dir.pwd, 'out')
+      @root_dir = root_dir || File.join(Dir.pwd, '.out')
+      FileUtils.mkdir_p(@root_dir)
     end
 
     attr_reader :project, :root_dir, :templates_dir
