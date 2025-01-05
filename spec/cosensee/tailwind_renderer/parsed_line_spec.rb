@@ -83,7 +83,11 @@ RSpec.describe Cosensee::TailwindRenderer::ParsedLine do
         ],
         [
           '>   12[ https://example.com #foo bar]34',
-          '<div class="relative pl-[0rem]"><blockquote class="border-l-4 border-gray-300 bg-gray-100 px-4 text-gray-800">&gt;</blockquote></div>'
+          '<div class="relative pl-[0rem]"><blockquote class="border-l-4 border-gray-300 bg-gray-100 px-4 text-gray-800">   12<span>[ <span><a href="https://example.com">https://example.com</a></span> <span><a href="foo">#foo</a></span> bar]</span>34</blockquote></div>'
+        ],
+        [
+          '    >   12[ https://example.com #foo bar]34',
+          '<div class="relative pl-[8rem]"><blockquote class="border-l-4 border-gray-300 bg-gray-100 px-4 text-gray-800">   12<span>[ <span><a href="https://example.com">https://example.com</a></span> <span><a href="foo">#foo</a></span> bar]</span>34</blockquote></div>'
         ]
       ]
     end

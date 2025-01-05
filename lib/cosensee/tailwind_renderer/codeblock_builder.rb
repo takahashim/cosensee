@@ -21,14 +21,14 @@ module Cosensee
       end
 
       def render
-        # rubocop:disable Style/StringConcatenation
-        %(<div class="mx-auto mt-4">) +
-          %(<div class="bg-orange-300 text-gray-900 px-4 py-1 rounded-t-lg font-mono text-sm">#{first_line.content}</div>) +
-          %(<div class="px-4 bg-gray-300 text-gray-900 rounded-b-lg shadow-md"><pre class="overflow-x-auto"><code class="block font-mono text-sm leading-relaxed">) +
-          lines.map { |line| ParsedLine.render(line) }.join +
-          %(</code></pre></div>) +
-          %(</div>)
-        # rubocop:enable Style/StringConcatenation
+        indent_level = base_indent_level * 2
+        title = first_line.line_content.content
+        <<~HTML_BLOCK
+          <div class="relative pl-[#{indent_level}rem]">
+            <div class="bg-orange-300 text-gray-900 px-4 py-1 rounded-t-lg font-mono text-sm">#{title}</div>
+            <div class="px-4 bg-gray-300 text-gray-900 rounded-b-lg shadow-md"><pre class="overflow-x-auto"><code class="block font-mono text-sm leading-relaxed">#{lines.map(&:raw).join("\n")}</code></pre></div>
+          </div>
+        HTML_BLOCK
       end
     end
   end

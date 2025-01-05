@@ -33,7 +33,7 @@ module Cosensee
 
     def parse_indent(line)
       matched = line.match(INDENT_PATTERN)
-      ParsedLine.new(indent: Cosensee::Indent.new(matched[1]),
+      ParsedLine.new(indent: Cosensee::Indent.new(matched[1], matched[1]),
                      rest: matched[2])
     end
 
@@ -42,7 +42,7 @@ module Cosensee
       matched = line.match(QUOTE_PATTERN)
       if matched
         line.update(rest: matched[2],
-                    line_content: Cosensee::Quote.new(matched[1]))
+                    line_content: Cosensee::Quote.new(content: nil, raw: matched[0], mark: matched[1]))
         return line
       end
 
@@ -50,7 +50,7 @@ module Cosensee
       matched = line.match(CODEBLOCK_PATTERN)
       if matched
         return line.update(rest: nil,
-                           line_content: Cosensee::Codeblock.new(matched[2]),
+                           line_content: Cosensee::Codeblock.new(content: matched[2], raw: matched[0]),
                            parsed: true)
       end
 
@@ -58,7 +58,9 @@ module Cosensee
       matched = line.match(COMMANDLINE_PATTERN)
       if matched
         return line.update(rest: nil,
-                           line_content: Cosensee::CommandLine.new(content: matched[2], prompt: matched[1]),
+                           line_content: Cosensee::CommandLine.new(content: matched[2],
+                                                                   prompt: matched[1],
+                                                                   raw: matched[0]),
                            parsed: true)
       end
 
@@ -91,7 +93,7 @@ module Cosensee
           return line.update(rest: nil,
                              content: parsed)
         else
-          parsed << Code.new(str)
+          parsed << Code.new(str, "`#{str}`")
         end
       end
     end
@@ -107,7 +109,7 @@ module Cosensee
             matched = elem.match(/(^|\s)#(\S+)/)
             if matched
               parsed << "#{matched.pre_match}#{matched[1]}"
-              parsed << Cosensee::HashTag.new(matched[2])
+              parsed << Cosensee::HashTag.new(content: matched[2], raw: "##{matched[2]}")
               elem = matched.post_match
             else
               parsed << elem
@@ -133,7 +135,7 @@ module Cosensee
             matched = elem.match(%r{(^|\s)(https?://[^\s]+)})
             if matched
               parsed << "#{matched.pre_match}#{matched[1]}"
-              parsed << Cosensee::Link.new(matched[2])
+              parsed << Cosensee::Link.new(matched[2], matched[2])
               elem = matched.post_match
             else
               parsed << elem
@@ -159,7 +161,7 @@ module Cosensee
             matched = elem.match(/\[\[(.+?)\]\]/)
             if matched
               parsed << matched.pre_match
-              parsed << Cosensee::DoubleBracket.new(content: [matched[1]])
+              parsed << Cosensee::DoubleBracket.new(content: [matched[1]], raw: matched[0])
               elem = matched.post_match
             else
               parsed << elem
@@ -226,6 +228,11 @@ module Cosensee
     end
 
     def done_parsing(line)
+      # If the line_content is Cosensee::Quote, move content into it.
+      if line.line_content.is_a?(Cosensee::Quote)
+        new_quote = line.line_content.replace_content(line.content)
+        line.update(line_content: new_quote, content: [])
+      end
       line.update(parsed: true)
     end
 

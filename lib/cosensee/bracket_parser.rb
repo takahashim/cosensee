@@ -16,27 +16,29 @@ module Cosensee
 
       case content
       in [/\A\z/]
-        EmptyBracket.new(content:)
-      in [/\A([ \t])+\z/]
-        BlankBracket.new(content:, blank: Regexp.last_match(1))
+        EmptyBracket.new(content:, raw: '[]')
+      in [/\A([ \t]+)\z/]
+        BlankBracket.new(content:, blank: Regexp.last_match(1), raw: "[#{Regexp.last_match(0)}]")
       in [/\A\$ (.*)\z/]
-        FormulaBracket.new(content:, formula: Regexp.last_match(1))
+        FormulaBracket.new(content:, formula: Regexp.last_match(1), raw: "[#{Regexp.last_match(0)}]")
       in [/\A(.*).icon\z/]
         IconBracket.new(content:, icon_name: Regexp.last_match(1))
       in [%r{\A(https?://[^\s]+)\s+(https?://[^\s\]]*\.(png|jpe?g|gif|svg|webp)(\?[^\s\]]+)?)\z}]
-        ImageBracket.new(content:, link: Regexp.last_match(1), src: Regexp.last_match(2))
+        ImageBracket.new(content:, link: Regexp.last_match(1), src: Regexp.last_match(2), raw: "[#{Regexp.last_match(0)}]")
       in [%r{\A(https?://[^\s\]]*\.(png|jpe?g|gif|svg|webp)(\?[^\s\]]+)?)\s+(https?://[^\s]+)\z}]
-        ImageBracket.new(content:, link: Regexp.last_match(4), src: Regexp.last_match(1))
+        ImageBracket.new(content:, link: Regexp.last_match(4), src: Regexp.last_match(1), raw: "[#{Regexp.last_match(0)}]")
       in [%r{\A(https?://[^ \t]*)(\s+(.+))?\z}]
         # match_external_link_precede
         anchor = Regexp.last_match(3) || Regexp.last_match(1)
         link = Regexp.last_match(1)
-        ExternalLinkBracket.new(content:, link:, anchor:)
+        raw = "[#{Regexp.last_match(0)}]"
+        ExternalLinkBracket.new(content:, link:, anchor:, raw:)
       in [%r{\A((.*\S)\s+)?(https?://[^\s]+)\z}]
         # match_external_link_succeed
         anchor = Regexp.last_match(2) || Regexp.last_match(3)
         link = Regexp.last_match(3)
-        ExternalLinkBracket.new(content:, link:, anchor:)
+        raw = "[#{Regexp.last_match(0)}]"
+        ExternalLinkBracket.new(content:, link:, anchor:, raw:)
       in [%r{\A([_\*/\-"#%&'\(\)~\|\+<>{},\.]+) (.+)\z}]
         # match_decorate
         deco = Regexp.last_match(1)
@@ -51,22 +53,28 @@ module Cosensee
           underlined:,
           slanted:,
           deleted:,
-          text:
+          text:,
+          raw:
         )
       else
         line_parser = LineParser.new
-        data = ParsedBracket.new(content: content)
+        data = ParsedBracket.new(content:)
         parsed = data
                    .then { |d| line_parser.parse_url(d) }
                    .then { |d| line_parser.parse_hashtag(d) }
         if parsed.single_text? && parsed.content == content
           anchor = parsed.first_content
           link = "#{encode_link(anchor)}.html"
-          InternalLinkBracket.new(content:, link:, anchor:)
+          raw = raw_string
+          InternalLinkBracket.new(content:, link:, anchor:, raw:)
         else
-          TextBracket.new(content: parsed.content)
+          TextBracket.new(content: parsed.content, raw: raw_string)
         end
       end
+    end
+
+    def raw_string
+      "[#{content.map(&:to_s).join}]"
     end
   end
 end

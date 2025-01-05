@@ -8,7 +8,8 @@ module Cosensee
     :underlined,
     :slanted,
     :deleted,
-    :text
+    :text,
+    :raw
   ) do
     include BracketSerializer
   end

@@ -2,7 +2,7 @@
 
 module Cosensee
   # for Formula
-  FormulaBracket = Data.define(:content, :formula) do
+  FormulaBracket = Data.define(:content, :formula, :raw) do
     include BracketSerializer
   end
 end

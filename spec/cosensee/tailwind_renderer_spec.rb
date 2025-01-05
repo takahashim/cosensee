@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Cosensee::TailwindRenderer do
-  let(:code) { Cosensee::Code.new('foo bar') }
+  let(:code) { Cosensee::Code.new('foo bar', '`foo bar`') }
 
   describe '#render' do
     it 'convert Code to HTML' do

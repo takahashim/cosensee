@@ -2,7 +2,7 @@
 
 module Cosensee
   # for Icon
-  InternalLinkBracket = Data.define(:content, :link, :anchor) do
+  InternalLinkBracket = Data.define(:content, :link, :anchor, :raw) do
     include BracketSerializer
   end
 end

@@ -2,7 +2,7 @@
 
 module Cosensee
   # for Formula
-  ExternalLinkBracket = Data.define(:content, :link, :anchor) do
+  ExternalLinkBracket = Data.define(:content, :link, :anchor, :raw) do
     include BracketSerializer
   end
 end

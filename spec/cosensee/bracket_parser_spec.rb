@@ -147,7 +147,7 @@ RSpec.describe Cosensee::BracketParser do
     end
 
     context 'when parsing a text bracket' do
-      let(:content) { ['mixed', Cosensee::Code.new('foo')] }
+      let(:content) { ['mixed', Cosensee::Code.new('foo', '`foo`')] }
       let(:result) { parser.parse(content) }
 
       it 'returns a TextBracket instance' do

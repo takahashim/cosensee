@@ -2,10 +2,12 @@
 
 module Cosensee
   # for double Bracket
-  DoubleBracket = Data.define(:content) do
+  DoubleBracket = Data.define(:content, :raw) do
     def image?
       content.size == 1 && content[0].match?(/\.(png|jpg)$/)
     end
+
+    def to_s = raw
 
     def to_obj
       "[[#{content}]]"

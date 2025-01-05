@@ -2,7 +2,7 @@
 
 module Cosensee
   # for empty bracket
-  EmptyBracket = Data.define(:content) do
+  EmptyBracket = Data.define(:content, :raw) do
     include BracketSerializer
   end
 end

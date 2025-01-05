@@ -52,6 +52,14 @@ module Cosensee
       self
     end
 
+    def raw
+      if line_content?
+        "#{indent.raw}#{line_content.raw}"
+      else
+        "#{indent.raw}#{content.map(&:to_s).join}"
+      end
+    end
+
     def ==(other)
       other.is_a?(Cosensee::ParsedLine) &&
         other.indent == indent &&

@@ -4,13 +4,15 @@ require 'json'
 
 module Cosensee
   # for normal Text
-  Indent = Data.define(:content) do
-    def initialize(content: '')
+  Indent = Data.define(:content, :raw) do
+    def initialize(content: '', raw: '')
       @level = content.size
       super
     end
 
     attr_reader :level
+
+    def to_s = raw
 
     def to_obj
       content

@@ -4,7 +4,7 @@ require 'json'
 
 module Cosensee
   # for mixed content (!= single text)
-  TextBracket = Data.define(:content) do
+  TextBracket = Data.define(:content, :raw) do
     include BracketSerializer
   end
 end

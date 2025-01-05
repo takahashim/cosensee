@@ -5,6 +5,8 @@ require 'json'
 module Cosensee
   # serializer for brackets
   module BracketSerializer
+    def to_s = raw
+
     def to_obj
       unparsed = content.map do |elem|
         if elem.is_a?(String)

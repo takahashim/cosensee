@@ -8,11 +8,11 @@ RSpec.describe Cosensee::LineParser do
   describe '#parse_indent' do
     it 'parse indent segments' do
       expect(parser.parse_indent(Cosensee::ParsedLine.new(rest: ''))).to eq Cosensee::ParsedLine.new(indent: Cosensee::Indent.new, rest: '')
-      expect(parser.parse_indent(Cosensee::ParsedLine.new(rest: ' '))).to eq Cosensee::ParsedLine.new(indent: Cosensee::Indent.new(' '), rest: '')
-      expect(parser.parse_indent(Cosensee::ParsedLine.new(rest: ' a'))).to eq Cosensee::ParsedLine.new(indent: Cosensee::Indent.new(' '), rest: 'a')
-      expect(parser.parse_indent(Cosensee::ParsedLine.new(rest: " \t"))).to eq Cosensee::ParsedLine.new(indent: Cosensee::Indent.new(" \t"), rest: '')
-      expect(parser.parse_indent(Cosensee::ParsedLine.new(rest: " \ta"))).to eq Cosensee::ParsedLine.new(indent: Cosensee::Indent.new(" \t"), rest: 'a')
-      expect(parser.parse_indent(Cosensee::ParsedLine.new(rest: " b\ta"))).to eq Cosensee::ParsedLine.new(indent: Cosensee::Indent.new(' '), rest: "b\ta")
+      expect(parser.parse_indent(Cosensee::ParsedLine.new(rest: ' '))).to eq Cosensee::ParsedLine.new(indent: Cosensee::Indent.new(' ', ' '), rest: '')
+      expect(parser.parse_indent(Cosensee::ParsedLine.new(rest: ' a'))).to eq Cosensee::ParsedLine.new(indent: Cosensee::Indent.new(' ', ' '), rest: 'a')
+      expect(parser.parse_indent(Cosensee::ParsedLine.new(rest: " \t"))).to eq Cosensee::ParsedLine.new(indent: Cosensee::Indent.new(" \t", " \t"), rest: '')
+      expect(parser.parse_indent(Cosensee::ParsedLine.new(rest: " \ta"))).to eq Cosensee::ParsedLine.new(indent: Cosensee::Indent.new(" \t", " \t"), rest: 'a')
+      expect(parser.parse_indent(Cosensee::ParsedLine.new(rest: " b\ta"))).to eq Cosensee::ParsedLine.new(indent: Cosensee::Indent.new(' ', ' '), rest: "b\ta")
     end
   end
 
@@ -21,26 +21,26 @@ RSpec.describe Cosensee::LineParser do
       expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: ''))).to eq Cosensee::ParsedLine.new(line_content: nil, rest: '')
       expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: 'a$'))).to eq Cosensee::ParsedLine.new(line_content: nil, rest: 'a$')
       expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: '$ '))).to eq Cosensee::ParsedLine.new(line_content: nil, rest: '$ ')
-      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: '$ a'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::CommandLine.new(content: 'a', prompt: '$'), rest: nil, parsed: true)
-      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: '% ab'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::CommandLine.new(content: 'ab', prompt: '%'), rest: nil, parsed: true)
+      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: '$ a'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::CommandLine.new(content: 'a', prompt: '$', raw: '$ a'), rest: nil, parsed: true)
+      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: '% ab'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::CommandLine.new(content: 'ab', prompt: '%', raw: '% ab'), rest: nil, parsed: true)
       expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: '%% a'))).to eq Cosensee::ParsedLine.new(line_content: nil, rest: '%% a')
-      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: '% a $ b'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::CommandLine.new(content: 'a $ b', prompt: '%'), rest: nil, parsed: true)
+      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: '% a $ b'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::CommandLine.new(content: 'a $ b', prompt: '%', raw: '% a $ b'), rest: nil, parsed: true)
     end
 
     it 'parse quote segments' do
       expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: ''))).to eq Cosensee::ParsedLine.new(line_content: nil, rest: '')
       expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: 'a>'))).to eq Cosensee::ParsedLine.new(line_content: nil, rest: 'a>')
-      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: '>'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Quote.new('>'), rest: '')
-      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: '>ab'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Quote.new('>'), rest: 'ab')
-      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: '>>b'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Quote.new('>'), rest: '>b')
+      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: '>'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Quote.new(nil, '>', '>'), rest: '')
+      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: '>ab'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Quote.new(nil, '>ab', '>'), rest: 'ab')
+      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: '>>b'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Quote.new(nil, '>>b', '>'), rest: '>b')
     end
 
     it 'parse codeblock segments' do
       expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: ''))).to eq Cosensee::ParsedLine.new(line_content: nil, rest: '')
       expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: 'code:'))).to eq Cosensee::ParsedLine.new(line_content: nil, rest: 'code:')
-      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: 'code:abc'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Codeblock.new('abc'), rest: nil, parsed: true)
-      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: 'code:abc def'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Codeblock.new('abc def'), rest: nil, parsed: true)
-      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: 'code:abc[] `de`f'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Codeblock.new('abc[] `de`f'), rest: nil, parsed: true)
+      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: 'code:abc'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Codeblock.new('abc', 'code:abc'), rest: nil, parsed: true)
+      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: 'code:abc def'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Codeblock.new('abc def', 'code:abc def'), rest: nil, parsed: true)
+      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: 'code:abc[] `de`f'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Codeblock.new('abc[] `de`f', 'code:abc[] `de`f'), rest: nil, parsed: true)
     end
   end
 
@@ -48,11 +48,11 @@ RSpec.describe Cosensee::LineParser do
     it 'parse hashtag segments' do
       expect(parser.parse_hashtag(Cosensee::ParsedLine.new(content: ['']))).to eq Cosensee::ParsedLine.new(content: [])
       expect(parser.parse_hashtag(Cosensee::ParsedLine.new(content: ['#']))).to eq Cosensee::ParsedLine.new(content: ['#'])
-      expect(parser.parse_hashtag(Cosensee::ParsedLine.new(content: ['#a']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::HashTag.new('a')])
-      expect(parser.parse_hashtag(Cosensee::ParsedLine.new(content: [' #a!#b']))).to eq Cosensee::ParsedLine.new(content: [' ', Cosensee::HashTag.new('a!#b')])
-      expect(parser.parse_hashtag(Cosensee::ParsedLine.new(content: [' #abc ']))).to eq Cosensee::ParsedLine.new(content: [' ', Cosensee::HashTag.new('abc'), ' '])
-      expect(parser.parse_hashtag(Cosensee::ParsedLine.new(content: [' #あいうえお ']))).to eq Cosensee::ParsedLine.new(content: [' ', Cosensee::HashTag.new('あいうえお'), ' '])
-      expect(parser.parse_hashtag(Cosensee::ParsedLine.new(content: ['#a #b #c']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::HashTag.new('a'), ' ', Cosensee::HashTag.new('b'), ' ', Cosensee::HashTag.new('c')])
+      expect(parser.parse_hashtag(Cosensee::ParsedLine.new(content: ['#a']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::HashTag.new('a', '#a')])
+      expect(parser.parse_hashtag(Cosensee::ParsedLine.new(content: [' #a!#b']))).to eq Cosensee::ParsedLine.new(content: [' ', Cosensee::HashTag.new('a!#b', '#a!#b')])
+      expect(parser.parse_hashtag(Cosensee::ParsedLine.new(content: [' #abc ']))).to eq Cosensee::ParsedLine.new(content: [' ', Cosensee::HashTag.new('abc', '#abc'), ' '])
+      expect(parser.parse_hashtag(Cosensee::ParsedLine.new(content: [' #あいうえお ']))).to eq Cosensee::ParsedLine.new(content: [' ', Cosensee::HashTag.new('あいうえお', '#あいうえお'), ' '])
+      expect(parser.parse_hashtag(Cosensee::ParsedLine.new(content: ['#a #b #c']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::HashTag.new('a', '#a'), ' ', Cosensee::HashTag.new('b', '#b'), ' ', Cosensee::HashTag.new('c', '#c')])
     end
   end
 
@@ -60,11 +60,11 @@ RSpec.describe Cosensee::LineParser do
     it 'parse code segments' do
       expect(parser.parse_code(Cosensee::ParsedLine.new(rest: ''))).to eq Cosensee::ParsedLine.new(content: [])
       expect(parser.parse_code(Cosensee::ParsedLine.new(rest: '`'))).to eq Cosensee::ParsedLine.new(content: ['`'])
-      expect(parser.parse_code(Cosensee::ParsedLine.new(rest: '``'))).to eq Cosensee::ParsedLine.new(content: ['', Cosensee::Code.new(''), ''])
-      expect(parser.parse_code(Cosensee::ParsedLine.new(rest: 'a`b`'))).to eq Cosensee::ParsedLine.new(content: ['a', Cosensee::Code.new('b'), ''])
-      expect(parser.parse_code(Cosensee::ParsedLine.new(rest: 'a`b`c'))).to eq Cosensee::ParsedLine.new(content: ['a', Cosensee::Code.new('b'), 'c'])
-      expect(parser.parse_code(Cosensee::ParsedLine.new(rest: 'a`b`c`d'))).to eq Cosensee::ParsedLine.new(content: ['a', Cosensee::Code.new('b'), 'c`d'])
-      expect(parser.parse_code(Cosensee::ParsedLine.new(rest: 'a`b`c`d`'))).to eq Cosensee::ParsedLine.new(content: ['a', Cosensee::Code.new('b'), 'c', Cosensee::Code.new('d'), ''])
+      expect(parser.parse_code(Cosensee::ParsedLine.new(rest: '``'))).to eq Cosensee::ParsedLine.new(content: ['', Cosensee::Code.new('', '``'), ''])
+      expect(parser.parse_code(Cosensee::ParsedLine.new(rest: 'a`b`'))).to eq Cosensee::ParsedLine.new(content: ['a', Cosensee::Code.new('b', '`b`'), ''])
+      expect(parser.parse_code(Cosensee::ParsedLine.new(rest: 'a`b`c'))).to eq Cosensee::ParsedLine.new(content: ['a', Cosensee::Code.new('b', '`b`'), 'c'])
+      expect(parser.parse_code(Cosensee::ParsedLine.new(rest: 'a`b`c`d'))).to eq Cosensee::ParsedLine.new(content: ['a', Cosensee::Code.new('b', '`b`'), 'c`d'])
+      expect(parser.parse_code(Cosensee::ParsedLine.new(rest: 'a`b`c`d`'))).to eq Cosensee::ParsedLine.new(content: ['a', Cosensee::Code.new('b', '`b`'), 'c', Cosensee::Code.new('d', '`d`'), ''])
     end
   end
 
@@ -72,11 +72,11 @@ RSpec.describe Cosensee::LineParser do
     it 'parse code segments' do
       expect(parser.parse_url(Cosensee::ParsedLine.new(content: ['']))).to eq Cosensee::ParsedLine.new(content: [])
       expect(parser.parse_url(Cosensee::ParsedLine.new(content: ['https://']))).to eq Cosensee::ParsedLine.new(content: ['https://'])
-      expect(parser.parse_url(Cosensee::ParsedLine.new(content: ['https://example.com']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::Link.new('https://example.com')])
-      expect(parser.parse_url(Cosensee::ParsedLine.new(content: ['https://example.com  ']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::Link.new('https://example.com'), '  '])
-      expect(parser.parse_url(Cosensee::ParsedLine.new(content: [' https://example.com ']))).to eq Cosensee::ParsedLine.new(content: [' ', Cosensee::Link.new('https://example.com'), ' '])
-      expect(parser.parse_url(Cosensee::ParsedLine.new(content: [' https://example.com/あいうえお ']))).to eq Cosensee::ParsedLine.new(content: [' ', Cosensee::Link.new('https://example.com/あいうえお'), ' '])
-      expect(parser.parse_url(Cosensee::ParsedLine.new(content: ['https://example.com https://example.org']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::Link.new('https://example.com'), ' ', Cosensee::Link.new('https://example.org')])
+      expect(parser.parse_url(Cosensee::ParsedLine.new(content: ['https://example.com']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::Link.new('https://example.com', 'https://example.com')])
+      expect(parser.parse_url(Cosensee::ParsedLine.new(content: ['https://example.com  ']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::Link.new('https://example.com', 'https://example.com'), '  '])
+      expect(parser.parse_url(Cosensee::ParsedLine.new(content: [' https://example.com ']))).to eq Cosensee::ParsedLine.new(content: [' ', Cosensee::Link.new('https://example.com', 'https://example.com'), ' '])
+      expect(parser.parse_url(Cosensee::ParsedLine.new(content: [' https://example.com/あいうえお ']))).to eq Cosensee::ParsedLine.new(content: [' ', Cosensee::Link.new('https://example.com/あいうえお', 'https://example.com/あいうえお'), ' '])
+      expect(parser.parse_url(Cosensee::ParsedLine.new(content: ['https://example.com https://example.org']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::Link.new('https://example.com', 'https://example.com'), ' ', Cosensee::Link.new('https://example.org', 'https://example.org')])
     end
   end
 
@@ -86,9 +86,9 @@ RSpec.describe Cosensee::LineParser do
       expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[']))).to eq Cosensee::ParsedLine.new(content: ['['])
       expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[]']))).to eq Cosensee::ParsedLine.new(content: ['[]'])
       expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[[]]']))).to eq Cosensee::ParsedLine.new(content: ['[[]]'])
-      expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[[a]]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::DoubleBracket.new(['a'])])
-      expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[[a[b]c]]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::DoubleBracket.new(['a[b]c'])])
-      expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[[a[[[[a[[]aa` ]]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::DoubleBracket.new(['a[[[[a[[]aa` '])])
+      expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[[a]]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::DoubleBracket.new(['a'], '[[a]]')])
+      expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[[a[b]c]]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::DoubleBracket.new(['a[b]c'], '[[a[b]c]]')])
+      expect(parser.parse_double_bracket(Cosensee::ParsedLine.new(content: ['[[a[[[[a[[]aa` ]]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::DoubleBracket.new(['a[[[[a[[]aa` '], '[[a[[[[a[[]aa` ]]')])
     end
   end
 
@@ -96,18 +96,18 @@ RSpec.describe Cosensee::LineParser do
     it 'parse bracket segments' do
       expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['']))).to eq Cosensee::ParsedLine.new(content: [])
       expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[']))).to eq Cosensee::ParsedLine.new(content: ['['])
-      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::EmptyBracket.new([''])])
-      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[abc]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc')])
-      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['12[abc]34']))).to eq Cosensee::ParsedLine.new(content: ['12', Cosensee::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc'), '34'])
+      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::EmptyBracket.new([''], '[]')])
+      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[abc]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc', raw: '[abc]')])
+      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['12[abc]34']))).to eq Cosensee::ParsedLine.new(content: ['12', Cosensee::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc', raw: '[abc]'), '34'])
       expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[abc]12[xyz]']))).to eq Cosensee::ParsedLine.new(content: [
-                                                                                                                         Cosensee::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc'),
+                                                                                                                         Cosensee::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc', raw: '[abc]'),
                                                                                                                          '12',
-                                                                                                                         Cosensee::InternalLinkBracket.new(content: ['xyz'], link: 'xyz.html', anchor: 'xyz')
+                                                                                                                         Cosensee::InternalLinkBracket.new(content: ['xyz'], link: 'xyz.html', anchor: 'xyz', raw: '[xyz]')
                                                                                                                        ])
-      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[abc]12[xyz']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc'), '12[xyz'])
-      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[a', Cosensee::Code.new('b'), 'c]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::TextBracket.new(['a', Cosensee::Code.new('b'), 'c'])])
-      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[a', Cosensee::Code.new('b'), 'c']))).to eq Cosensee::ParsedLine.new(content: ['[a', Cosensee::Code.new('b'), 'c'])
-      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['x[a', Cosensee::Code.new('b'), 'c', 'd]e']))).to eq Cosensee::ParsedLine.new(content: ['x', Cosensee::TextBracket.new(['a', Cosensee::Code.new('b'), 'cd']), 'e'])
+      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[abc]12[xyz']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc', raw: '[abc]'), '12[xyz'])
+      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[a', Cosensee::Code.new('b', '`b`'), 'c]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::TextBracket.new(['a', Cosensee::Code.new('b', '`b`'), 'c'], '[a`b`c]')])
+      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[a', Cosensee::Code.new('b', '`b`'), 'c']))).to eq Cosensee::ParsedLine.new(content: ['[a', Cosensee::Code.new('b', '`b`'), 'c'])
+      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['x[a', Cosensee::Code.new('b', '`b`'), 'c', 'd]e']))).to eq Cosensee::ParsedLine.new(content: ['x', Cosensee::TextBracket.new(['a', Cosensee::Code.new('b', '`b`'), 'cd'], '[a`b`cd]'), 'e'])
     end
   end
 
@@ -126,7 +126,7 @@ RSpec.describe Cosensee::LineParser do
         [
           ' ',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(' '),
+            indent: Cosensee::Indent.new(' ', ' '),
             content: [],
             parsed: true
           )
@@ -142,7 +142,7 @@ RSpec.describe Cosensee::LineParser do
         [
           ' a',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(' '),
+            indent: Cosensee::Indent.new(' ', ' '),
             content: ['a'],
             parsed: true
           )
@@ -150,7 +150,7 @@ RSpec.describe Cosensee::LineParser do
         [
           " \tabc",
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(" \t"),
+            indent: Cosensee::Indent.new(" \t", " \t"),
             content: ['abc'],
             parsed: true
           )
@@ -158,8 +158,8 @@ RSpec.describe Cosensee::LineParser do
         [
           ' `a`bc',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new(' '),
-            content: [Cosensee::Code.new('a'), 'bc'],
+            indent: Cosensee::Indent.new(' ', ' '),
+            content: [Cosensee::Code.new('a', '`a`'), 'bc'],
             parsed: true
           )
         ],
@@ -167,7 +167,7 @@ RSpec.describe Cosensee::LineParser do
           'a`b`c',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Indent.new,
-            content: ['a', Cosensee::Code.new('b'), 'c'],
+            content: ['a', Cosensee::Code.new('b', '`b`'), 'c'],
             parsed: true
           )
         ],
@@ -175,8 +175,8 @@ RSpec.describe Cosensee::LineParser do
           '> a`b`c',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Indent.new,
-            line_content: Cosensee::Quote.new('>'),
-            content: [' a', Cosensee::Code.new('b'), 'c'],
+            line_content: Cosensee::Quote.new([' a', Cosensee::Code.new('b', '`b`'), 'c'], '> a`b`c', '>'),
+            content: [],
             parsed: true
           )
         ],
@@ -192,7 +192,7 @@ RSpec.describe Cosensee::LineParser do
           'code:a`b`c',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Indent.new,
-            line_content: Cosensee::Codeblock.new('a`b`c'),
+            line_content: Cosensee::Codeblock.new(content: 'a`b`c', raw: 'code:a`b`c'),
             parsed: true
           )
         ],
@@ -200,7 +200,7 @@ RSpec.describe Cosensee::LineParser do
           '$ a b c',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Indent.new,
-            line_content: Cosensee::CommandLine.new(content: 'a b c', prompt: '$'),
+            line_content: Cosensee::CommandLine.new(content: 'a b c', prompt: '$', raw: '$ a b c'),
             parsed: true
           )
         ],
@@ -208,7 +208,7 @@ RSpec.describe Cosensee::LineParser do
           '$ a [b] c',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Indent.new,
-            line_content: Cosensee::CommandLine.new(content: 'a [b] c', prompt: '$'),
+            line_content: Cosensee::CommandLine.new(content: 'a [b] c', prompt: '$', raw: '$ a [b] c'),
             parsed: true
           )
         ],
@@ -216,7 +216,7 @@ RSpec.describe Cosensee::LineParser do
           '$ a `b` c',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Indent.new,
-            line_content: Cosensee::CommandLine.new(content: 'a `b` c', prompt: '$'),
+            line_content: Cosensee::CommandLine.new(content: 'a `b` c', prompt: '$', raw: '$ a `b` c'),
             parsed: true
           )
         ],
@@ -232,7 +232,7 @@ RSpec.describe Cosensee::LineParser do
           '[]',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Indent.new,
-            content: [Cosensee::EmptyBracket.new([''])],
+            content: [Cosensee::EmptyBracket.new([''], '[]')],
             parsed: true
           )
         ],
@@ -240,7 +240,7 @@ RSpec.describe Cosensee::LineParser do
           '[abc]',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Indent.new,
-            content: [Cosensee::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc')],
+            content: [Cosensee::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc', raw: '[abc]')],
             parsed: true
           )
         ],
@@ -248,7 +248,7 @@ RSpec.describe Cosensee::LineParser do
           '12[abc]34',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Indent.new,
-            content: ['12', Cosensee::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc'), '34'],
+            content: ['12', Cosensee::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc', raw: '[abc]'), '34'],
             parsed: true
           )
         ],
@@ -256,7 +256,7 @@ RSpec.describe Cosensee::LineParser do
           'a[[b[]c]]d[e]f',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Indent.new,
-            content: ['a', Cosensee::DoubleBracket.new(['b[]c']), 'd', Cosensee::InternalLinkBracket.new(content: ['e'], link: 'e.html', anchor: 'e'), 'f'],
+            content: ['a', Cosensee::DoubleBracket.new(['b[]c'], '[[b[]c]]'), 'd', Cosensee::InternalLinkBracket.new(content: ['e'], link: 'e.html', anchor: 'e', raw: '[e]'), 'f'],
             parsed: true
           )
         ],
@@ -264,7 +264,7 @@ RSpec.describe Cosensee::LineParser do
           '12 #abc 34',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Indent.new,
-            content: ['12 ', Cosensee::HashTag.new('abc'), ' 34'],
+            content: ['12 ', Cosensee::HashTag.new('abc', '#abc'), ' 34'],
             parsed: true
           )
         ],
@@ -272,32 +272,33 @@ RSpec.describe Cosensee::LineParser do
           '12[a`bc]34',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Indent.new,
-            content: ['12', Cosensee::InternalLinkBracket.new(content: ['a`bc'], link: 'a%60bc.html', anchor: 'a`bc'), '34'],
+            content: ['12', Cosensee::InternalLinkBracket.new(content: ['a`bc'], link: 'a%60bc.html', anchor: 'a`bc', raw: '[a`bc]'), '34'],
             parsed: true
           )
         ],
         [
           '   12[a`b`c]34',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new('   '),
-            content: ['12', Cosensee::TextBracket.new(['a', Cosensee::Code.new('b'), 'c']), '34'],
+            indent: Cosensee::Indent.new('   ', '   '),
+            content: ['12', Cosensee::TextBracket.new(['a', Cosensee::Code.new('b', '`b`'), 'c'], '[a`b`c]'), '34'],
             parsed: true
           )
         ],
         [
           '   12[ https://example.com #foo bar]34',
           Cosensee::ParsedLine.new(
-            indent: Cosensee::Indent.new('   '),
+            indent: Cosensee::Indent.new('   ', '   '),
             content: [
               '12',
               Cosensee::TextBracket.new(
                 [
                   ' ',
-                  Cosensee::Link.new('https://example.com'),
+                  Cosensee::Link.new('https://example.com', 'https://example.com'),
                   ' ',
-                  Cosensee::HashTag.new('foo'),
+                  Cosensee::HashTag.new('foo', '#foo'),
                   ' bar'
-                ]
+                ],
+                '[ https://example.com #foo bar]'
               ),
               '34'
             ],
