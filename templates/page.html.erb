@@ -39,7 +39,7 @@
             Links<br>🔗
           </div>
         </div>
-        <% project.page_store.find_link_pages_by_title(title).each do |page|%>
+        <% project.page_store.find_link_pages_by_title(title).reverse_each do |page|%>
         <div class="bg-white shadow-md rounded-md aspect-square flex items-start justify-center p-2 overflow-hidden">
           <div class="break-words text-xs w-full">
             <a href="<%= page.link_path %>">

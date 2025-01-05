@@ -19,7 +19,7 @@
     <div class="max-w-screen-xl mx-auto">
       <h1 class="text-xl mb-4"><%= project.display_name %> ページ一覧</h1>
       <div class="grid grid-cols-8 gap-4">
-        <% project.pages.each do |page|%>
+        <% project.pages.sort_by(&:updated).reverse_each do |page|%>
         <div class="bg-white shadow-md rounded-md aspect-square flex items-start justify-center p-2 overflow-hidden">
             <div class="break-words text-xs w-full">
               <a href="<%= page.link_path %>">

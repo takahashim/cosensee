@@ -46,7 +46,7 @@ module Cosensee
 
     def find_link_pages_by_title(title)
       pages = linking_pages[title] + linked_pages[title]
-      pages.sort_by(&:updated)
+      pages.sort_by(&:updated).uniq
     end
 
     def setup_link_indexes
