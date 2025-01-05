@@ -11,6 +11,11 @@
 .rspec_status
 
 # others
+.out
 .DS_Store
 .ruby-version
 Gemfile.lock
+.vscode/
+#*#
+*~
+*.bak
