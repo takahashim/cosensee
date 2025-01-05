@@ -25,8 +25,8 @@ RSpec.describe Cosensee::Page do
     it 'is a Hash' do
       page = Cosensee::Page.from_hash(page_hash)
       expect(page.id).to eq '673c819d2c4025543126d6af'
-      expect(page.created).to eq Time.new('2024-11-19 21:06:40')
-      expect(page.updated).to eq Time.new('2024-11-19 21:40:00')
+      expect(page.created.utc).to eq Time.new('2024-11-19 12:06:40 UTC')
+      expect(page.updated.utc).to eq Time.new('2024-11-19 12:40:00 UTC')
       expect(page.title).to eq 'テストページ1'
       expect(page.views).to eq 12
       expect(page.lines).to eq ['テスト1', '', '[テスト2]と[test3]', '', "\tテスト4", "\tテスト5", 'https://example.com/test/', '']
@@ -38,8 +38,8 @@ RSpec.describe Cosensee::Page do
       page = Cosensee::Page.new(**page_hash)
 
       expect(page.id).to eq '673c819d2c4025543126d6af'
-      expect(page.created).to eq Time.new('2024-11-19 21:06:40')
-      expect(page.updated).to eq Time.new('2024-11-19 21:40:00')
+      expect(page.created.utc).to eq Time.new('2024-11-19 12:06:40 UTC')
+      expect(page.updated.utc).to eq Time.new('2024-11-19 12:40:00 UTC')
       expect(page.title).to eq 'テストページ1'
       expect(page.views).to eq 12
       expect(page.lines).to eq ['テスト1', '', '[テスト2]と[test3]', '', "\tテスト4", "\tテスト5", 'https://example.com/test/', '']
@@ -52,8 +52,8 @@ RSpec.describe Cosensee::Page do
       expect(pages.size).to eq 1
 
       expect(pages[0].id).to eq '673c819d2c4025543126d6af'
-      expect(pages[0].created).to eq Time.new('2024-11-19 21:06:40')
-      expect(pages[0].updated).to eq Time.new('2024-11-19 21:40:00')
+      expect(pages[0].created.utc).to eq Time.new('2024-11-19 12:06:40 UTC')
+      expect(pages[0].updated.utc).to eq Time.new('2024-11-19 12:40:00 UTC')
       expect(pages[0].title).to eq 'テストページ1'
       expect(pages[0].views).to eq 12
       expect(pages[0].lines).to eq ['テスト1', '', '[テスト2]と[test3]', '', "\tテスト4", "\tテスト5", 'https://example.com/test/',

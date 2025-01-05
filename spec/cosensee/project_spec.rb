@@ -43,7 +43,7 @@ RSpec.describe Cosensee::Project do
 
       expect(project.name).to eq 'sample1'
       expect(project.display_name).to eq 'sample 1'
-      expect(project.exported).to eq Time.new('2024-11-19 21:40:00')
+      expect(project.exported.utc).to eq Time.new('2024-11-19 12:40:00 UTC')
       expect(project.users).to eq [
         Cosensee::User.new(
           id: '12ab34cd',
@@ -72,7 +72,7 @@ RSpec.describe Cosensee::Project do
 
       expect(project.name).to eq 'sample1'
       expect(project.display_name).to eq 'sample 1'
-      expect(project.exported).to eq Time.new('2024-11-19 21:40:00')
+      expect(project.exported.utc).to eq Time.new('2024-11-19 12:40:00 UTC')
       expect(project.users).to eq [
         Cosensee::User.new(
           id: '12ab34cd',
