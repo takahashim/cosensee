@@ -35,7 +35,7 @@ module Cosensee
     end
 
     def orphan_page_titles
-      linked_pages.keys.select{|title| !title_exist?(title)}
+      linked_pages.keys.reject { |title| title_exist?(title) }
     end
 
     def create_title_index(pages)

@@ -44,12 +44,12 @@ module Cosensee
     end
 
     def build_page_only_title(title)
+      path = File.join(root_dir, "#{title.gsub(/ /, '_').gsub('/', '%2F')}.html")
+      return if File.exist?(path)
+
       template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'page.html.erb'))
       output = template.render(nil, project:, page: nil, title:)
-      path = File.join(root_dir, "#{title.gsub(/ /, '_').gsub('/', '%2F')}.html")
-      unless File.exist?(path)
-        File.write(path, output)
-      end
+      File.write(path, output)
     end
 
     def page_title(page)

@@ -39,7 +39,7 @@ if filename
   project = Cosensee::Project.parse_file(filename)
   builder = Cosensee::HtmlBuilder.new(project)
   builder.build_all
-  puts "build done."
+  puts 'build done.'
 end
 
 Async do
