@@ -6,7 +6,7 @@ RSpec.describe Cosensee::TailwindRenderer::CodeblockBuilder do
   let(:line_parser) { Cosensee::LineParser.new }
   let(:first_line) { line_parser.parse('  code:test.rb') }
   let(:additional_line) { line_parser.parse('  a = Foo.bar(2); `foo`.buz(a: "hoge")') }
-  let(:additional_line2) { line_parser.parse('    # 日本語のコメント') }
+  let(:additional_line2) { line_parser.parse('     # 日本語のコメント') }
   let(:another_line) { line_parser.parse(' "other block line!"') }
 
   describe '#initialize' do
@@ -46,7 +46,8 @@ RSpec.describe Cosensee::TailwindRenderer::CodeblockBuilder do
       expected_html = <<~HTML_BLOCK
         <div class="relative pl-[4rem]">
           <div class="bg-orange-300 text-gray-900 px-4 py-1 rounded-t-lg font-mono text-sm">test.rb</div>
-          <div class="px-4 bg-gray-300 text-gray-900 rounded-b-lg shadow-md"><pre class="overflow-x-auto"><code class="block font-mono text-sm leading-relaxed">a = Foo.bar(2).buz(a: &quot;hoge&quot;)</code></pre></div>
+          <div class="px-4 bg-gray-300 text-gray-900 rounded-b-lg shadow-md"><pre class="overflow-x-auto"><code class="block font-mono text-sm leading-relaxed">  a = Foo.bar(2); `foo`.buz(a: &quot;hoge&quot;)
+             # 日本語のコメント</code></pre></div>
         </div>
       HTML_BLOCK
 

@@ -14,7 +14,7 @@ module Cosensee
     attr_accessor :indent, :line_content, :content, :rest, :parsed
 
     def codeblock?
-      line_content.is_a?(Cosensee::CodeBlock)
+      line_content.is_a?(Cosensee::Codeblock)
     end
 
     def parsed?
