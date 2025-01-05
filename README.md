@@ -1,5 +1,7 @@
 # Cosensee
 
+Cosensee is a tool that reads JSON data from Cosensee (formerly Scrapbox) and outputs it in HTML format.
+
 ## Installation
 
 Install the gem and add to the application's Gemfile by executing:
@@ -12,7 +14,15 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-TBD.
+To output HTML, specify the JSON file from Cosense as an argument and run `bin/build`.
+
+    $ bin/build
+
+The HTML files will be output to the .out directory. You can view them locally by using the bin/server command.
+
+    $ $bin/server
+
+The default port used by bin/server is 1212.
 
 ## Development
 
