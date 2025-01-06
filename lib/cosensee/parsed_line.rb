@@ -25,6 +25,10 @@ module Cosensee
       !!rest
     end
 
+    def song_tagged?
+      content.any? { |elem| elem.is_a?(HashTag) && elem.anchor == '楽曲' }
+    end
+
     def first_image
       if line_content?
         line_content.is_a?(Quote) && line_content.content.find { |elem| elem.is_a?(ImageBracket) || elem.is_a?(GyazoImageBracket) }

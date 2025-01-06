@@ -20,6 +20,9 @@
           -webkit-box-orient: vertical;
       }
     </style>
+    <% if page.song_page? %>
+    <style>@media print { img.lyrics { display: none !important; } }</style>
+    <% end %>
   </head>
   <body class="bg-slate-100">
     <div class="max-w-screen-lg mx-auto p-4 m-4">

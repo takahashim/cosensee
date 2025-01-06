@@ -43,6 +43,10 @@ module Cosensee
       end
     end
 
+    def song_page?
+      parsed_lines.any?(&:song_tagged?)
+    end
+
     def body_lines
       lines.drop(1)
     end
