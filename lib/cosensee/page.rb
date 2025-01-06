@@ -49,7 +49,7 @@ module Cosensee
 
     def link_path
       # body = URI.encode_www_form_component(title.gsub(/ /, '_'))
-      body = title.gsub(/ /, '_').gsub('/', '%2F')
+      body = title.gsub(/ /, '_').gsub('=', '=3d').gsub('/', '=2F').gsub('#', '=23')
 
       "#{body}.html"
     end
