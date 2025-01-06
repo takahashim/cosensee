@@ -15,7 +15,7 @@ module Cosensee
     end
 
     def initialize(id:, title:, created:, updated:, views:, lines:)
-      @parsed_lines = Cosensee::Line.from_array(lines.drop(1)).map(&:parsed)
+      @parsed_lines = lines.drop(1).map { |arg| LineParser.parse(arg) }
       @linking_page_titles = @parsed_lines.map(&:internal_links).flatten
 
       super(
@@ -32,14 +32,6 @@ module Cosensee
 
     def body_lines
       lines.drop(1)
-    end
-
-    def some_images?
-      lines.any?(&:some_image?)
-    end
-
-    def first_image
-      lines.find(&:some_image?)&.first_image
     end
 
     def link_path
