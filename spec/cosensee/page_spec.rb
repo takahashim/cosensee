@@ -67,41 +67,41 @@ RSpec.describe Cosensee::Page do
 
       expect(page.parsed_lines).to eq [
         Cosensee::ParsedLine.new(
-          indent: Cosensee::Indent.new,
+          indent: Cosensee::Node::Indent.new,
           content: [],
           parsed: true
         ),
         Cosensee::ParsedLine.new(
-          indent: Cosensee::Indent.new,
+          indent: Cosensee::Node::Indent.new,
           content: [
-            Cosensee::InternalLinkBracket.new(content: ['テスト2'], link: '%E3%83%86%E3%82%B9%E3%83%882.html', anchor: 'テスト2', raw: '[テスト2]'),
+            Cosensee::Node::InternalLinkBracket.new(content: ['テスト2'], link: '%E3%83%86%E3%82%B9%E3%83%882.html', anchor: 'テスト2', raw: '[テスト2]'),
             'と',
-            Cosensee::InternalLinkBracket.new(content: ['test3'], link: 'test3.html', anchor: 'test3', raw: '[test3]')
+            Cosensee::Node::InternalLinkBracket.new(content: ['test3'], link: 'test3.html', anchor: 'test3', raw: '[test3]')
           ],
           parsed: true
         ),
         Cosensee::ParsedLine.new(
-          indent: Cosensee::Indent.new,
+          indent: Cosensee::Node::Indent.new,
           content: [],
           parsed: true
         ),
         Cosensee::ParsedLine.new(
-          indent: Cosensee::Indent.new("\t", "\t"),
+          indent: Cosensee::Node::Indent.new("\t", "\t"),
           content: ['テスト4'],
           parsed: true
         ),
         Cosensee::ParsedLine.new(
-          indent: Cosensee::Indent.new("\t", "\t"),
+          indent: Cosensee::Node::Indent.new("\t", "\t"),
           content: ['テスト5'],
           parsed: true
         ),
         Cosensee::ParsedLine.new(
-          indent: Cosensee::Indent.new,
-          content: [Cosensee::Link.new('https://example.com/test/', 'https://example.com/test/')],
+          indent: Cosensee::Node::Indent.new,
+          content: [Cosensee::Node::Link.new('https://example.com/test/', 'https://example.com/test/')],
           parsed: true
         ),
         Cosensee::ParsedLine.new(
-          indent: Cosensee::Indent.new,
+          indent: Cosensee::Node::Indent.new,
           content: [],
           parsed: true
         )

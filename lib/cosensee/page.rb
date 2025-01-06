@@ -33,7 +33,7 @@ module Cosensee
 
     def summary
       if (image = first_image)
-        if image.is_a?(Cosensee::GyazoImageBracket)
+        if image.is_a?(Cosensee::Node::GyazoImageBracket)
           %(<img src="#{image.src}/raw">)
         else
           %(<img src="#{image.src}">)

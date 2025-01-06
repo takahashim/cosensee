@@ -11,7 +11,7 @@ RSpec.describe Cosensee::BracketParser do
       let(:result) { parser.parse(content) }
 
       it 'returns an EmptyBracket instance' do
-        expect(result.class).to eq Cosensee::EmptyBracket
+        expect(result.class).to eq Cosensee::Node::EmptyBracket
       end
 
       it 'has the correct content' do
@@ -24,7 +24,7 @@ RSpec.describe Cosensee::BracketParser do
       let(:result) { parser.parse(content) }
 
       it 'returns a BlankBracket instance' do
-        expect(result.class).to eq Cosensee::BlankBracket
+        expect(result.class).to eq Cosensee::Node::BlankBracket
       end
 
       it 'has the correct content' do
@@ -41,7 +41,7 @@ RSpec.describe Cosensee::BracketParser do
       let(:result) { parser.parse(content) }
 
       it 'returns a FormulaBracket instance' do
-        expect(result.class).to eq Cosensee::FormulaBracket
+        expect(result.class).to eq Cosensee::Node::FormulaBracket
       end
 
       it 'has the correct formula' do
@@ -54,7 +54,7 @@ RSpec.describe Cosensee::BracketParser do
       let(:result) { parser.parse(content) }
 
       it 'returns an ExternalLinkBracket instance' do
-        expect(result.class).to eq(Cosensee::ExternalLinkBracket)
+        expect(result.class).to eq(Cosensee::Node::ExternalLinkBracket)
       end
 
       it 'has the correct content' do
@@ -75,7 +75,7 @@ RSpec.describe Cosensee::BracketParser do
       let(:result) { parser.parse(content) }
 
       it 'returns an ExternalLinkBracket instance' do
-        expect(result.class).to eq(Cosensee::ExternalLinkBracket)
+        expect(result.class).to eq(Cosensee::Node::ExternalLinkBracket)
       end
 
       it 'has the correct link' do
@@ -92,7 +92,7 @@ RSpec.describe Cosensee::BracketParser do
       let(:result) { parser.parse(content) }
 
       it 'returns a DecorateBracket instance' do
-        expect(result.class).to eq Cosensee::DecorateBracket
+        expect(result.class).to eq Cosensee::Node::DecorateBracket
       end
 
       it 'has the correct content' do
@@ -125,7 +125,7 @@ RSpec.describe Cosensee::BracketParser do
       let(:result) { parser.parse(content) }
 
       it 'returns an IconBracket instance' do
-        expect(result.class).to eq(Cosensee::IconBracket)
+        expect(result.class).to eq(Cosensee::Node::IconBracket)
       end
     end
 
@@ -134,7 +134,7 @@ RSpec.describe Cosensee::BracketParser do
       let(:result) { parser.parse(content) }
 
       it 'returns an YoutubeBracket instance' do
-        expect(result.class).to eq(Cosensee::YoutubeBracket)
+        expect(result.class).to eq(Cosensee::Node::YoutubeBracket)
       end
     end
 
@@ -143,7 +143,7 @@ RSpec.describe Cosensee::BracketParser do
       let(:result) { parser.parse(content) }
 
       it 'returns an InternalLinkBracket instance' do
-        expect(result.class).to eq Cosensee::InternalLinkBracket
+        expect(result.class).to eq Cosensee::Node::InternalLinkBracket
       end
 
       it 'has the correct link' do
@@ -156,11 +156,11 @@ RSpec.describe Cosensee::BracketParser do
     end
 
     context 'when parsing a text bracket' do
-      let(:content) { ['mixed', Cosensee::Code.new('foo', '`foo`')] }
+      let(:content) { ['mixed', Cosensee::Node::Code.new('foo', '`foo`')] }
       let(:result) { parser.parse(content) }
 
       it 'returns a TextBracket instance' do
-        expect(result.class).to eq Cosensee::TextBracket
+        expect(result.class).to eq Cosensee::Node::TextBracket
       end
 
       it 'has the correct content' do
@@ -173,7 +173,7 @@ RSpec.describe Cosensee::BracketParser do
       let(:result) { parser.parse(content) }
 
       it 'returns an ImageBracket instance' do
-        expect(result.class).to eq Cosensee::ImageBracket
+        expect(result.class).to eq Cosensee::Node::ImageBracket
       end
 
       it 'has the correct link' do
@@ -190,7 +190,7 @@ RSpec.describe Cosensee::BracketParser do
       let(:result) { parser.parse(content) }
 
       it 'returns an ImageBracket instance' do
-        expect(result.class).to eq Cosensee::ImageBracket
+        expect(result.class).to eq Cosensee::Node::ImageBracket
       end
 
       it 'has the correct link' do

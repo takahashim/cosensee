@@ -14,7 +14,7 @@ module Cosensee
     attr_accessor :indent, :line_content, :content, :rest, :parsed
 
     def codeblock?
-      line_content.is_a?(Cosensee::Codeblock)
+      line_content.is_a?(Cosensee::Node::Codeblock)
     end
 
     def parsed?
@@ -26,14 +26,14 @@ module Cosensee
     end
 
     def song_tagged?
-      content.any? { |elem| elem.is_a?(HashTag) && elem.anchor == '楽曲' }
+      content.any? { |elem| elem.is_a?(Node::HashTag) && elem.anchor == '楽曲' }
     end
 
     def first_image
       if line_content?
-        line_content.is_a?(Quote) && line_content.content.find { |elem| elem.is_a?(ImageBracket) || elem.is_a?(GyazoImageBracket) }
+        line_content.is_a?(Node::Quote) && line_content.content.find { |elem| elem.is_a?(Node::ImageBracket) || elem.is_a?(Node::GyazoImageBracket) }
       else
-        content.find { |elem| elem.is_a?(ImageBracket) || elem.is_a?(GyazoImageBracket) }
+        content.find { |elem| elem.is_a?(Node::ImageBracket) || elem.is_a?(Node::GyazoImageBracket) }
       end
     end
 
@@ -65,7 +65,7 @@ module Cosensee
     end
 
     def internal_links
-      content.select { |c| c.is_a?(Cosensee::InternalLinkBracket) || c.is_a?(Cosensee::HashTag) }.map(&:anchor)
+      content.select { |c| c.is_a?(Cosensee::Node::InternalLinkBracket) || c.is_a?(Cosensee::Node::HashTag) }.map(&:anchor)
     end
 
     def to_s

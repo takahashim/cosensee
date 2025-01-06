@@ -9,7 +9,7 @@ RSpec.describe Cosensee::TailwindRenderer::DecorateBracket do
   let(:underlined) { nil }
   let(:slanted) { nil }
   let(:deleted) { nil }
-  let(:bracket) { Cosensee::DecorateBracket.new(content: [], font_size:, underlined:, slanted:, deleted:, text: 'Sample Text', raw: 'dummy') }
+  let(:bracket) { Cosensee::Node::DecorateBracket.new(content: [], font_size:, underlined:, slanted:, deleted:, text: 'Sample Text', raw: 'dummy') }
 
   describe '#render' do
     context 'when no styles are applied' do

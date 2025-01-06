@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Cosensee::TailwindRenderer::BlankBracket do
-  let(:content) { Cosensee::BlankBracket.new(content: ['  '], blank: '  ', raw: '  ') }
+  let(:content) { Cosensee::Node::BlankBracket.new(content: ['  '], blank: '  ', raw: '  ') }
   let(:bracket) { Cosensee::TailwindRenderer::BlankBracket.new(content:, project: nil) }
 
   describe '#render' do

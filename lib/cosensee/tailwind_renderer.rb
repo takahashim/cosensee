@@ -27,7 +27,7 @@ module Cosensee
       end
     end
 
-    # ex. Cosensee::TailwindRenderer::Code for Cosensee::Code
+    # ex. Cosensee::TailwindRenderer::Code for Cosensee::Node::Code
     def renderer_class(content)
       name = content.class.name.split('::').last
 

@@ -4,7 +4,7 @@ RSpec.describe Cosensee::TailwindRenderer::ImageBracket do
   describe '#render' do
     context 'when link is nil' do
       it 'convert ImageBracket to HTML' do
-        content = Cosensee::ImageBracket.new(
+        content = Cosensee::Node::ImageBracket.new(
           content: ['https://example.com/example.jpg'],
           link: nil,
           src: 'https://example.com/example.jpg',
@@ -16,7 +16,7 @@ RSpec.describe Cosensee::TailwindRenderer::ImageBracket do
 
     context 'when link is not nil' do
       it 'convert ImageBracket to HTML' do
-        content = Cosensee::ImageBracket.new(
+        content = Cosensee::Node::ImageBracket.new(
           content: ['https://example.com/example.jpg http://example.com/link'],
           link: 'http://example.com/link',
           src: 'https://example.com/example.jpg',
