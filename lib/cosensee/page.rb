@@ -39,7 +39,7 @@ module Cosensee
           %(<img src="#{image.src}">)
         end
       else
-        parsed_lines.map(&:to_s).join
+        parsed_lines.map(&:to_s).take(MAX_SUMMARY_LINE).join
       end
     end
 

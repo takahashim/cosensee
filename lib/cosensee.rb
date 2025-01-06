@@ -55,3 +55,7 @@ require_relative 'cosensee/tailwind_renderer/text_bracket'
 require_relative 'cosensee/tailwind_renderer/youtube_bracket'
 require_relative 'cosensee/text_bracket'
 require_relative 'cosensee/user'
+
+module Cosensee
+  MAX_SUMMARY_LINE = 10
+end
