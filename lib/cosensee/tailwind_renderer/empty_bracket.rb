@@ -2,7 +2,7 @@
 
 module Cosensee
   class TailwindRenderer
-    EmptyBracket = Data.define(:content) do
+    EmptyBracket = Data.define(:content, :project) do
       def render
         %(<span>[]</span>)
       end

@@ -2,12 +2,13 @@
 
 module Cosensee
   class TailwindRenderer
-    IconBracket = Data.define(:content) do
+    IconBracket = Data.define(:content, :project) do
       include HtmlEncodable
 
       def render
-        # XXX use icon image finder with project object
-        %(<span>[icon:#{escape_html(content.icon_name)}]</span>)
+        page = project.page_store.find_page_by_title(content.icon_name)
+        icon_src = page&.first_image&.src
+        %(<img src="#{icon_src}" alt="icon" class="inline-block h-5 w-5 align-middle">)
       end
     end
   end

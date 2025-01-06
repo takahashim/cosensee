@@ -50,8 +50,8 @@ module Cosensee
       "#{body}.html"
     end
 
-    def to_html
-      Cosensee::TailwindRenderer.new(content: self).render
+    def to_html(project: nil)
+      Cosensee::TailwindRenderer.new(content: self, project:).render
     end
 
     def to_obj

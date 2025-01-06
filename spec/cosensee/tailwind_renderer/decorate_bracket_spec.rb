@@ -3,7 +3,7 @@
 require 'rspec'
 
 RSpec.describe Cosensee::TailwindRenderer::DecorateBracket do
-  subject(:renderer) { Cosensee::TailwindRenderer::DecorateBracket.new(bracket) }
+  subject(:renderer) { Cosensee::TailwindRenderer::DecorateBracket.new(bracket, nil) }
 
   let(:font_size) { nil }
   let(:underlined) { nil }

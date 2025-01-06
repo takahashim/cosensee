@@ -2,7 +2,7 @@
 
 module Cosensee
   class TailwindRenderer
-    ImageBracket = Data.define(:content) do
+    ImageBracket = Data.define(:content, :project) do
       def render
         if content.link
           %(<span><a href="#{content.link}"><img src="#{content.src}" class="max-w-max max-h-80"></a></span>)

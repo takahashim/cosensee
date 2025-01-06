@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Cosensee::TailwindRenderer::ParsedLine do
-  subject(:renderer) { Cosensee::TailwindRenderer::ParsedLine.new(parsed_line) }
+  subject(:renderer) { Cosensee::TailwindRenderer::ParsedLine.new(parsed_line, nil) }
 
   let(:parser) { Cosensee::LineParser.new }
   let(:parsed_line) { parser.parse(source) }

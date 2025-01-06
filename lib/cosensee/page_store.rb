@@ -18,6 +18,10 @@ module Cosensee
       @pages_by_title ||= create_title_index(@pages)
     end
 
+    def find_page_by_title(title)
+      pages_by_title[title]
+    end
+
     def linking_pages
       setup_link_indexes unless @linking_pages
 

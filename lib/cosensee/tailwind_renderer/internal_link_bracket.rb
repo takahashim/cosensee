@@ -4,7 +4,7 @@ require 'uri'
 
 module Cosensee
   class TailwindRenderer
-    InternalLinkBracket = Data.define(:content) do
+    InternalLinkBracket = Data.define(:content, :project) do
       include HtmlEncodable
 
       def render

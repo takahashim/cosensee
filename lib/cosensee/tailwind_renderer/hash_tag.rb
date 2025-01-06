@@ -4,7 +4,7 @@ require 'uri'
 
 module Cosensee
   class TailwindRenderer
-    HashTag = Data.define(:content) do
+    HashTag = Data.define(:content, :project) do
       include LinkEncodable
       include HtmlEncodable
 

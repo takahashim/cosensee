@@ -2,7 +2,7 @@
 
 module Cosensee
   class TailwindRenderer
-    FormulaBracket = Data.define(:content) do
+    FormulaBracket = Data.define(:content, :project) do
       include HtmlEncodable
 
       def render

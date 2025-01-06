@@ -29,7 +29,7 @@ module Cosensee
         ImageBracket.new(content:, link: Regexp.last_match(1), src: Regexp.last_match(2), raw: "[#{Regexp.last_match(0)}]")
       in [%r{\A(https?://[^\s\]]*\.(png|jpe?g|gif|svg|webp)(\?[^\s\]]+)?)\s+(https?://[^\s]+)\z}]
         ImageBracket.new(content:, link: Regexp.last_match(4), src: Regexp.last_match(1), raw: "[#{Regexp.last_match(0)}]")
-      in [%r{\A(https?://[^\s\]]*\.(png|jpe?g|gif|svg|webp))\z}]
+      in [%r{\A(https?://[^\s\]]*\.(png|jpe?g|gif|svg|webp))\z}] | [%r{\A(https://gyazo.com/[0-9a-f]{32}(?:/raw)?)\z}]
         ImageBracket.new(content:, link: nil, src: Regexp.last_match(1), raw: "[#{Regexp.last_match(0)}]")
       in [%r{\A(https?://[^ \t]*)(\s+(.+))?\z}]
         # match_external_link_precede

@@ -2,7 +2,7 @@
 
 module Cosensee
   class TailwindRenderer
-    Link = Data.define(:content) do
+    Link = Data.define(:content, :project) do
       include HtmlEncodable
 
       def render

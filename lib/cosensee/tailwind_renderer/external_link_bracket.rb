@@ -2,7 +2,7 @@
 
 module Cosensee
   class TailwindRenderer
-    ExternalLinkBracket = Data.define(:content) do
+    ExternalLinkBracket = Data.define(:content, :project) do
       include HtmlEncodable
 
       def render

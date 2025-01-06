@@ -4,7 +4,7 @@ require 'json'
 
 module Cosensee
   class TailwindRenderer
-    CommandLine = Data.define(:content) do
+    CommandLine = Data.define(:content, :project) do
       include HtmlEncodable
 
       def render

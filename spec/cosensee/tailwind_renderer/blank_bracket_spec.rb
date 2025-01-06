@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe Cosensee::TailwindRenderer::BlankBracket do
   let(:content) { Cosensee::BlankBracket.new(content: ['  '], blank: '  ', raw: '  ') }
-  let(:bracket) { Cosensee::TailwindRenderer::BlankBracket.new(content:) }
+  let(:bracket) { Cosensee::TailwindRenderer::BlankBracket.new(content:, project: nil) }
 
   describe '#render' do
     it 'renders an empty bracket with no content' do

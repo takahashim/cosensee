@@ -2,9 +2,9 @@
 
 module Cosensee
   class TailwindRenderer
-    TextBracket = Data.define(:content) do
+    TextBracket = Data.define(:content, :project) do
       def render
-        rendered = TailwindRenderer.new(content: content.content).render
+        rendered = TailwindRenderer.new(content: content.content, project:).render
         %(<span>[#{rendered}]</span>)
       end
     end

@@ -2,7 +2,7 @@
 
 module Cosensee
   class TailwindRenderer
-    BlankBracket = Data.define(:content) do
+    BlankBracket = Data.define(:content, :project) do
       def render
         %(<span>#{content.blank}</span>)
       end

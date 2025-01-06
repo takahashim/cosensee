@@ -2,7 +2,7 @@
 
 module Cosensee
   class TailwindRenderer
-    DecorateBracket = Data.define(:content) do
+    DecorateBracket = Data.define(:content, :project) do
       def render
         classes = []
         classes << font_sizes[content.font_size] if content.font_size

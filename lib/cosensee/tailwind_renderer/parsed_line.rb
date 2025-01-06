@@ -2,18 +2,18 @@
 
 module Cosensee
   class TailwindRenderer
-    ParsedLine = Data.define(:content) do
+    ParsedLine = Data.define(:content, :project) do
       include HtmlEncodable
 
       def render
         result = if content.line_content?
-                   TailwindRenderer.new(content: content.line_content).render
+                   TailwindRenderer.new(content: content.line_content, project:).render
                  else
                    content.content.map do |c|
                      if c.is_a?(String)
                        escape_html(c)
                      else
-                       TailwindRenderer.new(content: c).render
+                       TailwindRenderer.new(content: c, project:).render
                      end
                    end.join
                  end

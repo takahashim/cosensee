@@ -6,11 +6,12 @@ module Cosensee
     include HtmlEncodable
 
     # content is Cosensee objects or an array of them
-    def initialize(content:)
+    def initialize(content:, project:)
       @content = content
+      @project = project
     end
 
-    attr_reader :content
+    attr_reader :content, :project
 
     def render
       if content.is_a?(Array)
@@ -18,11 +19,11 @@ module Cosensee
           if c.is_a?(String)
             escape_html(c)
           else
-            renderer_class(c).new(content: c).render
+            renderer_class(c).new(content: c, project:).render
           end
         end.join
       else
-        renderer_class(content).new(content:).render
+        renderer_class(content).new(content:, project:).render
       end
     end
 
