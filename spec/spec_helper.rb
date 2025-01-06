@@ -2,6 +2,7 @@
 
 require 'cosensee'
 require 'rspec-parameterized'
+require_relative 'support/fixture_helper'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -14,4 +15,6 @@ RSpec.configure do |config|
     c.syntax = :expect
     c.max_formatted_output_length = 1000
   end
+
+  config.include FixtureHelper
 end
