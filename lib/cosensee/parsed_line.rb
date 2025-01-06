@@ -27,9 +27,9 @@ module Cosensee
 
     def first_image
       if line_content?
-        line_content.is_a?(Quote) && line_content.content.find { |elem| elem.is_a?(ImageBracket) }
+        line_content.is_a?(Quote) && line_content.content.find { |elem| elem.is_a?(ImageBracket) || elem.is_a?(GyazoImageBracket) }
       else
-        content.find { |elem| elem.is_a?(ImageBracket) }
+        content.find { |elem| elem.is_a?(ImageBracket) || elem.is_a?(GyazoImageBracket) }
       end
     end
 

@@ -33,7 +33,11 @@ module Cosensee
 
     def summary
       if (image = first_image)
-        %(<img src="#{image.src}">)
+        if image.is_a?(Cosensee::GyazoImageBracket)
+          %(<img src="#{image.src}/raw">)
+        else
+          %(<img src="#{image.src}">)
+        end
       else
         parsed_lines.map(&:to_s).join
       end
