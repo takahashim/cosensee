@@ -22,7 +22,7 @@ module Cosensee
       in [/\A\$ (.*)\z/]
         FormulaBracket.new(content:, formula: Regexp.last_match(1), raw: "[#{Regexp.last_match(0)}]")
       in [/\A(.*).icon\z/]
-        IconBracket.new(content:, icon_name: Regexp.last_match(1))
+        IconBracket.new(content:, icon_name: Regexp.last_match(1), raw: Regexp.last_match(0))
       in [%r{\A(https://www\.youtube\.com/watch\?v=([^&]+)(&.*)?)\z}]
         YoutubeBracket.new(content:, video_id: Regexp.last_match(2), raw: "[#{Regexp.last_match(0)}]")
       in [%r{\A(https?://[^\s]+)\s+(https?://[^\s\]]*\.(png|jpe?g|gif|svg|webp)(\?[^\s\]]+)?)\z}]
