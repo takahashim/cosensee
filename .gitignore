@@ -7,11 +7,14 @@
 /spec/reports/
 /tmp/
 
+# 
+.out
+/public/
+
 # rspec failure tracking
 .rspec_status
 
 # others
-.out
 .DS_Store
 .ruby-version
 Gemfile.lock
