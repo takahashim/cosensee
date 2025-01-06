@@ -25,6 +25,14 @@ module Cosensee
       !!rest
     end
 
+    def first_image
+      if line_content?
+        line_content.is_a?(Quote) && line_content.content.find { |elem| elem.is_a?(ImageBracket) }
+      else
+        content.find { |elem| elem.is_a?(ImageBracket) }
+      end
+    end
+
     def line_content?
       !!line_content
     end
@@ -54,6 +62,10 @@ module Cosensee
 
     def internal_links
       content.select { |c| c.is_a?(Cosensee::InternalLinkBracket) || c.is_a?(Cosensee::HashTag) }.map(&:anchor)
+    end
+
+    def to_s
+      raw
     end
 
     def raw

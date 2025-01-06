@@ -17,6 +17,7 @@ module Cosensee
     def initialize(id:, title:, created:, updated:, views:, lines:)
       @parsed_lines = lines.drop(1).map { |arg| LineParser.parse(arg) }
       @linking_page_titles = @parsed_lines.map(&:internal_links).flatten
+      @first_image = @parsed_lines.find(&:first_image)&.first_image
 
       super(
         id:,
@@ -28,7 +29,15 @@ module Cosensee
       )
     end
 
-    attr_accessor :parsed_lines, :linking_page_titles
+    attr_accessor :parsed_lines, :linking_page_titles, :first_image
+
+    def summary
+      if (image = first_image)
+        %(<img src="#{image.src}">)
+      else
+        parsed_lines.map(&:to_s).join
+      end
+    end
 
     def body_lines
       lines.drop(1)

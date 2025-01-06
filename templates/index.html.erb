@@ -26,9 +26,7 @@
                 <p class="pagetitle font-bold  overflow-hidden"><%= page.title %></p>
               </a>
               <a href="<%= page.link_path %>">
-              <% page.body_lines.each do |line| %>
-                <p class="inline text-xs"><%= line.to_s %></p>
-              <% end %>
+                <p class="inline text-xs"><%= page.summary %></p>
               </a>
             </div>
         </div>
