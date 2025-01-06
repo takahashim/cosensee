@@ -29,7 +29,7 @@
       <div class="max-w-screen bg-white">
         <h1 class="text-3xl py-4 my-4"><%= title %></h1>
         <div>
-          <%= page&.to_html(project:) %>
+          <%== page&.to_html(project:) %>
         </div>
       </div>
 
@@ -46,7 +46,7 @@
               <p class="pagetitle font-bold  overflow-hidden"><%= page.title %></p>
             </a>
             <a href="<%= page.link_path %>">
-              <p class="inline text-xs"><%= page.summary %></p>
+              <p class="inline text-xs"><%== page.summary %></p>
             </a>
           </div>
         </div>

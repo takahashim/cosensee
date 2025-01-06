@@ -32,13 +32,13 @@ module Cosensee
     end
 
     def build_index(project)
-      template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'index.html.erb'))
+      template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'index.html.erb'), escape_html: true)
       output = template.render(nil, project:)
       File.write(File.join(root_dir, 'index.html'), output)
     end
 
     def build_page(page)
-      template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'page.html.erb'))
+      template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'page.html.erb'), escape_html: true)
       output = template.render(nil, project:, page:, title: page.title)
       File.write(File.join(root_dir, page.link_path), output)
     end
@@ -47,7 +47,7 @@ module Cosensee
       path = File.join(root_dir, "#{title.gsub(/ /, '_').gsub('/', '%2F')}.html")
       return if File.exist?(path)
 
-      template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'page.html.erb'))
+      template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'page.html.erb'), escape_html: true)
       output = template.render(nil, project:, page: nil, title:)
       File.write(path, output)
     end
