@@ -8,6 +8,7 @@ require 'falcon'
 require 'async/http/endpoint'
 require 'async'
 require 'uri'
+require 'mini_mime'
 
 DIRECTORY_TO_SERVE = './public'
 
@@ -16,16 +17,17 @@ module StaticFileHandler
   def self.call(env)
     path_info = env['PATH_INFO']
     path_info = if path_info.start_with?('/')
-                  "/#{URI.decode_www_form_component(path_info.slice(1..-1)).gsub('/', '%2F')}"
+                  "/#{URI.decode_www_form_component(path_info.slice(1..-1))}"
                 else
-                  URI.decode_www_form_component(path_info).gsub('/', '%2F')
+                  URI.decode_www_form_component(path_info)
                 end
     path = File.join(DIRECTORY_TO_SERVE, path_info)
     path = File.join(path, 'index.html') if File.directory?(path)
 
     if File.exist?(path) && !File.directory?(path)
       content = File.read(path)
-      [200, { 'Content-Type' => 'text/html', 'Content-Length' => content.bytesize.to_s }, [content]]
+      content_type = MiniMime.lookup_by_filename(path).content_type
+      [200, { 'Content-Type' => content_type, 'Content-Length' => content.bytesize.to_s }, [content]]
     else
       [404, { 'Content-Type' => 'text/plain' }, ["File not found: #{env['PATH_INFO']}"]]
     end
