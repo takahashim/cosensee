@@ -7,11 +7,13 @@ module Cosensee
   # for Page
   Page = Data.define(:id, :title, :created, :updated, :views, :lines) do
     def self.from_array(args_list)
-      args_list.map { |args| new(**args) }
-    end
-
-    def self.from_hash(obj)
-      new(**obj)
+      args_list.map do |args|
+        if args.is_a?(Cosensee::Page)
+          args
+        else
+          new(**args)
+        end
+      end
     end
 
     def initialize(id:, title:, created:, updated:, views:, lines:)

@@ -6,7 +6,13 @@ module Cosensee
   # for User
   User = Data.define(:id, :name, :display_name, :email) do
     def self.from_array(users_args)
-      users_args.map { |args| new(**args) }
+      users_args.map do |args|
+        if args.is_a?(Cosensee::User)
+          args
+        else
+          new(**args)
+        end
+      end
     end
 
     # allow both `:display_key` and `:displayKey`
