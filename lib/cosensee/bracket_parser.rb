@@ -33,6 +33,8 @@ module Cosensee
         Node::ImageBracket.new(content:, link: nil, src: Regexp.last_match(1), raw: "[#{Regexp.last_match(0)}]")
       in [%r{\A(https://gyazo.com/([0-9a-f]{32})(?:/raw)?)\z}]
         Node::GyazoImageBracket.new(content:, link: nil, src: Regexp.last_match(1), image_id: Regexp.last_match(2), raw: "[#{Regexp.last_match(0)}]")
+      in [%r{\A(https://open.spotify.com/playlist/(\w+))\z}]
+        Node::SpotifyPlaylistBracket.new(content:, playlist_id: Regexp.last_match(2), src: Regexp.last_match(1), raw: "[#{Regexp.last_match(0)}]")
       in [%r{\A(https?://[^ \t]*)(\s+(.+))?\z}]
         # match_external_link_precede
         anchor = Regexp.last_match(3) || Regexp.last_match(1)
