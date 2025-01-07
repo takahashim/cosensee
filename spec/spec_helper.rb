@@ -4,6 +4,7 @@ require 'cosensee'
 require 'rspec-parameterized'
 require 'factory_bot'
 require_relative 'support/fixture_helper'
+require_relative 'support/time_helper'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -18,6 +19,7 @@ RSpec.configure do |config|
   end
 
   config.include FixtureHelper
+  config.include TimeHelper
   config.include FactoryBot::Syntax::Methods
 end
 
