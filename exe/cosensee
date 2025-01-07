@@ -20,37 +20,20 @@ DEFAULT_PORT = '1212'
 
 Dotenv.load
 logger = Console.logger
-
 options = {}
+opts = OptionParser.new
 
 begin
-  opts = OptionParser.new
   opts.banner = 'Usage: bin/build [-f <filename>] [-r <project_name>]'
-
-  opts.on('-f FILE', '--file FILE', 'Specify the file name') do |file|
-    options[:file] = file
-  end
-
-  opts.on('-r NAME', '--remote NAME', 'Retrieve the file from the remote paga-data API') do |name|
-    options[:remote] = name
-  end
-
-  opts.on('-p PORT', '--port PORT', "Specify port number of web server (default: #{DEFAULT_PORT})") do |port|
-    options[:port] = port
-  end
-
-  opts.on('-d dir', '--dir DIR', "Specify directory name of generated html files(default: #{DEFAULT_DIR})") do |dir|
-    options[:dir] = dir
-  end
-
-  opts.on('-s', '--server', 'Serves files by running a web server locally.') do
-    options[:server] = true
-  end
-
+  opts.on('-f FILE', '--file FILE', 'Specify the file name') { |file| options[:file] = file }
+  opts.on('-r NAME', '--remote NAME', 'Retrieve the file from the remote paga-data API') { |name| options[:remote] = name }
+  opts.on('-p PORT', '--port PORT', "Specify port number of web server (default: #{DEFAULT_PORT})") { |port| options[:port] = port }
+  opts.on('-d dir', '--dir DIR', "Specify directory name of generated html files(default: #{DEFAULT_DIR})") { |dir| options[:dir] = dir }
+  opts.on('-s', '--server', 'Serves files by running a web server locally.') { options[:server] = true }
   opts.parse!
 rescue OptionParser::MissingArgument => e
-  logger.error "option requires an argument: #{e.args.join(' ')}"
-  logger.error opts.help
+  puts "Error: option requires an argument: #{e.args.join(' ')}"
+  puts opts.help
   exit 1
 end
 
@@ -58,35 +41,46 @@ filename = options[:file]
 port = options[:port] || DEFAULT_PORT
 dir = options[:dir] || DEFAULT_DIR
 server_url = "http://localhost:#{port}"
+project_name = options[:remote]
 
-unless filename
-  logger.error 'Error: You must specify a file with -f.'
+if !filename && !options[:server]
+  puts 'Error: You must specify -f or -s.'
+  puts opts.help
   exit 1
 end
 
-if options[:remote]
-  project_name = options[:remote]
-  sid = ENV.fetch('CONNECT_SID', nil)
+if !filename && project_name
+  puts 'Error: You must not specify project name -p without -f.'
+  puts opts.help
+  exit 1
+end
 
-  unless sid
-    logger.error 'Error: You must set CONNECT_ID as environment variable.'
+if filename
+  if options[:remote]
+    sid = ENV.fetch('CONNECT_SID', nil)
+
+    unless sid
+      logger.error 'Error: You must set CONNECT_ID as environment variable.'
+      exit 1
+    end
+
+    logger.info 'Retrieving file from remote API...'
+    Cosensee::PageData.new.download(project_name:, sid:, filename:)
+    logger.info "File retrieved and saved as: #{filename}"
+  end
+
+  unless File.exist?(filename)
+    logger.error "Error: File not found - #{filename}"
     exit 1
   end
 
-  logger.info 'Retrieving file from remote API...'
-  Cosensee::PageData.new.download(project_name:, sid:, filename:)
-  logger.info "File retrieved and saved as: #{filename}"
-elsif !File.exist?(filename)
-  logger.error "Error: File not found - #{filename}"
-  exit 1
+  logger.info "Processing file: #{filename}"
+
+  project = Cosensee::Project.parse_file(filename)
+  Cosensee::HtmlBuilder.new(project).build_all
+
+  logger.info 'Build all files.'
 end
-
-logger.info "Processing file: #{filename}"
-
-project = Cosensee::Project.parse_file(filename)
-Cosensee::HtmlBuilder.new(project).build_all
-
-logger.info 'Build all files.'
 
 exit 0 unless options[:server]
 
