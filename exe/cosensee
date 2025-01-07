@@ -1,0 +1,99 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require 'cosensee'
+
+require 'async'
+require 'async/http/endpoint'
+require 'console'
+require 'dotenv'
+require 'falcon'
+require 'mini_mime'
+require 'optparse'
+require 'uri'
+
+require_relative '../lib/falcon_static_file_handler'
+
+DIRECTORY_TO_SERVE = './public'
+
+Dotenv.load
+logger = Console.logger
+
+options = {}
+
+begin
+  opts = OptionParser.new
+  opts.banner = 'Usage: bin/build [-f <filename>] [-r <project_name>]'
+
+  opts.on('-f FILE', '--file FILE', 'Specify the file name') do |file|
+    options[:file] = file
+  end
+
+  opts.on('-r NAME', '--remote NAME', 'Retrieve the file from the remote paga-data API') do |name|
+    options[:remote] = name
+  end
+
+  opts.on('-s', '--server', 'Serves files by running a web server locally.') do
+    options[:server] = true
+  end
+
+  opts.parse!
+rescue OptionParser::MissingArgument => e
+  logger.error "option requires an argument: #{e.args.join(' ')}"
+  logger.error opts.help
+  exit 1
+end
+
+filename = options[:file]
+
+unless filename
+  logger.error 'Error: You must specify a file with -f.'
+  exit 1
+end
+
+if options[:remote]
+  project_name = options[:remote]
+  sid = ENV.fetch('CONNECT_SID', nil)
+
+  unless sid
+    logger.error 'Error: You must set CONNECT_ID as environment variable.'
+    exit 1
+  end
+
+  logger.info 'Retrieving file from remote API...'
+  Cosensee::PageData.new.download(project_name:, sid:, filename:)
+  logger.info "File retrieved and saved as: #{filename}"
+elsif !File.exist?(filename)
+  logger.error "Error: File not found - #{filename}"
+  exit 1
+end
+
+logger.info "Processing file: #{filename}"
+
+project = Cosensee::Project.parse_file(filename)
+Cosensee::HtmlBuilder.new(project).build_all
+
+logger.info 'Build all files.'
+
+endpoint = Async::HTTP::Endpoint.parse('http://localhost:1212')
+handler = FalconStaticFileHandler.new(dir: DIRECTORY_TO_SERVE, logger:)
+app = Falcon::Server.middleware(handler)
+server = Falcon::Server.new(app, endpoint)
+
+begin
+  Async do |task|
+    logger.info("Serving files from #{File.expand_path(DIRECTORY_TO_SERVE)} at http://localhost:1212")
+
+    Signal.trap('INT') do
+      logger.info("\nShutting down the server...")
+      task.stop
+    end
+
+    server.run
+  end
+rescue Interrupt
+  logger.warn("\nServer interrupted. Exiting.")
+ensure
+  logger.info('Cleanup complete.')
+end
