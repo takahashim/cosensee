@@ -35,6 +35,16 @@ module Cosensee
 
     attr_reader :name, :display_name, :users, :pages, :exported, :source, :page_store
 
+    def sorted_pages_for_top
+      pinned_pages = page_store.pinned_pages
+      if pinned_pages.empty?
+        pages.sort_by(&:updated).reverse
+      else
+        unpinned_pages = pages - pinned_pages
+        pinned_pages + unpinned_pages.sort_by(&:updated).reverse
+      end
+    end
+
     def to_obj
       { name:, displayName: display_name, exported: exported.to_i, users:, pages: }
     end

@@ -6,13 +6,18 @@ require 'json'
 module Cosensee
   # To search for pages
   class PageStore
+    DEFAULT_PIN_TITLES = ['HOME'] # rubocop:disable Style/MutableConstant
+
     def initialize(project:)
       @project = project
       @pages = project.pages
       @pages_by_title = nil
       @linking_pages = nil
       @linked_pages = nil
+      @pin_titles = DEFAULT_PIN_TITLES
     end
+
+    attr_reader :pin_titles
 
     def pages_by_title
       @pages_by_title ||= create_title_index(@pages)
@@ -46,6 +51,10 @@ module Cosensee
       pages.each_with_object({}) do |page, hash|
         hash[page.title] = page
       end
+    end
+
+    def pinned_pages
+      pages_by_title.fetch_values(*pin_titles)
     end
 
     def find_link_pages_by_title(title)
