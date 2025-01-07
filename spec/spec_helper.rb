@@ -2,6 +2,7 @@
 
 require 'cosensee'
 require 'rspec-parameterized'
+require 'factory_bot'
 require_relative 'support/fixture_helper'
 
 RSpec.configure do |config|
@@ -17,4 +18,8 @@ RSpec.configure do |config|
   end
 
   config.include FixtureHelper
+  config.include FactoryBot::Syntax::Methods
 end
+
+FactoryBot.definition_file_paths = ['spec/factories']
+FactoryBot.find_definitions
