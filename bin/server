@@ -9,46 +9,41 @@ require 'async/http/endpoint'
 require 'async'
 require 'uri'
 require 'mini_mime'
+require 'console'
+
+require_relative '../lib/falcon_static_file_handler'
 
 DIRECTORY_TO_SERVE = './public'
 
-# for static files
-module StaticFileHandler
-  def self.call(env)
-    path_info = env['PATH_INFO']
-    path_info = if path_info.start_with?('/')
-                  "/#{URI.decode_www_form_component(path_info.slice(1..-1))}"
-                else
-                  URI.decode_www_form_component(path_info)
-                end
-    path = File.join(DIRECTORY_TO_SERVE, path_info)
-    path = File.join(path, 'index.html') if File.directory?(path)
-
-    if File.exist?(path) && !File.directory?(path)
-      content = File.read(path)
-      content_type = MiniMime.lookup_by_filename(path).content_type
-      [200, { 'Content-Type' => content_type, 'Content-Length' => content.bytesize.to_s }, [content]]
-    else
-      [404, { 'Content-Type' => 'text/plain' }, ["File not found: #{env['PATH_INFO']}"]]
-    end
-  end
-end
+logger = Console.logger
 
 filename = ARGV[0]
 
 if filename
-  puts "build #{filename}..."
+  logger.info("build #{filename}...")
   project = Cosensee::Project.parse_file(filename)
-  builder = Cosensee::HtmlBuilder.new(project)
-  builder.build_all
-  puts 'build done.'
+  Cosensee::HtmlBuilder.new(project).build_all
+  logger.info('build done.')
 end
 
-Async do
-  endpoint = Async::HTTP::Endpoint.parse('http://localhost:1212')
-  app = Falcon::Server.middleware(StaticFileHandler)
-  server = Falcon::Server.new(app, endpoint)
-  server.run.wait
-end
+endpoint = Async::HTTP::Endpoint.parse('http://localhost:1212')
+handler = FalconStaticFileHandler.new(dir: DIRECTORY_TO_SERVE, logger:)
+app = Falcon::Server.middleware(handler)
+server = Falcon::Server.new(app, endpoint)
 
-puts "Serving files from #{File.expand_path(DIRECTORY_TO_SERVE)} at http://localhost:1212"
+begin
+  Async do |task|
+    logger.info("Serving files from #{File.expand_path(DIRECTORY_TO_SERVE)} at http://localhost:1212")
+
+    Signal.trap('INT') do
+      logger.info("\nShutting down the server...")
+      task.stop
+    end
+
+    server.run
+  end
+rescue Interrupt
+  logger.warn("\nServer interrupted. Exiting.")
+ensure
+  logger.info('Cleanup complete.')
+end
