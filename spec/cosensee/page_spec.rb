@@ -21,18 +21,6 @@ RSpec.describe Cosensee::Page do
     }
   end
 
-  describe '.from_hash' do
-    it 'is a Hash' do
-      page = Cosensee::Page.from_hash(page_hash)
-      expect(page.id).to eq '673c819d2c4025543126d6af'
-      expect(page.created.utc).to eq Time.new('2024-11-19 12:06:40 UTC')
-      expect(page.updated.utc).to eq Time.new('2024-11-19 12:40:00 UTC')
-      expect(page.title).to eq 'テストページ1'
-      expect(page.views).to eq 12
-      expect(page.lines).to eq ['テスト1', '', '[テスト2]と[test3]', '', "\tテスト4", "\tテスト5", 'https://example.com/test/', '']
-    end
-  end
-
   describe '.new' do
     it 'is keyword arguments' do
       page = Cosensee::Page.new(**page_hash)
