@@ -18,17 +18,17 @@
   <body class="bg-gray-100 p-4">
     <div class="max-w-screen-xl mx-auto">
       <h1 class="text-2xl font-extralight my-4"><%= project.display_name %> <span class="text-gray-400">(all pages)</span></h1>
-      <div class="grid grid-cols-8 gap-4">
+      <div class="flex flex-wrap gap-3">
         <% project.sorted_pages_for_top.each do |page|%>
-        <div class="bg-white shadow-md rounded-md aspect-square flex items-start justify-center p-2 overflow-hidden hover:bg-gray-200 border-t-4 border-gray-300">
-            <div class="break-words text-xs w-full">
-              <a href="<%= page.link_path %>">
-                <p class="pagetitle font-bold  overflow-hidden"><%= page.title %></p>
-              </a>
-              <a href="<%= page.link_path %>">
-                <p class="inline text-xs"><%== page.summary %></p>
-              </a>
-            </div>
+        <div class="bg-white shadow-md rounded-md aspect-square flex items-start justify-center p-2 overflow-hidden hover:bg-gray-200 border-t-4 border-gray-300 basis-[148px] max-w-[148px]">
+          <div class="break-words text-xs w-full">
+            <a href="<%= page.link_path %>">
+              <p class="pagetitle font-bold"><%= page.title %></p>
+            </a>
+            <a href="<%= page.link_path %>">
+              <p class="inline text-xs text-gray-500"><%== page.summary %></p>
+            </a>
+          </div>
         </div>
         <% end %>
       </div>
