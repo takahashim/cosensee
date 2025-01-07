@@ -5,6 +5,7 @@ AllCops:
   NewCops: enable
 
 require:
+  - rubocop-factory_bot
   - rubocop-rake
   - rubocop-rspec
 

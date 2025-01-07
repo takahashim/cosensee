@@ -9,6 +9,7 @@ group :test, :development do
   gem 'irb'
   gem 'rake'
   gem 'rubocop'
+  gem 'rubocop-factory_bot', require: false
   gem 'rubocop-rake', require: false
   gem 'rubocop-rspec', require: false
 
