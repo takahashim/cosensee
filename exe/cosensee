@@ -15,7 +15,8 @@ require 'uri'
 
 require_relative '../lib/falcon_static_file_handler'
 
-DIRECTORY_TO_SERVE = './public'
+DEFAULT_DIR = './public'
+DEFAULT_PORT = '1212'
 
 Dotenv.load
 logger = Console.logger
@@ -34,6 +35,14 @@ begin
     options[:remote] = name
   end
 
+  opts.on('-p PORT', '--port PORT', "Specify port number of web server (default: #{DEFAULT_PORT})") do |port|
+    options[:port] = port
+  end
+
+  opts.on('-d dir', '--dir DIR', "Specify directory name of generated html files(default: #{DEFAULT_DIR})") do |dir|
+    options[:dir] = dir
+  end
+
   opts.on('-s', '--server', 'Serves files by running a web server locally.') do
     options[:server] = true
   end
@@ -46,6 +55,9 @@ rescue OptionParser::MissingArgument => e
 end
 
 filename = options[:file]
+port = options[:port] || DEFAULT_PORT
+dir = options[:dir] || DEFAULT_DIR
+server_url = "http://localhost:#{port}"
 
 unless filename
   logger.error 'Error: You must specify a file with -f.'
@@ -76,14 +88,16 @@ Cosensee::HtmlBuilder.new(project).build_all
 
 logger.info 'Build all files.'
 
-endpoint = Async::HTTP::Endpoint.parse('http://localhost:1212')
-handler = FalconStaticFileHandler.new(dir: DIRECTORY_TO_SERVE, logger:)
+exit 0 unless options[:server]
+
+endpoint = Async::HTTP::Endpoint.parse(server_url)
+handler = FalconStaticFileHandler.new(dir:, logger:)
 app = Falcon::Server.middleware(handler)
 server = Falcon::Server.new(app, endpoint)
 
 begin
   Async do |task|
-    logger.info("Serving files from #{File.expand_path(DIRECTORY_TO_SERVE)} at http://localhost:1212")
+    logger.info("Serving files from #{File.expand_path(dir)} at #{server_url}")
 
     Signal.trap('INT') do
       logger.info("\nShutting down the server...")
