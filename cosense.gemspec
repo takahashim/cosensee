@@ -35,6 +35,7 @@ Gem::Specification.new do |spec|
   # Uncomment to register a new dependency of your gem
   # spec.add_dependency "example-gem", "~> 1.0"
   spec.add_dependency 'console'
+  spec.add_dependency 'dotenv'
   spec.add_dependency 'erubi'
   spec.add_dependency 'mini_mime'
   spec.add_dependency 'tilt'

@@ -4,13 +4,52 @@
 require 'bundler/setup'
 require 'cosensee'
 
-filename = ARGV[0]
+require 'optparse'
+require 'dotenv'
 
-if !filename || !File.exist?(filename)
-  puts "Error: file not found: #{filename}"
-  puts 'Usage: bin/build <filename>'
+Dotenv.load
+options = {}
+OptionParser.new do |opts|
+  opts.banner = 'Usage: bin/build [-f <filename>] [-r]'
+
+  opts.on('-f FILE', '--file FILE', 'Specify the file name') do |file|
+    options[:file] = file
+  end
+
+  opts.on('-r NAME', '--remote NAME', 'Retrieve the file from the remote API') do |name|
+    options[:remote] = name
+  end
+
+  opts.on('-h', '--help', 'Show this help message') do
+    puts opts
+    exit
+  end
+end.parse!
+
+unless options[:file]
+  puts 'Error: You must specify a file with -f.'
   exit 1
 end
+
+filename = options[:file]
+if options[:remote]
+  project_name = options[:remote]
+  sid = ENV.fetch('CONNECT_SID', nil)
+
+  unless sid
+    puts 'Error: You must set CONNECT_ID as environment variable.'
+    exit 1
+  end
+
+  puts 'Retrieving file from remote API...'
+  Cosensee::PageData.new.download(project_name:, sid:, filename:)
+  puts "File retrieved and saved as: #{filename}"
+elsif !File.exist?(filename)
+  puts "Error: File not found - #{filename}"
+  exit 1
+end
+
+puts "Processing file: #{filename}"
 
 project = Cosensee::Project.parse_file(filename)
 builder = Cosensee::HtmlBuilder.new(project)
