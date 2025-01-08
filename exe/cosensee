@@ -18,39 +18,19 @@ logger = Console.logger
 option = Cosensee::CLI::Parser.parse(ARGV)
 exit 1 if option.failed?
 
-filename = option.filename
-dir = option.dir
-project_name = option.project_name
-server_url = "http://localhost:#{option.port}"
-
-if filename
-  if option.remote?
-    sid = ENV['CONNECT_SID']
-
-    unless sid
-      logger.error 'Error: You must set CONNECT_ID as environment variable.'
-      exit 1
-    end
-
-    logger.info 'Retrieving file from remote API...'
-    Cosensee::Api::PageData.new.download(project_name:, sid:, filename:)
-    logger.info "File retrieved and saved as: #{filename}"
-  end
-
-  unless File.exist?(filename)
-    logger.error "Error: File not found - #{filename}"
-    exit 1
-  end
-
-  logger.info "Processing file: #{filename}"
-
-  project = Cosensee::Project.parse_file(filename)
-  Cosensee::HtmlBuilder.new(project).build_all
-
-  logger.info 'Build all files.'
+begin
+  content_generator = Cosensee::WebContentGenerator.new(option:, logger:, sid: ENV['CONNECT_SID'])
+  content_generator.generate
+rescue Cosensee::WebContentGenerator::Error => e
+  logger.error "Error: #{e.message}"
+  exit 1
 end
 
 exit 0 unless option.server?
 
-web_server = Cosensee::WebServer.new(dir:, server_url:, logger:)
+web_server = Cosensee::WebServer.new(
+  dir: option.dir,
+  server_url: "http://localhost:#{option.port}",
+  logger:
+)
 web_server.start
