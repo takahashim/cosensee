@@ -33,7 +33,7 @@ if filename
     end
 
     logger.info 'Retrieving file from remote API...'
-    Cosensee::PageData.new.download(project_name:, sid:, filename:)
+    Cosensee::Api::PageData.new.download(project_name:, sid:, filename:)
     logger.info "File retrieved and saved as: #{filename}"
   end
 
