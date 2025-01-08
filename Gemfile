@@ -12,8 +12,6 @@ group :test, :development do
   gem 'rubocop-factory_bot', require: false
   gem 'rubocop-rake', require: false
   gem 'rubocop-rspec', require: false
-
-  gem 'falcon'
 end
 
 group :test do

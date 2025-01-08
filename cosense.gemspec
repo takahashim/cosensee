@@ -37,7 +37,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'console'
   spec.add_dependency 'dotenv'
   spec.add_dependency 'erubi'
+  spec.add_dependency 'falcon'
   spec.add_dependency 'mini_mime'
+  spec.add_dependency 'tailwindcss-ruby'
   spec.add_dependency 'tilt'
 
   # For more information and examples about making a new gem, check out our
