@@ -6,8 +6,6 @@ require 'cosensee'
 
 require 'console'
 require 'dotenv'
-require 'optparse'
-require 'uri'
 
 DEFAULT_DIR = './public'
 DEFAULT_PORT = '1212'

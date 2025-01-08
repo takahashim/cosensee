@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'mini_mime'
+require 'uri'
 
 module Cosensee
   class WebServer

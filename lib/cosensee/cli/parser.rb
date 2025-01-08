@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'optparse'
+
 module Cosensee
   class CLI
     # Parser class for Cosensee::CLI
