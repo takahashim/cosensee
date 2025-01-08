@@ -58,6 +58,8 @@ require_relative 'cosensee/tailwind_renderer/spotify_playlist_bracket'
 require_relative 'cosensee/tailwind_renderer/text_bracket'
 require_relative 'cosensee/tailwind_renderer/youtube_bracket'
 require_relative 'cosensee/user'
+require_relative 'cosensee/web_server'
+require_relative 'cosensee/web_server/static_file_handler'
 
 module Cosensee
   MAX_SUMMARY_LINE = 10

@@ -4,16 +4,10 @@
 require 'bundler/setup'
 require 'cosensee'
 
-require 'async'
-require 'async/http/endpoint'
 require 'console'
 require 'dotenv'
-require 'falcon'
-require 'mini_mime'
 require 'optparse'
 require 'uri'
-
-require_relative '../lib/falcon_static_file_handler'
 
 DEFAULT_DIR = './public'
 DEFAULT_PORT = '1212'
@@ -84,24 +78,5 @@ end
 
 exit 0 unless options[:server]
 
-endpoint = Async::HTTP::Endpoint.parse(server_url)
-handler = FalconStaticFileHandler.new(dir:, logger:)
-app = Falcon::Server.middleware(handler)
-server = Falcon::Server.new(app, endpoint)
-
-begin
-  Async do |task|
-    logger.info("Serving files from #{File.expand_path(dir)} at #{server_url}")
-
-    Signal.trap('INT') do
-      logger.info("\nShutting down the server...")
-      task.stop
-    end
-
-    server.run
-  end
-rescue Interrupt
-  logger.warn("\nServer interrupted. Exiting.")
-ensure
-  logger.info('Cleanup complete.')
-end
+web_server = Cosensee::WebServer.new(dir:, server_url:, logger:)
+web_server.start
