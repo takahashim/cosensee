@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Cosensee
   class CLI
     # Option class for Cosensee::CLI
@@ -6,7 +8,7 @@ module Cosensee
       attr_writer :failed, :server, :remote, :filename
 
       def initialize(filename: nil, remote: nil, port: DEFAULT_PORT, dir: DEFAULT_DIR, server: nil)
-        @remote = !!remote
+        @remote = remote
         @filename = filename
         @port = port
         @dir = dir
@@ -23,7 +25,7 @@ module Cosensee
       end
 
       def remote?
-        @remote
+        !!@remote
       end
 
       def failed?
