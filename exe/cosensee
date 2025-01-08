@@ -14,44 +14,18 @@ DEFAULT_PORT = '1212'
 
 Dotenv.load
 logger = Console.logger
-options = {}
-opts = OptionParser.new
 
-begin
-  opts.banner = 'Usage: bin/build [-f <filename>] [-r <project_name>]'
-  opts.on('-f FILE', '--file FILE', 'Specify the file name') { |file| options[:file] = file }
-  opts.on('-r NAME', '--remote NAME', 'Retrieve the file from the remote paga-data API') { |name| options[:remote] = name }
-  opts.on('-p PORT', '--port PORT', "Specify port number of web server (default: #{DEFAULT_PORT})") { |port| options[:port] = port }
-  opts.on('-d dir', '--dir DIR', "Specify directory name of generated html files(default: #{DEFAULT_DIR})") { |dir| options[:dir] = dir }
-  opts.on('-s', '--server', 'Serves files by running a web server locally.') { options[:server] = true }
-  opts.parse!
-rescue OptionParser::MissingArgument => e
-  puts "Error: option requires an argument: #{e.args.join(' ')}"
-  puts opts.help
-  exit 1
-end
+option = Cosensee::CLI::Parser.parse(ARGV)
+exit 1 if option.failed?
 
-filename = options[:file]
-port = options[:port] || DEFAULT_PORT
-dir = options[:dir] || DEFAULT_DIR
-server_url = "http://localhost:#{port}"
-project_name = options[:remote]
-
-if !filename && !options[:server]
-  puts 'Error: You must specify -f or -s.'
-  puts opts.help
-  exit 1
-end
-
-if !filename && project_name
-  puts 'Error: You must not specify project name -p without -f.'
-  puts opts.help
-  exit 1
-end
+filename = option.filename
+dir = option.dir
+project_name = option.project_name
+server_url = "http://localhost:#{option.port}"
 
 if filename
-  if options[:remote]
-    sid = ENV.fetch('CONNECT_SID', nil)
+  if option.remote?
+    sid = ENV['CONNECT_SID']
 
     unless sid
       logger.error 'Error: You must set CONNECT_ID as environment variable.'
@@ -76,7 +50,7 @@ if filename
   logger.info 'Build all files.'
 end
 
-exit 0 unless options[:server]
+exit 0 unless option.server?
 
 web_server = Cosensee::WebServer.new(dir:, server_url:, logger:)
 web_server.start

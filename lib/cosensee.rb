@@ -7,6 +7,8 @@ require_relative 'cosensee/html_encodable'
 require_relative 'cosensee/link_encodable'
 
 require_relative 'cosensee/bracket_parser'
+require_relative 'cosensee/cli/option'
+require_relative 'cosensee/cli/parser'
 require_relative 'cosensee/html_builder'
 require_relative 'cosensee/line_parser'
 require_relative 'cosensee/node/blank_bracket'
