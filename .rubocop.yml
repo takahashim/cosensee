@@ -38,6 +38,9 @@ Metrics/ParameterLists:
 Metrics/PerceivedComplexity:
   Max: 20
 
+Style/FetchEnvVar:
+  Enabled: false
+
 Style/MinMaxComparison:
   Enabled: false
 
@@ -55,3 +58,7 @@ RSpec/MultipleExpectations:
 
 Style/NumericPredicate:
   Enabled: false
+
+Style/HashSyntax:
+  EnforcedStyle: ruby19_no_mixed_keys
+  EnforcedShorthandSyntax: always
