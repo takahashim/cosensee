@@ -24,6 +24,10 @@ module Cosensee
       project = Cosensee::Project.parse_file(filename)
       Cosensee::HtmlBuilder.new(project).build_all
       logger.info 'Build all files.'
+
+      command = Cosensee::TailwindCommand.compile_command
+      logger.info "Processing TailwindCSS: #{command.inspect}"
+      system(*command, exception: true)
     end
 
     private
