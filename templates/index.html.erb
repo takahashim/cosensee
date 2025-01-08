@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
     <title><%= project.display_name %></title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="./styles/tailwind.css" rel="stylesheet">
     <style>
       p.pagetitle {
           display: -webkit-box;
@@ -22,11 +22,9 @@
         <% project.sorted_pages_for_top.each do |page|%>
         <div class="bg-white shadow-md rounded-md aspect-square flex items-start justify-center p-2 overflow-hidden hover:bg-gray-200 border-t-4 border-gray-300 basis-[148px] max-w-[148px]">
           <div class="break-words text-xs w-full">
-            <a href="<%= page.link_path %>">
-              <p class="pagetitle font-bold"><%= page.title %></p>
-            </a>
-            <a href="<%= page.link_path %>">
-              <p class="inline text-xs text-gray-500"><%== page.summary %></p>
+            <a href="<%= page.link_path %>" class="block ">
+              <p class="pagetitle font-bold truncate overflow-hidden"><%= page.title %></p>
+              <p class="inline text-xs leading-relaxed text-gray-500 overflow-hidden"><%== page.summary %></p>
             </a>
           </div>
         </div>
