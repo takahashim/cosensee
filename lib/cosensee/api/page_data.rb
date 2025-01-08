@@ -14,7 +14,11 @@ module Cosensee
       def download(project_name:, sid:, filename:)
         res = export(project_name:, sid:)
 
-        File.binwrite(filename, res)
+        begin
+          File.binwrite(filename, res)
+        rescue SystemCallError => e
+          raise Cosensee::Error, "Failed to write to file '#{filename}': #{e.message}"
+        end
       end
 
       private
@@ -22,8 +26,17 @@ module Cosensee
       def send_request(uri, sid)
         cookies = "connect.sid=#{sid}"
         parsed_uri = URI.parse(uri)
-        response = parsed_uri.open('Cookie' => cookies)
-        response.read
+
+        begin
+          response = parsed_uri.open('Cookie' => cookies)
+          response.read
+        rescue OpenURI::HTTPError => e
+          raise Cosensee::Error, "HTTP error while accessing #{uri}: #{e.message}"
+        rescue SocketError => e
+          raise Cosensee::Error, "Network error: #{e.message}"
+        rescue URI::InvalidURIError => e
+          raise Cosensee::Error, "Invalid URI: #{e.message}"
+        end
       end
     end
   end
