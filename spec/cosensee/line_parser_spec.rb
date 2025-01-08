@@ -310,7 +310,9 @@ RSpec.describe Cosensee::LineParser do
                 [
                   ' ',
                   Cosensee::Node::Link.new('https://example.com', 'https://example.com'),
-                  ' #foo bar'
+                  ' ',
+                  Cosensee::Node::HashTag.new('foo', '#foo'),
+                  ' bar'
                 ],
                 '[ https://example.com #foo bar]'
               ),

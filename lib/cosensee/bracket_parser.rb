@@ -74,6 +74,7 @@ module Cosensee
           raw = raw_string
           Node::InternalLinkBracket.new(content:, link:, anchor:, raw:)
         else
+          parsed = parsed.then { line_parser.parse_hashtag(it) }
           Node::TextBracket.new(content: parsed.content, raw: raw_string)
         end
       end
