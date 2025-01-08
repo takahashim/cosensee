@@ -69,7 +69,11 @@ module Cosensee
     end
 
     def to_s
-      content.map(&:to_s).join
+      if line_content?
+        line_content.to_s
+      else
+        content.map(&:to_s).join
+      end
     end
 
     def raw
