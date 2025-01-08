@@ -21,7 +21,7 @@ begin
     options[:file] = file
   end
 
-  opts.on('-r NAME', '--remote NAME', 'Retrieve the file from the remote paga-data API') do |name|
+  opts.on('-r NAME', '--remote NAME', 'Retrieve the file from the remote page-data API') do |name|
     options[:remote] = name
   end
 
@@ -41,7 +41,7 @@ end
 
 if options[:remote]
   project_name = options[:remote]
-  sid = ENV.fetch('CONNECT_SID', nil)
+  sid = ENV['CONNECT_SID']
 
   unless sid
     logger.error 'Error: You must set CONNECT_ID as environment variable.'
