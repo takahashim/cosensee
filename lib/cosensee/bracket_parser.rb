@@ -68,7 +68,6 @@ module Cosensee
         line_parser = LineParser.new
         parsed = ParsedBracket.new(content:)
                    .then { line_parser.parse_url(it) }
-                   .then { line_parser.parse_hashtag(it) }
         if parsed.single_text? && parsed.content == content
           anchor = parsed.first_content
           link = make_link(anchor)
