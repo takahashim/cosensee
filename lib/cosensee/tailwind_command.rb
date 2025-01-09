@@ -10,7 +10,7 @@ module Cosensee
         Tailwindcss::Ruby.executable(**),
         '-i', File.join(__dir__, '../../assets/styles/input.css'),
         '-o', File.join(output_dir, css_dir, 'tailwind.css'),
-        '-c', 'tailwind.config.js'
+        '-c', Cosensee::TAILWIND_CONFIG_FILE
       ]
 
       command << '--minify' unless debug
