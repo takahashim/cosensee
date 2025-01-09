@@ -14,6 +14,11 @@ If you use bundler, add to the application's Gemfile by executing:
 
 ## Usage
 
+First, create project directory and move to it.
+
+    $ cosensee --init <project dir>
+    $ cd <project dir>
+
 To output HTML, specify the JSON file from Cosense as an argument and run `cosensee` with Cosense JSON page-data file.
 
     $ cosensee -f <json file>
@@ -31,6 +36,15 @@ The default port used by the local server is `1212`. If you want to change the p
 You can also use the `-h` option to display the help message.
 
     $ cosensee --help
+
+## Deploy
+
+Cosensee outputs static HTML and CSS files, so they can be deployed as-is.
+Use the tools and resources specific to the environment you want to deploy to.
+
+For example, in the case of Cloudflare Pages, you can deploy using [Wrangler](https://developers.cloudflare.com/workers/wrangler/) as follows:
+
+    $ npx wrangler pages deploy dist --project-name <cloudflare project name>
 
 ## Development
 
