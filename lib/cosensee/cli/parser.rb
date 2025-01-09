@@ -45,13 +45,15 @@ module Cosensee
             option.skip_tailwind_execution = true
           end
 
-          op.on('--init', 'Initialize the project with default files') do
-            option.init = true
+          op.on('--init PROJECT_DIR', 'Initialize the project with default files') do |project_dir|
+            option.init = project_dir
           end
 
           op.parse!(args)
         rescue OptionParser::MissingArgument => e
           return option_error("Error: option requires an argument: #{e.args.join(' ')}")
+        rescue OptionParser::InvalidOption => e
+          return option_error("Error: invalid option: #{e.args.join(' ')}")
         end
 
         if !option.filename && !option.server? && !option.init?

@@ -14,6 +14,7 @@ module Cosensee
 
       def run
         logger.info 'Initializing...'
+        create_project_dir if option.init?
         create_directories
         create_files
         logger.info 'Done!'
@@ -21,9 +22,16 @@ module Cosensee
 
       private
 
+      def create_project_dir
+        return if File.exist?(project_path)
+
+        FileUtils.mkdir_p(project_path)
+        logger.info "Created project directory: #{project_path}"
+      end
+
       def create_directories
-        FileUtils.mkdir_p(option.output_dir)
-        FileUtils.mkdir_p(File.join(option.output_dir, option.css_dir))
+        FileUtils.mkdir_p(project_path(option.output_dir))
+        FileUtils.mkdir_p(project_path(option.output_dir, option.css_dir))
       end
 
       def create_files
@@ -46,6 +54,10 @@ module Cosensee
             plugins: [],
           }
         TAILWIND_CONFIG
+      end
+
+      def project_path(*relative_paths)
+        File.join(option.project_dir, *relative_paths)
       end
     end
   end
