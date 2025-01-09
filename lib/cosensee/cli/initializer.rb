@@ -39,10 +39,10 @@ module Cosensee
       end
 
       def create_tailwind_config
-        return if File.exist?(Cosensee::TAILWIND_CONFIG_FILE)
+        return if File.exist?(project_path(Cosensee::TAILWIND_CONFIG_FILE))
 
         logger.info 'Creating TailwindCSS config file...'
-        File.write(Cosensee::TAILWIND_CONFIG_FILE, <<~TAILWIND_CONFIG)
+        File.write(project_path(Cosensee::TAILWIND_CONFIG_FILE), <<~TAILWIND_CONFIG)
           /** @type {import('tailwindcss').Config} */
           module.exports = {
             content: [
