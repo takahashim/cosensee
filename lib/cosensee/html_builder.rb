@@ -17,7 +17,9 @@ module Cosensee
 
     attr_reader :project, :root_dir, :templates_dir
 
-    def build_all
+    def build_all(clean: true)
+      purge_files if clean
+
       build_index(project)
 
       # build all pages
@@ -50,6 +52,10 @@ module Cosensee
       template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'page.html.erb'), escape_html: true)
       output = template.render(nil, project:, page: nil, title:)
       File.write(path, output)
+    end
+
+    def purge_files
+      FileUtils.rm_rf(Dir.glob("#{root_dir}/*.html"))
     end
   end
 end
