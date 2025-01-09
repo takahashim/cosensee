@@ -25,7 +25,7 @@ module Cosensee
           op.on('-f FILENAME', '--file FILENAME', 'Specify the file name') do |filename|
             option.filename = filename
           end
-          op.on('-r PROJECT_NAME', '--remote PROJECT_NAME', 'Retrieve the project pages file from the remote page-data API') do |project_name|
+          op.on('-r PROJECT_NAME', '--remote PROJECT_NAME', 'Retrieve the project pages file from the remote page-data API (with env var `CONNECT_SID`)') do |project_name|
             option.remote = project_name
           end
           op.on('-p PORT', '--port PORT', "Specify port number of web server (default: #{DEFAULT_PORT})") do |port|
