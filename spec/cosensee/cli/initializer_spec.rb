@@ -76,13 +76,13 @@ RSpec.describe Cosensee::CLI::Initializer do
 
       expect(logger).to have_received(:info).with('Creating TailwindCSS config file...')
       expect(File).to have_received(:write).with(
-        Cosensee::TAILWIND_CONFIG_FILE,
+        'dummy_path/tailwind.config.js',
         /tailwindcss/
       )
     end
 
     it 'does not create TailwindCSS config file if it exists' do
-      allow(File).to receive(:exist?).with(Cosensee::TAILWIND_CONFIG_FILE).and_return(true)
+      allow(File).to receive(:exist?).with('dummy_path/tailwind.config.js').and_return(true)
 
       initializer.send(:create_files)
 
