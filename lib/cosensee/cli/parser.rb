@@ -21,6 +21,7 @@ module Cosensee
       def parse
         begin
           op.banner = 'Usage: bin/build [-f <filename>] [-r <project_name>]'
+          op.version = Cosensee::VERSION
 
           op.on('-f FILENAME', '--file FILENAME', 'Specify the file name') do |filename|
             option.filename = filename
