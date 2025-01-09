@@ -10,6 +10,7 @@
 # 
 .out
 /public/
+/dist/
 
 # rspec failure tracking
 .rspec_status
