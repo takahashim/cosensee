@@ -23,14 +23,15 @@ module Cosensee
 
       logger.info "Processing file: #{filename}"
       project = Cosensee::Project.parse_file(filename)
-      Cosensee::HtmlBuilder.new(project).build_all
-      logger.info 'Build all files.'
+      Cosensee::HtmlBuilder.new(project, output_dir: option.output_dir).build_all
+      logger.info "Build all files into #{option.output_dir}."
 
       execute_tailwind unless skip_tailwind_execution
     end
 
     def execute_tailwind
-      command = Cosensee::TailwindCommand.compile_command
+      FileUtils.mkdir_p(File.join(option.output_dir, 'styles'))
+      command = Cosensee::TailwindCommand.compile_command(output_dir: option.output_dir)
       logger.info "Processing TailwindCSS: #{command.inspect}"
       system(*command, exception: true)
     end

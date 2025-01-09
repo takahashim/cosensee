@@ -24,7 +24,7 @@ end
 exit 0 unless option.server?
 
 web_server = Cosensee::WebServer.new(
-  dir: option.dir,
+  dir: option.output_dir,
   server_url: "http://localhost:#{option.port}",
   logger:
 )

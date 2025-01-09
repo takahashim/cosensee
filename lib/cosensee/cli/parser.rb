@@ -31,8 +31,8 @@ module Cosensee
           op.on('-p PORT', '--port PORT', "Specify port number of web server (default: #{DEFAULT_PORT})") do |port|
             option.port = port
           end
-          op.on('-d dir', '--dir DIR', "Specify directory name of generated html files(default: #{DEFAULT_OUTPUT_DIR})") do |dir|
-            option.dir = dir
+          op.on('-d OUTPUT_DIR', '--dir OUTPUT_DIR', "Specify directory name of generated html files(default: #{DEFAULT_OUTPUT_DIR})") do |output_dir|
+            option.output_dir = output_dir
           end
           op.on('-s', '--server', 'Serves files by running a web server locally.') do
             option.server = true

@@ -4,14 +4,14 @@ module Cosensee
   class CLI
     # Option class for Cosensee::CLI
     class Option
-      attr_accessor :port, :dir
+      attr_accessor :port, :output_dir
       attr_writer :failed, :server, :remote, :filename, :skip_tailwind_execution
 
-      def initialize(filename: nil, remote: nil, port: DEFAULT_PORT, dir: DEFAULT_OUTPUT_DIR, server: nil, skip_tailwind_execution: false)
+      def initialize(filename: nil, remote: nil, port: DEFAULT_PORT, output_dir: DEFAULT_OUTPUT_DIR, server: nil, skip_tailwind_execution: false)
         @remote = remote
         @filename = filename
         @port = port
-        @dir = dir
+        @output_dir = output_dir
         @server = server
         @skip_tailwind_execution = skip_tailwind_execution
         @failed = false
