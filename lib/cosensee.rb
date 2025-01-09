@@ -67,4 +67,6 @@ require_relative 'cosensee/web_server/static_file_handler'
 
 module Cosensee
   MAX_SUMMARY_LINE = 10
+  DEFAULT_OUTPUT_DIR = './public'
+  DEFAULT_PORT = '1212'
 end

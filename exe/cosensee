@@ -7,9 +7,6 @@ require 'cosensee'
 require 'console'
 require 'dotenv'
 
-DEFAULT_OUTPUT_DIR = './public'
-DEFAULT_PORT = '1212'
-
 Dotenv.load
 logger = Console.logger
 

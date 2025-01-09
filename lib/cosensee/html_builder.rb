@@ -11,7 +11,7 @@ module Cosensee
     def initialize(project, root_dir: nil)
       @project = project
       @templates_dir = File.join(__dir__, '../../templates')
-      @root_dir = root_dir || File.join(Dir.pwd, 'public')
+      @root_dir = root_dir || File.join(Dir.pwd, Cosensee::DEFAULT_OUTPUT_DIR)
       FileUtils.mkdir_p(@root_dir)
     end
 
