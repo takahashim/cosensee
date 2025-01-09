@@ -17,6 +17,7 @@ RSpec.describe Cosensee::WebContentGenerator do
 
     before do
       allow(Cosensee::Api::PageData).to receive(:new).and_return(page_data)
+      allow(File).to receive(:write)
     end
 
     context 'when filename is missing' do
@@ -70,6 +71,11 @@ RSpec.describe Cosensee::WebContentGenerator do
         generator.generate
         expect(html_builder).to have_received(:build_all)
       end
+
+      it 'generate JSON index file' do
+        generator.generate
+        expect(File).to have_received(:write).with('./dist/search.json', anything)
+      end
     end
 
     context 'when remote is true and SID is valid' do
@@ -104,6 +110,11 @@ RSpec.describe Cosensee::WebContentGenerator do
       it 'calls HtmlBuilder to generate index and page files' do
         generator.generate
         expect(html_builder).to have_received(:build_all)
+      end
+
+      it 'generate JSON index file' do
+        generator.generate
+        expect(File).to have_received(:write).with('./dist/search.json', anything)
       end
     end
   end
