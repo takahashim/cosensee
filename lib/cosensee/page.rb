@@ -45,6 +45,10 @@ module Cosensee
       end
     end
 
+    def summary_text
+      parsed_lines.map(&:to_s).join.slice(0, MAX_SUMMARY_TEXT_SIZE)
+    end
+
     def song_page?
       parsed_lines.any?(&:song_tagged?)
     end

@@ -17,10 +17,10 @@ module Cosensee
       @pin_titles = DEFAULT_PIN_TITLES.dup
     end
 
-    attr_reader :pin_titles
+    attr_reader :pin_titles, :pages
 
     def pages_by_title
-      @pages_by_title ||= create_title_index(@pages)
+      @pages_by_title ||= create_title_index(pages)
     end
 
     def find_page_by_title(title)
@@ -60,6 +60,14 @@ module Cosensee
     def find_link_pages_by_title(title)
       pages = linking_pages[title] + linked_pages[title]
       pages.sort_by(&:updated).uniq.reverse
+    end
+
+    def dump_search_data
+      pages.map do |page|
+        { title: page.title,
+          link: page.link_path,
+          summary: page.summary_text }
+      end
     end
 
     def setup_link_indexes

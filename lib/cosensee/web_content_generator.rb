@@ -5,6 +5,8 @@ module Cosensee
   class WebContentGenerator
     class Error < StandardError; end
 
+    SEARCH_DATA_PATH = 'search.json'
+
     attr_reader :option, :logger, :sid, :skip_tailwind_execution
 
     def initialize(option:, logger:, sid:)
@@ -27,6 +29,8 @@ module Cosensee
       logger.info "Build all files into #{option.output_dir}."
 
       execute_tailwind unless skip_tailwind_execution
+
+      dump_search_data(project)
     end
 
     def execute_tailwind
@@ -34,6 +38,11 @@ module Cosensee
       command = Cosensee::TailwindCommand.compile_command(output_dir: option.output_dir, css_dir: option.css_dir, debug: false)
       logger.info "Processing TailwindCSS: #{command.inspect}"
       system(*command, exception: true)
+    end
+
+    def dump_search_data(project)
+      data = project.dump_search_data
+      File.write(File.join(option.output_dir, SEARCH_DATA_PATH), data.to_json)
     end
 
     private

@@ -68,6 +68,7 @@ require_relative 'cosensee/web_server/static_file_handler'
 
 module Cosensee
   MAX_SUMMARY_LINE = 10
+  MAX_SUMMARY_TEXT_SIZE = 300
   DEFAULT_OUTPUT_DIR = './dist'
   DEFAULT_CSS_DIR = 'css'
   DEFAULT_PORT = '1212'

@@ -45,6 +45,10 @@ module Cosensee
       end
     end
 
+    def dump_search_data
+      page_store.dump_search_data
+    end
+
     def to_obj
       { name:, displayName: display_name, exported: exported.to_i, users:, pages: }
     end
