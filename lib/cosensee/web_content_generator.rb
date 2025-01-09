@@ -28,6 +28,8 @@ module Cosensee
       Cosensee::HtmlBuilder.new(project, output_dir: option.output_dir).build_all
       logger.info "Build all files into #{option.output_dir}."
 
+      copy_js_files
+
       execute_tailwind unless skip_tailwind_execution
 
       dump_search_data(project)
@@ -65,6 +67,14 @@ module Cosensee
         filename:
       )
       logger.info "File retrieved and saved as: #{filename}"
+    end
+
+    def copy_js_files
+      FileUtils.mkdir_p(File.join(option.output_dir, 'js'))
+      Dir.glob("#{__dir__}/../../assets/js/*.js") do |path|
+        js_file = File.basename(path)
+        FileUtils.cp(path, File.join(option.output_dir, 'js', js_file))
+      end
     end
   end
 end
