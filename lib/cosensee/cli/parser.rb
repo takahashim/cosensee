@@ -38,6 +38,10 @@ module Cosensee
             option.server = true
           end
 
+          op.on('--skip-tailwind', 'Skip TailwindCSS execution') do
+            option.skip_tailwind_execution = true
+          end
+
           op.parse!(args)
         rescue OptionParser::MissingArgument => e
           return option_error("Error: option requires an argument: #{e.args.join(' ')}")

@@ -5,12 +5,13 @@ module Cosensee
   class WebContentGenerator
     class Error < StandardError; end
 
-    attr_reader :option, :logger, :sid
+    attr_reader :option, :logger, :sid, :skip_tailwind_execution
 
     def initialize(option:, logger:, sid:)
       @option = option
       @logger = logger
       @sid = sid
+      @skip_tailwind_execution = option.skip_tailwind_execution?
     end
 
     def generate
@@ -25,6 +26,10 @@ module Cosensee
       Cosensee::HtmlBuilder.new(project).build_all
       logger.info 'Build all files.'
 
+      execute_tailwind unless skip_tailwind_execution
+    end
+
+    def execute_tailwind
       command = Cosensee::TailwindCommand.compile_command
       logger.info "Processing TailwindCSS: #{command.inspect}"
       system(*command, exception: true)

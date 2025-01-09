@@ -51,7 +51,7 @@ RSpec.describe Cosensee::WebContentGenerator do
     context 'when the file exists and remote is false' do
       let(:html_builder) { instance_double(Cosensee::HtmlBuilder, build_all: 'dummy') }
       let(:generator) do
-        option = Cosensee::CLI::Option.new(filename:)
+        option = Cosensee::CLI::Option.new(filename:, skip_tailwind_execution: true)
         Cosensee::WebContentGenerator.new(option:, logger:, sid:)
       end
 
@@ -75,7 +75,7 @@ RSpec.describe Cosensee::WebContentGenerator do
     context 'when remote is true and SID is valid' do
       let(:html_builder) { instance_double(Cosensee::HtmlBuilder) }
       let(:generator) do
-        option = Cosensee::CLI::Option.new(filename:, remote: 'example_project')
+        option = Cosensee::CLI::Option.new(filename:, remote: 'example_project', skip_tailwind_execution: true)
 
         Cosensee::WebContentGenerator.new(option:, logger:, sid:)
       end
