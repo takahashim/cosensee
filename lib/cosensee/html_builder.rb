@@ -19,6 +19,8 @@ module Cosensee
     attr_reader :project, :output_dir, :css_dir, :templates_dir
 
     def build_all(clean: true)
+      prepare_output_dir
+
       purge_files if clean
 
       build_index(project)
@@ -32,6 +34,10 @@ module Cosensee
       project.page_store.orphan_page_titles.each do |title|
         build_page_only_title(title)
       end
+    end
+
+    def prepare_output_dir
+      FilUtils.mkdir_p(output_dir)
     end
 
     def build_index(project)
