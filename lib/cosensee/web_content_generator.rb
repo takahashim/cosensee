@@ -30,8 +30,8 @@ module Cosensee
     end
 
     def execute_tailwind
-      FileUtils.mkdir_p(File.join(option.output_dir, 'styles'))
-      command = Cosensee::TailwindCommand.compile_command(output_dir: option.output_dir)
+      FileUtils.mkdir_p(File.join(option.output_dir, option.css_dir))
+      command = Cosensee::TailwindCommand.compile_command(output_dir: option.output_dir, css_dir: option.css_dir, debug: false)
       logger.info "Processing TailwindCSS: #{command.inspect}"
       system(*command, exception: true)
     end

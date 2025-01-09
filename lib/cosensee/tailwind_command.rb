@@ -5,11 +5,11 @@ require 'tailwindcss/ruby'
 module Cosensee
   # build TailwindCSS Command, based on https://github.com/rails/tailwindcss-rails
   module TailwindCommand
-    def self.compile_command(output_dir: Cosensee::DEFAULT_OUTPUT_DIR, debug: false, **)
+    def self.compile_command(output_dir: Cosensee::DEFAULT_OUTPUT_DIR, css_dir: DEFAULT_CSS_DIR, debug: false, **)
       command = [
         Tailwindcss::Ruby.executable(**),
         '-i', 'assets/styles/input.css',
-        '-o', "#{output_dir}/styles/tailwind.css",
+        '-o', File.join(output_dir, css_dir, 'tailwind.css'),
         '-c', 'tailwind.config.js'
       ]
 

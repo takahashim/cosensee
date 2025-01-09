@@ -8,14 +8,15 @@ require 'fileutils'
 module Cosensee
   # generate HTML files
   class HtmlBuilder
-    def initialize(project, output_dir: nil)
+    def initialize(project, output_dir: nil, css_dir: nil)
       @project = project
       @templates_dir = File.join(__dir__, '../../templates')
       @output_dir = output_dir || File.join(Dir.pwd, Cosensee::DEFAULT_OUTPUT_DIR)
+      @css_dir = css_dir || Cosensee::DEFAULT_CSS_DIR
       FileUtils.mkdir_p(@output_dir)
     end
 
-    attr_reader :project, :output_dir, :templates_dir
+    attr_reader :project, :output_dir, :css_dir, :templates_dir
 
     def build_all(clean: true)
       purge_files if clean
@@ -35,13 +36,13 @@ module Cosensee
 
     def build_index(project)
       template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'index.html.erb'), escape_html: true)
-      output = template.render(nil, project:)
+      output = template.render(nil, project:, css_dir:)
       File.write(File.join(output_dir, 'index.html'), output)
     end
 
     def build_page(page)
       template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'page.html.erb'), escape_html: true)
-      output = template.render(nil, project:, page:, title: page.title)
+      output = template.render(nil, project:, page:, title: page.title, css_dir:)
       File.write(File.join(output_dir, page.link_path), output)
     end
 
@@ -50,7 +51,7 @@ module Cosensee
       return if File.exist?(path)
 
       template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'page.html.erb'), escape_html: true)
-      output = template.render(nil, project:, page: nil, title:)
+      output = template.render(nil, project:, page: nil, title:, css_dir:)
       File.write(path, output)
     end
 

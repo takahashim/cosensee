@@ -63,7 +63,7 @@ RSpec.describe Cosensee::WebContentGenerator do
       it 'processes the file and generates HTML' do
         generator.generate
         expect(logger).to have_received(:info).with('Processing file: spec/fixtures/project.json').ordered
-        expect(logger).to have_received(:info).with('Build all files.').ordered
+        expect(logger).to have_received(:info).with('Build all files into ./public.').ordered
       end
 
       it 'calls HtmlBuilder to generate index and page files' do
@@ -98,7 +98,7 @@ RSpec.describe Cosensee::WebContentGenerator do
         expect(logger).to have_received(:info).with('Retrieving file from remote API...').ordered
         expect(logger).to have_received(:info).with('File retrieved and saved as: spec/fixtures/project.json').ordered
         expect(logger).to have_received(:info).with('Processing file: spec/fixtures/project.json').ordered
-        expect(logger).to have_received(:info).with('Build all files.').ordered
+        expect(logger).to have_received(:info).with('Build all files into ./public.').ordered
       end
 
       it 'calls HtmlBuilder to generate index and page files' do

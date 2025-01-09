@@ -39,7 +39,7 @@ RSpec.describe Cosensee::CLI::Parser do
         args = ['-d', 'output_dir', '-f', 'test_file']
         result = Cosensee::CLI::Parser.parse(args)
 
-        expect(result.dir).to eq('output_dir')
+        expect(result.output_dir).to eq('output_dir')
         expect(result.failed?).to be false
       end
 

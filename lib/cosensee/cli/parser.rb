@@ -34,6 +34,9 @@ module Cosensee
           op.on('-d OUTPUT_DIR', '--dir OUTPUT_DIR', "Specify directory name of generated html files(default: #{DEFAULT_OUTPUT_DIR})") do |output_dir|
             option.output_dir = output_dir
           end
+          op.on('--css-dir CSS_DIR', "Specify directory name of generated html files(default: #{DEFAULT_CSS_DIR})") do |css_dir|
+            option.css_dir = css_dir
+          end
           op.on('-s', '--server', 'Serves files by running a web server locally.') do
             option.server = true
           end
