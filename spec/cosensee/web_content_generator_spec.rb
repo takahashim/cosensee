@@ -8,7 +8,7 @@ RSpec.describe Cosensee::WebContentGenerator do
 
   before do
     stub_const('DEFAULT_PORT', 1234)
-    stub_const('DEFAULT_DIR', 'public')
+    stub_const('DEFAULT_OUTPUT_DIR', 'public')
   end
 
   describe '#generate' do

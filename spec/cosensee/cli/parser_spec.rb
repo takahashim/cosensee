@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe Cosensee::CLI::Parser do
   before do
     stub_const('DEFAULT_PORT', 3030)
-    stub_const('DEFAULT_DIR', 'default_dir')
+    stub_const('DEFAULT_OUTPUT_DIR', 'default_dir')
   end
 
   describe '.parse' do
