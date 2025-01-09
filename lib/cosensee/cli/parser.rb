@@ -45,12 +45,16 @@ module Cosensee
             option.skip_tailwind_execution = true
           end
 
+          op.on('--init', 'Initialize the project with default files') do
+            option.init = true
+          end
+
           op.parse!(args)
         rescue OptionParser::MissingArgument => e
           return option_error("Error: option requires an argument: #{e.args.join(' ')}")
         end
 
-        if !option.filename && !option.server?
+        if !option.filename && !option.server? && !option.init?
           return option_error('Error: filename not found. You must specify -f, or use server with -s.')
         elsif !option.filename && option.remote?
           return option_error('Error: project_name not found. You must not specify project name -p without -f.')

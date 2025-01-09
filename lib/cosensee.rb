@@ -10,6 +10,7 @@ require_relative 'cosensee/api/page_data'
 require_relative 'cosensee/bracket_parser'
 require_relative 'cosensee/cli/option'
 require_relative 'cosensee/cli/parser'
+require_relative 'cosensee/cli/initializer'
 require_relative 'cosensee/html_builder'
 require_relative 'cosensee/line_parser'
 require_relative 'cosensee/node/blank_bracket'
@@ -70,4 +71,5 @@ module Cosensee
   DEFAULT_OUTPUT_DIR = './dist'
   DEFAULT_CSS_DIR = 'css'
   DEFAULT_PORT = '1212'
+  TAILWIND_CONFIG_FILE = 'tailwind.config.js'
 end

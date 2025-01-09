@@ -13,6 +13,11 @@ logger = Console.logger
 option = Cosensee::CLI::Parser.parse(ARGV)
 exit 1 if option.failed?
 
+if option.init?
+  Cosensee::CLI::Initializer.new(option:, logger:).run
+  exit 0
+end
+
 begin
   content_generator = Cosensee::WebContentGenerator.new(option:, logger:, sid: ENV['CONNECT_SID'])
   content_generator.generate
