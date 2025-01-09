@@ -8,7 +8,7 @@ module Cosensee
     def self.compile_command(output_dir: Cosensee::DEFAULT_OUTPUT_DIR, css_dir: DEFAULT_CSS_DIR, debug: false, **)
       command = [
         Tailwindcss::Ruby.executable(**),
-        '-i', 'assets/styles/input.css',
+        '-i', File.join(__dir__, '../../assets/styles/input.css'),
         '-o', File.join(output_dir, css_dir, 'tailwind.css'),
         '-c', 'tailwind.config.js'
       ]
