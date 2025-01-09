@@ -14,10 +14,36 @@
           -webkit-box-orient: vertical;
       }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
   </head>
   <body class="bg-gray-100 p-4">
     <div class="max-w-screen-xl mx-auto">
-      <h1 class="text-2xl font-extralight my-4"><%= project.display_name %> <span class="text-gray-400">(all pages)</span></h1>
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between my-4">
+        <h1 class="text-2xl font-extralight">
+          <%= project.display_name %> <span class="text-gray-400">(all pages)</span>
+        </h1>
+        <form action="/" method="GET" class="mt-2 sm:mt-0 w-full sm:w-[32rem] relative">
+          <div class="flex">
+            <input
+              id="searchInput"
+              type="text"
+              name="query"
+              placeholder="Search..."
+              class="flex-grow px-4 py-2 border rounded-l-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
+            />
+            <button
+              type="submit"
+              class="px-4 flex items-center justify-center bg-blue-500 text-white rounded-r-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z"></path>
+              </svg>
+            </button>
+          </div>
+          <ul id="resultsList" class="absolute bg-white shadow-md mt-2 w-full rounded-md z-10 hidden">
+          </ul>
+        </form>
+      </div>
       <div class="flex flex-wrap gap-3">
         <% project.sorted_pages_for_top.each do |page|%>
         <div class="bg-white shadow-md rounded-md aspect-square flex items-start justify-center p-2 overflow-hidden hover:bg-gray-200 border-t-4 border-gray-300 basis-[148px] max-w-[148px]">
@@ -31,5 +57,69 @@
         <% end %>
       </div>
     </div>
+    <script>
+    let fuse;
+    const searchInput = document.getElementById("searchInput");
+    const resultsList = document.getElementById("resultsList");
+
+    async function fetchData() {
+      try {
+        const response = await fetch("/search.json");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        fuse = new Fuse(data, {
+          keys: ["title", "summary"],
+          threshold: 0.3,
+        });
+      } catch (error) {
+        console.error("error while loading data:", error);
+      }
+    }
+
+    searchInput.addEventListener("input", () => {
+      if (!fuse) {
+        console.warn("data not loaded");
+        return;
+      }
+
+      const query = searchInput.value.trim();
+      if (query === "") {
+        resultsList.innerHTML = "";
+        resultsList.classList.add("hidden");
+        return;
+      }
+
+      const results = fuse.search(query);
+      resultsList.innerHTML = results
+        .map(
+          (result) =>
+            `<li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+              <a href="${result.item.link}" class="block">
+                <span class="block text-sm font-medium text-ellipsis whitespace-nowrap overflow-hidden">${result.item.title.slice(0, 50)}</span>
+                <p class="text-xs text-gray-500 text-ellipsis whitespace-nowrap overflow-hidden">${result.item.summary.slice(0, 50)}</p>
+              </a>
+            </li>`
+        )
+        .join("");
+
+      resultsList.classList.remove("hidden");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!resultsList.contains(e.target) && e.target !== searchInput) {
+        resultsList.classList.add("hidden");
+      }
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        resultsList.classList.add("hidden");
+      }
+    });
+
+    fetchData();
+    </script>
   </body>
 </html>
