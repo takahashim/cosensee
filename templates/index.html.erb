@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8"/>
-    <meta name="referrer" content="same-origin"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+    <meta charset="utf-8">
+    <meta name="referrer" content="same-origin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <title><%= project.display_name %></title>
     <link href="./<%= css_dir %>/tailwind.css" rel="stylesheet">
     <script type="module">
@@ -29,8 +29,7 @@
               @input="search"
               @keydown.escape="clearResults"
               @click="restoreResults"
-              class="flex-grow px-4 py-2 border rounded-l-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
-            />
+              class="flex-grow px-4 py-2 border rounded-l-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300">
           </div>
           <ul id="resultsList" class="absolute bg-white shadow-md mt-2 w-full rounded-md z-10" x-show="results.length > 0" @click.away="results = []">
             <template x-for="result in results" :key="result.item.link">

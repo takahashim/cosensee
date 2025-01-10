@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8"/>
-    <meta name="referrer" content="same-origin"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
-    <meta name="format-detection" content="email=no,telephone=no,address=no,date=no"/>
+    <meta charset="utf-8">
+    <meta name="referrer" content="same-origin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="format-detection" content="email=no,telephone=no,address=no,date=no">
     <title><%= title %> | <%= project.name%></title>
     <link href="./<%= css_dir %>/tailwind.css" rel="stylesheet">
     <script type="module">
@@ -13,12 +13,11 @@
       document.addEventListener('alpine:init', () => Alpine.data('searchComponent', createSearch));
     </script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js" defer></script>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.18/dist/katex.min.css" integrity="sha384-veTAhWILPOotXm+kbR5uY7dRamYLJf58I7P+hJhjeuc7hsMAkJHTsPahAl0hBST0" crossorigin="anonymous">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.18/dist/katex.min.js" integrity="sha384-v6mkHYHfY/4BWq54f7lQAdtIsoZZIByznQ3ZqN38OL4KCsrxo31SLlPiak7cj/Mg" crossorigin="anonymous"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.18/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i|Roboto:400,400i,500,500i,700,700i"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i|Roboto:400,400i,500,500i,700,700i">
     <% if page&.song_page? %>
     <style>@media print { img.lyrics { display: none !important; } }</style>
     <% end %>
@@ -39,8 +38,7 @@
               @input="search"
               @keydown.escape="clearResults"
               @click="restoreResults"
-              class="flex-grow px-4 py-2 border rounded-l-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
-            />
+              class="flex-grow px-4 py-2 border rounded-l-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300">
           </div>
           <ul id="resultsList" class="absolute bg-white shadow-md mt-2 w-full rounded-md z-10" x-show="results.length > 0" @click.away="results = []">
             <template x-for="result in results" :key="result.item.link">
