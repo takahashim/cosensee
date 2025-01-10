@@ -7,15 +7,12 @@ function searchComponent() {
 
     async init() {
       try {
-        const response = await fetch("/search.json");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        const res = await fetch("/search.json");
+        if (!res.ok) {
+          throw new Error(`Error HTTP status: ${res.status}`);
         }
-        const data = await response.json();
-        this.fuse = new Fuse(data, {
-          keys: ["title", "summary"],
-          threshold: 0.3,
-        });
+        const data = await res.json();
+        this.fuse = new Fuse(data, { keys: ["title", "summary"], threshold: 0.3 });
       } catch (error) {
         console.error("Error fetching data:", error);
       }
