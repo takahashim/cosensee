@@ -1,4 +1,6 @@
-function searchComponent() {
+import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.esm.js';
+
+export function createSearch() {
   return {
     query: '',
     results: [],

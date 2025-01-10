@@ -14,12 +14,14 @@
           -webkit-box-orient: vertical;
       }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js" defer></script>
-    <script src="/js/search.js" defer></script>
+    <script type="module">
+      import { createSearch } from '/js/search.js';
+      document.addEventListener('alpine:init', () => Alpine.data('searchComponent', createSearch));
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js" defer></script>
   </head>
   <body class="bg-gray-100 p-4">
-    <div class="max-w-screen-xl mx-auto" x-data="searchComponent()">
+    <div class="max-w-screen-xl mx-auto" x-data="searchComponent">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between my-4">
         <h1 class="text-2xl font-extralight">
           <%= project.display_name %> <span class="text-gray-400">(all pages)</span>
