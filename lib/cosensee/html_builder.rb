@@ -35,15 +35,11 @@ module Cosensee
     end
 
     def build_index(project)
-      template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'index.html.erb'), escape_html: true)
-      output = template.render(nil, project:, css_dir:)
-      File.write(File.join(output_dir, 'index.html'), output)
+      render_html(src: 'index.html.erb', to: 'index.html', project:, css_dir:)
     end
 
     def build_page(page)
-      template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'page.html.erb'), escape_html: true)
-      output = template.render(nil, project:, page:, title: page.title, css_dir:)
-      File.write(File.join(output_dir, page.link_path), output)
+      render_html(src: 'page.html.erb', to: page.link_path, project:, css_dir:, page:, title: page.title)
     end
 
     def build_page_only_title(title)
@@ -57,6 +53,12 @@ module Cosensee
 
     def purge_files
       FileUtils.rm_rf(Dir.glob("#{output_dir}/*.html"))
+    end
+
+    def render_html(src:, to:, **args)
+      template = Tilt::ErubiTemplate.new(File.join(templates_dir, src), escape_html: true)
+      output = template.render(nil, **args)
+      File.write(File.join(output_dir, to), output)
     end
   end
 end
