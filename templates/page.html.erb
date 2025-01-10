@@ -8,6 +8,12 @@
     <meta name="format-detection" content="email=no,telephone=no,address=no,date=no"/>
     <title><%= title %> | <%= project.name%></title>
     <link href="./<%= css_dir %>/tailwind.css" rel="stylesheet">
+    <script type="module">
+      import { createSearch } from '/js/search.js';
+      document.addEventListener('alpine:init', () => Alpine.data('searchComponent', createSearch));
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js" defer></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.18/dist/katex.min.css" integrity="sha384-veTAhWILPOotXm+kbR5uY7dRamYLJf58I7P+hJhjeuc7hsMAkJHTsPahAl0hBST0" crossorigin="anonymous">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.18/dist/katex.min.js" integrity="sha384-v6mkHYHfY/4BWq54f7lQAdtIsoZZIByznQ3ZqN38OL4KCsrxo31SLlPiak7cj/Mg" crossorigin="anonymous"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.18/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script>
@@ -26,9 +32,36 @@
   </head>
   <body class="bg-slate-100">
     <div class="max-w-screen-lg mx-auto p-4">
-      <nav class="my-4 font-extralight text-2xl">
-        <span id="project-name"><a href="/"><%= project.name %></a></span>
-      </nav>
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between my-4" x-data="searchComponent">
+        <nav class="my-4 font-extralight text-2xl">
+          <span id="project-name"><a href="/"><%= project.name %></a></span>
+        </nav>
+        <form action="/" method="GET" class="mt-2 sm:mt-0 w-full sm:w-[32rem] relative">
+          <div class="flex">
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="Search..."
+              x-model="query"
+              @input="search"
+              @keydown.escape="clearResults"
+              @click="restoreResults"
+              class="flex-grow px-4 py-2 border rounded-l-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
+            />
+          </div>
+          <ul id="resultsList" class="absolute bg-white shadow-md mt-2 w-full rounded-md z-10" x-show="results.length > 0" @click.away="results = []">
+            <template x-for="result in results" :key="result.item.link">
+              <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                <a :href="result.item.link" class="block">
+                  <span class="block text-sm font-medium text-ellipsis whitespace-nowrap overflow-hidden" x-text="result.item.title.slice(0, 50)"></span>
+                  <p class="text-xs text-gray-500 text-ellipsis whitespace-nowrap overflow-hidden" x-text="result.item.summary.slice(0, 50)"></p>
+                </a>
+              </li>
+            </template>
+          </ul>
+        </form>
+      </div>
+
       <div class="max-w-screen bg-white p-4">
         <h1 class="text-3xl mb-8"><%= title %></h1>
         <div class="leading-7">
