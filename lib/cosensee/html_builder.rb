@@ -29,7 +29,7 @@ module Cosensee
       end
 
       # build all orphan (title only) pages
-      project.page_store.orphan_page_titles.each do |title|
+      project.orphan_page_titles.each do |title|
         build_page_only_title(title)
       end
     end

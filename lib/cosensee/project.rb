@@ -5,6 +5,8 @@ require 'json'
 module Cosensee
   # for Project
   class Project
+    extend Delegatable
+
     def self.parse(source)
       json = JSON.parse(source, symbolize_names: true)
       name, display_name, exported, users, pages = json.values_at(:name, :displayName, :exported, :users, :pages)
@@ -35,6 +37,8 @@ module Cosensee
 
     attr_reader :name, :display_name, :users, :pages, :exported, :source, :page_store
 
+    delegate :orphan_page_titles, :dump_search_data, :find_page_by_title, to: :page_store
+
     def sorted_pages_for_top
       pinned_pages = page_store.pinned_pages
       if pinned_pages.empty?
@@ -43,10 +47,6 @@ module Cosensee
         unpinned_pages = pages - pinned_pages
         pinned_pages + unpinned_pages.sort_by(&:updated).reverse
       end
-    end
-
-    def dump_search_data
-      page_store.dump_search_data
     end
 
     def to_obj

@@ -3,6 +3,8 @@
 module Cosensee
   # convert project file to web content
   class WebContentGenerator
+    extend Cosensee::Delegatable
+
     class Error < StandardError; end
 
     SEARCH_DATA_PATH = 'search.json'
@@ -49,13 +51,7 @@ module Cosensee
 
     private
 
-    def filename
-      option.filename
-    end
-
-    def project_name
-      option.project_name
-    end
+    delegate :filename, :project_name, to: :option
 
     def download_page_data(sid)
       raise Error, 'You must set CONNECT_SID as environment variable.' unless sid

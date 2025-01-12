@@ -8,6 +8,8 @@ module Cosensee
   class PageStore
     DEFAULT_PIN_TITLES = ['HOME'].freeze
 
+    extend Delegatable
+
     def initialize(project:)
       @project = project
       @pages = project.pages

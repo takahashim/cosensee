@@ -5,6 +5,7 @@ require_relative 'cosensee/error'
 require_relative 'cosensee/bracket_serializer'
 require_relative 'cosensee/html_encodable'
 require_relative 'cosensee/link_encodable'
+require_relative 'cosensee/delegatable'
 
 require_relative 'cosensee/api/page_data'
 require_relative 'cosensee/bracket_parser'
