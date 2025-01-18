@@ -19,7 +19,7 @@ if option.init?
 end
 
 begin
-  content_generator = Cosensee::WebContentGenerator.new(option:, logger:, sid: ENV['CONNECT_SID'])
+  content_generator = Cosensee::WebContentGenerator.new(option:, renderer_class: Cosensee::TailwindRenderer, logger:, sid: ENV['CONNECT_SID'])
   content_generator.generate
 rescue Cosensee::WebContentGenerator::Error => e
   logger.error "Error: #{e.message}"

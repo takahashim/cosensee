@@ -8,9 +8,10 @@ FactoryBot.define do
     users { [build(:user)] }
     pages { build_list(:page, 3) }
     source { { name:, displayName: display_name, exported:, users:, pages: pages.map(&:to_obj) }.to_json }
+    renderer_class { Cosensee::TailwindRenderer }
 
     initialize_with do
-      new(name:, display_name:, exported:, users:, pages:, source:)
+      new(name:, display_name:, exported:, users:, pages:, source:, renderer_class:)
     end
   end
 end

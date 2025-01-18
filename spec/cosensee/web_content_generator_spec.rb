@@ -5,6 +5,7 @@ require 'spec_helper'
 RSpec.describe Cosensee::WebContentGenerator do
   let(:logger) { Console.logger }
   let(:sid) { 'valid_sid' }
+  let(:renderer_class) { Cosensee::TailwindRenderer }
 
   before do
     stub_const('DEFAULT_PORT', 1234)
@@ -23,7 +24,7 @@ RSpec.describe Cosensee::WebContentGenerator do
     context 'when filename is missing' do
       it 'raises an error' do
         option = Cosensee::CLI::Option.new(filename: nil)
-        generator = Cosensee::WebContentGenerator.new(option:, logger:, sid:)
+        generator = Cosensee::WebContentGenerator.new(option:, logger:, sid:, renderer_class:)
 
         expect { generator.generate }.to raise_error(Cosensee::WebContentGenerator::Error, 'Filename is missing.')
       end
@@ -34,7 +35,7 @@ RSpec.describe Cosensee::WebContentGenerator do
 
       it 'raises an error' do
         option = Cosensee::CLI::Option.new(filename:, remote: 'example_project')
-        generator = Cosensee::WebContentGenerator.new(option:, logger:, sid:)
+        generator = Cosensee::WebContentGenerator.new(option:, logger:, sid:, renderer_class:)
 
         expect { generator.generate }.to raise_error(Cosensee::WebContentGenerator::Error, 'You must set CONNECT_SID as environment variable.')
       end
@@ -43,7 +44,7 @@ RSpec.describe Cosensee::WebContentGenerator do
     context 'when the specified file does not exist' do
       it 'raises an error' do
         option = Cosensee::CLI::Option.new(filename: 'not_exist.json')
-        generator = Cosensee::WebContentGenerator.new(option:, logger:, sid:)
+        generator = Cosensee::WebContentGenerator.new(option:, logger:, sid:, renderer_class:)
 
         expect { generator.generate }.to raise_error(Cosensee::WebContentGenerator::Error, 'File not found - not_exist.json')
       end
@@ -53,7 +54,7 @@ RSpec.describe Cosensee::WebContentGenerator do
       let(:html_builder) { instance_double(Cosensee::HtmlBuilder, build_all: 'dummy') }
       let(:generator) do
         option = Cosensee::CLI::Option.new(filename:, skip_tailwind_execution: true)
-        Cosensee::WebContentGenerator.new(option:, logger:, sid:)
+        Cosensee::WebContentGenerator.new(option:, logger:, sid:, renderer_class:)
       end
 
       before do
@@ -83,7 +84,7 @@ RSpec.describe Cosensee::WebContentGenerator do
       let(:generator) do
         option = Cosensee::CLI::Option.new(filename:, remote: 'example_project', skip_tailwind_execution: true)
 
-        Cosensee::WebContentGenerator.new(option:, logger:, sid:)
+        Cosensee::WebContentGenerator.new(option:, logger:, sid:, renderer_class:)
       end
 
       before do

@@ -7,18 +7,18 @@ module Cosensee
   class Project
     extend Delegatable
 
-    def self.parse(source)
+    def self.parse(source, renderer_class:)
       json = JSON.parse(source, symbolize_names: true)
       name, display_name, exported, users, pages = json.values_at(:name, :displayName, :exported, :users, :pages)
-      Cosensee::Project.new(name:, display_name:, exported:, users:, pages:, source:)
+      Cosensee::Project.new(name:, display_name:, exported:, users:, pages:, source:, renderer_class:)
     end
 
-    def self.parse_file(filename)
+    def self.parse_file(filename, renderer_class:)
       src = File.read(filename)
-      parse(src)
+      parse(src, renderer_class:)
     end
 
-    def initialize(name:, exported:, users:, pages:, source:, **kwargs)
+    def initialize(name:, exported:, users:, pages:, source:, renderer_class:, **kwargs)
       @name = name
       @display_name = if kwargs.keys.size == 1 && kwargs.key?(:display_name)
                         kwargs[:display_name]
@@ -33,9 +33,10 @@ module Cosensee
       @source = source
 
       @page_store = PageStore.new(project: self)
+      @renderer_class = renderer_class
     end
 
-    attr_reader :name, :display_name, :users, :pages, :exported, :source, :page_store
+    attr_reader :name, :display_name, :users, :pages, :exported, :source, :page_store, :renderer_class
 
     delegate :orphan_page_titles, :dump_search_data, :find_page_by_title, to: :page_store
 

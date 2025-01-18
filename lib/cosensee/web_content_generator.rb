@@ -9,10 +9,11 @@ module Cosensee
 
     SEARCH_DATA_PATH = 'search.json'
 
-    attr_reader :option, :logger, :sid, :skip_tailwind_execution
+    attr_reader :option, :logger, :sid, :skip_tailwind_execution, :renderer_class
 
-    def initialize(option:, logger:, sid:)
+    def initialize(option:, renderer_class:, logger:, sid:)
       @option = option
+      @renderer_class = renderer_class
       @logger = logger
       @sid = sid
       @skip_tailwind_execution = option.skip_tailwind_execution?
@@ -26,7 +27,7 @@ module Cosensee
       raise Error, "File not found - #{filename}" unless File.exist?(filename)
 
       logger.info "Processing file: #{filename}"
-      project = Cosensee::Project.parse_file(filename)
+      project = Cosensee::Project.parse_file(filename, renderer_class:)
       Cosensee::HtmlBuilder.new(project, output_dir: option.output_dir).build_all(clean: option.clean?)
       logger.info "Build all files into #{option.output_dir}."
 

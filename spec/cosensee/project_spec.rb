@@ -35,11 +35,12 @@ RSpec.describe Cosensee::Project do
       ]
     }
   end
+  let(:renderer_class) { Cosensee::TailwindRenderer }
 
   describe '.parse' do
     it 'parses a JSON data' do
       json = project_hash.to_json
-      project = Cosensee::Project.parse(json)
+      project = Cosensee::Project.parse(json, renderer_class:)
 
       expect(project.name).to eq 'sample1'
       expect(project.display_name).to eq 'sample 1'
@@ -68,7 +69,7 @@ RSpec.describe Cosensee::Project do
 
   describe '.parse_file' do
     it 'parses JSON file' do
-      project = Cosensee::Project.parse_file('spec/assets/project1.json')
+      project = Cosensee::Project.parse_file('spec/assets/project1.json', renderer_class:)
 
       expect(project.name).to eq 'sample1'
       expect(project.display_name).to eq 'sample 1'
@@ -98,7 +99,7 @@ RSpec.describe Cosensee::Project do
   describe '#to_json' do
     it 'returns a JSON' do
       json = project_hash.to_json
-      project = Cosensee::Project.parse(json)
+      project = Cosensee::Project.parse(json, renderer_class:)
       json2 = project.to_json
       expect(json).to eq json2
     end

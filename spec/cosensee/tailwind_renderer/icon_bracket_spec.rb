@@ -3,7 +3,8 @@
 RSpec.describe Cosensee::TailwindRenderer::IconBracket do
   describe '#render' do
     let(:project_json) { fixture_file('project.json') }
-    let(:project) { Cosensee::Project.parse_file(project_json) }
+    let(:project) { Cosensee::Project.parse_file(project_json, renderer_class:) }
+    let(:renderer_class) { Cosensee::TailwindRenderer }
 
     it 'convert IconBracket to HTML' do
       content = Cosensee::Node::IconBracket.new(content: ['Scrapbox.icon'], icon_name: 'Scrapbox', raw: '[Scrapbox.icon]')
