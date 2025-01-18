@@ -7,7 +7,7 @@ module Cosensee
       attr_accessor :port, :output_dir, :css_dir
       attr_writer :failed, :server, :remote, :filename, :skip_tailwind_execution, :init, :clean
 
-      def initialize(filename: nil, remote: nil, port: DEFAULT_PORT, output_dir: DEFAULT_OUTPUT_DIR, css_dir: DEFAULT_CSS_DIR, server: nil, skip_tailwind_execution: false, init: nil, clean: false)
+      def initialize(filename: nil, remote: nil, port: DEFAULT_PORT, output_dir: DEFAULT_OUTPUT_DIR, css_dir: DEFAULT_CSS_DIR, server: nil, skip_tailwind_execution: false, init: nil, clean: false, base_url: nil)
         @remote = remote
         @filename = filename
         @port = port
@@ -18,6 +18,7 @@ module Cosensee
         @failed = false
         @clean = clean
         @init = init
+        @base_url = base_url
       end
 
       def filename
@@ -26,6 +27,10 @@ module Cosensee
 
       def project_name
         @remote || ENV['COSENSEE_PROJECT_NAME']
+      end
+
+      def base_url
+        @base_url || ENV['COSENSEE_BASE_URL']
       end
 
       def project_dir

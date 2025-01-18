@@ -8,15 +8,16 @@ require 'fileutils'
 module Cosensee
   # generate HTML files
   class HtmlBuilder
-    def initialize(project, output_dir: nil, css_dir: nil)
+    def initialize(project, output_dir: nil, css_dir: nil, base_url: nil)
       @project = project
       @templates_dir = File.join(__dir__, '../../templates')
       @output_dir = output_dir || File.join(Dir.pwd, Cosensee::DEFAULT_OUTPUT_DIR)
       @css_dir = css_dir || Cosensee::DEFAULT_CSS_DIR
+      @base_url = base_url
       FileUtils.mkdir_p(@output_dir)
     end
 
-    attr_reader :project, :output_dir, :css_dir, :templates_dir
+    attr_reader :project, :output_dir, :css_dir, :templates_dir, :base_url
 
     def build_all(clean: true)
       purge_files if clean
@@ -35,19 +36,22 @@ module Cosensee
     end
 
     def build_index(project)
-      render_html(src: 'index.html.erb', to: 'index.html', project:, css_dir:)
+      render_html(src: 'index.html.erb', to: 'index.html', project:, css_dir:, base_url:)
     end
 
     def build_page(page)
-      render_html(src: 'page.html.erb', to: page.link_path, project:, css_dir:, page:, title: page.title)
+      render_html(src: 'page.html.erb', to: page.link_path, project:, css_dir:, page:, title: page.title, base_url:)
     end
 
     def build_page_only_title(title)
       path = File.join(output_dir, "#{title.gsub(/ /, '_').gsub('/', '%2F')}.html")
       return if File.exist?(path)
 
+      # make a dummy page
+      page = Page.new(title:, id: 0, created: Time.now, updated: Time.now, views: 0, lines: [])
+
       template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'page.html.erb'), escape_html: true)
-      output = template.render(nil, project:, page: nil, title:, css_dir:)
+      output = template.render(nil, project:, page:, title:, css_dir:, base_url:)
       File.write(path, output)
     end
 

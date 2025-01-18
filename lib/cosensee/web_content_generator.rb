@@ -28,7 +28,7 @@ module Cosensee
 
       logger.info "Processing file: #{filename}"
       project = Cosensee::Project.parse_file(filename, renderer_class:)
-      Cosensee::HtmlBuilder.new(project, output_dir: option.output_dir).build_all(clean: option.clean?)
+      Cosensee::HtmlBuilder.new(project, output_dir: option.output_dir, base_url: option.base_url).build_all(clean: option.clean?)
       logger.info "Build all files into #{option.output_dir}."
 
       copy_js_files

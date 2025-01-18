@@ -11,6 +11,7 @@ RSpec.describe Cosensee::HtmlBuilder do
   let(:output_dir) { Dir.mktmpdir }
   let(:css_dir) { 'css' }
   let(:templates_dir) { File.expand_path('../../templates', __dir__) }
+  let(:base_url) { 'https://example.com' }
 
   before do
     stub_const('Cosensee::DEFAULT_OUTPUT_DIR', 'output')
@@ -23,7 +24,7 @@ RSpec.describe Cosensee::HtmlBuilder do
 
   describe '#initialize' do
     it 'initializes with correct attributes' do
-      builder = Cosensee::HtmlBuilder.new(project, output_dir:, css_dir:)
+      builder = Cosensee::HtmlBuilder.new(project, output_dir:, css_dir:, base_url:)
       absolute_templates_dir = File.expand_path(builder.templates_dir)
       expect(builder.project).to eq(project)
       expect(builder.output_dir).to eq(output_dir)
@@ -34,7 +35,7 @@ RSpec.describe Cosensee::HtmlBuilder do
 
   describe '#build_all' do
     it 'builds all HTML files' do
-      builder = Cosensee::HtmlBuilder.new(project, output_dir:, css_dir:)
+      builder = Cosensee::HtmlBuilder.new(project, output_dir:, css_dir:, base_url:)
 
       builder.build_all
 
@@ -56,7 +57,7 @@ RSpec.describe Cosensee::HtmlBuilder do
 
   describe '#purge_files' do
     it 'removes all HTML files in the output directory' do
-      builder = Cosensee::HtmlBuilder.new(project, output_dir:, css_dir:)
+      builder = Cosensee::HtmlBuilder.new(project, output_dir:, css_dir:, base_url:)
       FileUtils.touch(File.join(output_dir, 'test.html'))
       expect(File).to exist(File.join(output_dir, 'test.html'))
 
@@ -68,7 +69,7 @@ RSpec.describe Cosensee::HtmlBuilder do
 
   describe '#build_index' do
     it 'creates the index.html file' do
-      builder = Cosensee::HtmlBuilder.new(project, output_dir:, css_dir:)
+      builder = Cosensee::HtmlBuilder.new(project, output_dir:, css_dir:, base_url:)
 
       builder.build_index(project)
 
@@ -84,7 +85,7 @@ RSpec.describe Cosensee::HtmlBuilder do
     let(:first_page) { build(:page, title: 'Test Page', lines: ['test', '  code:test.rb', '  a = b', '  c = d', 'e = f']) }
 
     it 'creates an HTML file for a given page' do
-      builder = Cosensee::HtmlBuilder.new(project, output_dir:, css_dir:)
+      builder = Cosensee::HtmlBuilder.new(project, output_dir:, css_dir:, base_url:)
 
       builder.build_page(first_page)
 
@@ -100,7 +101,7 @@ RSpec.describe Cosensee::HtmlBuilder do
 
   describe '#build_page_only_title' do
     it 'creates an HTML file for a page with only a title' do
-      builder = Cosensee::HtmlBuilder.new(project, output_dir:, css_dir:)
+      builder = Cosensee::HtmlBuilder.new(project, output_dir:, css_dir:, base_url:)
       title = 'Only Title'
 
       builder.build_page_only_title(title)

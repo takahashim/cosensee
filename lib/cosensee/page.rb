@@ -50,6 +50,14 @@ module Cosensee
       parsed_lines.map(&:to_s).join.slice(0, MAX_SUMMARY_TEXT_SIZE)
     end
 
+    def description
+      summary_text
+    end
+
+    def ogp_image_url
+      first_image
+    end
+
     def song_page?
       parsed_lines.any?(&:song_tagged?)
     end
@@ -63,6 +71,12 @@ module Cosensee
       body = title.gsub(/ /, '_').gsub('=', '=3d').gsub('/', '=2F').gsub('#', '=23')
 
       "#{body}.html"
+    end
+
+    def full_url(base_url:)
+      return unless base_url && link_path
+
+      "#{base_url}/#{link_path}"
     end
 
     def to_html(project: nil)
