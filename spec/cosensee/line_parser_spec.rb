@@ -38,9 +38,9 @@ RSpec.describe Cosensee::LineParser do
     it 'parse codeblock segments' do
       expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: ''))).to eq Cosensee::ParsedLine.new(line_content: nil, rest: '')
       expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: 'code:'))).to eq Cosensee::ParsedLine.new(line_content: nil, rest: 'code:')
-      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: 'code:abc'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Node::Codeblock.new('abc', 'code:abc'), rest: nil, parsed: true)
-      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: 'code:abc def'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Node::Codeblock.new('abc def', 'code:abc def'), rest: nil, parsed: true)
-      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: 'code:abc[] `de`f'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Node::Codeblock.new('abc[] `de`f', 'code:abc[] `de`f'), rest: nil, parsed: true)
+      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: 'code:abc'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Node::Codeblock.new('', 'abc', 'code:abc'), rest: nil, parsed: true)
+      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: 'code:abc def'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Node::Codeblock.new('', 'abc def', 'code:abc def'), rest: nil, parsed: true)
+      expect(parser.parse_whole_line(Cosensee::ParsedLine.new(rest: 'code:abc[] `de`f'))).to eq Cosensee::ParsedLine.new(line_content: Cosensee::Node::Codeblock.new('', 'abc[] `de`f', 'code:abc[] `de`f'), rest: nil, parsed: true)
     end
   end
 
@@ -192,7 +192,7 @@ RSpec.describe Cosensee::LineParser do
           'code:a`b`c',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Node::Indent.new,
-            line_content: Cosensee::Node::Codeblock.new(content: 'a`b`c', raw: 'code:a`b`c'),
+            line_content: Cosensee::Node::Codeblock.new(content: '', name: 'a`b`c', raw: 'code:a`b`c'),
             parsed: true
           )
         ],

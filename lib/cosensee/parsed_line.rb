@@ -3,15 +3,17 @@
 module Cosensee
   # parse a line
   class ParsedLine
-    def initialize(indent: nil, line_content: nil, content: [], rest: nil, parsed: false)
+    def initialize(indent: nil, line_content: nil, content: [], rest: nil, raw: '', parsed: false)
       @indent = indent
       @line_content = line_content
       @content = content
       @rest = rest
+      @raw = raw
       @parsed = parsed
     end
 
     attr_accessor :indent, :line_content, :content, :rest, :parsed
+    attr_reader :raw
 
     def codeblock?
       line_content.is_a?(Cosensee::Node::Codeblock)
@@ -39,6 +41,10 @@ module Cosensee
 
     def line_content?
       !!line_content
+    end
+
+    def append_text(text:, raw_line:)
+      self.line_content = line_content.append_text(text:, raw_line:)
     end
 
     def indent_level
@@ -73,14 +79,6 @@ module Cosensee
         line_content.to_s
       else
         content.map(&:to_s).join
-      end
-    end
-
-    def raw
-      if line_content?
-        "#{indent.raw}#{line_content.raw}"
-      else
-        "#{indent.raw}#{content.map(&:to_s).join}"
       end
     end
 

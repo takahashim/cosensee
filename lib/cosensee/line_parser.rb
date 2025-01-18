@@ -14,12 +14,25 @@ module Cosensee
       new.parse(line)
     end
 
+    def self.merge_blocks(lines)
+      prev_line = nil
+      lines.each_with_object([]) do |line, result|
+        if prev_line&.codeblock? && prev_line.indent_level < line.indent_level
+          text = line.raw[prev_line.indent_level..]
+          prev_line.append_text(text:, raw_line: line.raw)
+        else
+          result << line
+          prev_line = line
+        end
+      end
+    end
+
     def initialize
       @bracket_parser = Cosensee::BracketParser.new
     end
 
     def parse(line)
-      parsed_line = ParsedLine.new(rest: line)
+      parsed_line = ParsedLine.new(rest: line, raw: line)
       parsed_line
         .then { parse_indent(it) }
         .then { parse_whole_line(it) }
@@ -34,7 +47,7 @@ module Cosensee
     def parse_indent(line)
       matched = line.match(INDENT_PATTERN)
       ParsedLine.new(indent: Cosensee::Node::Indent.new(matched[1], matched[1]),
-                     rest: matched[2])
+                     rest: matched[2], raw: line.raw)
     end
 
     def parse_whole_line(line)
@@ -50,7 +63,7 @@ module Cosensee
       matched = line.match(CODEBLOCK_PATTERN)
       if matched
         return line.update(rest: nil,
-                           line_content: Cosensee::Node::Codeblock.new(content: matched[2], raw: matched[0]),
+                           line_content: Cosensee::Node::Codeblock.new(content: '', name: matched[2], raw: matched[0]),
                            parsed: true)
       end
 

@@ -17,7 +17,8 @@ module Cosensee
     end
 
     def initialize(id:, title:, created:, updated:, views:, lines:)
-      @parsed_lines = lines.drop(1).map { |arg| LineParser.parse(arg) }
+      temp_lines = lines.drop(1).map { |arg| LineParser.parse(arg) }
+      @parsed_lines = LineParser.merge_blocks(temp_lines)
       @linking_page_titles = @parsed_lines.map(&:internal_links).flatten
       @first_image = @parsed_lines.find(&:first_image)&.first_image
 
