@@ -45,7 +45,7 @@
       </div>
 
       <div class="flex flex-wrap gap-3">
-        <% project.sorted_pages_for_top.each do |page|%>
+        <% project.sorted_pages_for_top.each do |page| %>
         <div class="bg-white shadow-md rounded-md aspect-square flex items-start justify-center p-2 overflow-hidden hover:bg-gray-200 border-t-4 border-gray-300 basis-[148px] max-w-[148px]">
           <div class="break-words text-xs w-full">
             <a href="<%= page.link_path %>" class="block ">
