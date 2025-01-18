@@ -5,6 +5,7 @@ require_relative 'lib/cosensee/version'
 Gem::Specification.new do |spec|
   spec.name = 'cosensee'
   spec.version = Cosensee::VERSION
+  spec.licenses = ['MIT']
   spec.authors = ['takahashim']
   spec.email = ['takahashimm@gmail.com']
 
