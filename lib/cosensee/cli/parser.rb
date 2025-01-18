@@ -46,6 +46,10 @@ module Cosensee
             option.skip_tailwind_execution = true
           end
 
+          op.on('--clean', 'Make dist directory clean') do
+            option.clean = true
+          end
+
           op.on('--init PROJECT_DIR', 'Initialize the project with default files') do |project_dir|
             option.init = project_dir
           end
