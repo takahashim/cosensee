@@ -4,10 +4,11 @@ module Cosensee
   class TailwindRenderer
     ParsedLine = Data.define(:content, :project) do
       include HtmlEncodable
+      include RenderClassFindable
 
       def render
         result = if content.line_content?
-                   TailwindRenderer.new(content: content.line_content, project:).render
+                   find_renderer_class(content.line_content).new(content: content.line_content, project:).render
                  else
                    content.content.map do |c|
                      if c.is_a?(String)
