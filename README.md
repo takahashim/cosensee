@@ -1,5 +1,7 @@
 # Cosensee
 
+[![Gem Version](https://badge.fury.io/rb/cosensee.svg)](https://badge.fury.io/rb/cosensee)
+
 Cosensee is a tool that reads JSON data from [Cosense](https://scrapbox.io) (formerly Scrapbox) and outputs it in HTML format.
 
 ## Installation
