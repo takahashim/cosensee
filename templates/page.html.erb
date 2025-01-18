@@ -93,5 +93,12 @@
       }
     }
   });
+  const padding = 20;
+  for (const svg of document.querySelectorAll("svg.svg-text")) {
+    const text = svg.querySelector("text.text");
+    const bbox = text.getBBox();
+    svg.setAttribute("width", bbox.width);
+    svg.setAttribute("height", bbox.height + padding);
+  };
   </script>
 </html>
