@@ -15,7 +15,7 @@ RSpec.describe Cosensee::TailwindRenderer::ParsedLine do
         ],
         [
           '  ',
-          '<div class="relative pl-[4rem]"><span class="absolute left-[3rem] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gray-800"></span>&nbsp;</div>'
+          '<div class="relative pl-[4rem]"><span class="absolute left-[3rem] top-[0.9rem] -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gray-800"></span>&nbsp;</div>'
         ],
         [
           'a',
@@ -23,11 +23,11 @@ RSpec.describe Cosensee::TailwindRenderer::ParsedLine do
         ],
         [
           ' a',
-          '<div class="relative pl-[2rem]"><span class="absolute left-[1rem] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gray-800"></span>a</div>'
+          '<div class="relative pl-[2rem]"><span class="absolute left-[1rem] top-[0.9rem] -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gray-800"></span>a</div>'
         ],
         [
           " \tabc",
-          '<div class="relative pl-[4rem]"><span class="absolute left-[3rem] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gray-800"></span>abc</div>'
+          '<div class="relative pl-[4rem]"><span class="absolute left-[3rem] top-[0.9rem] -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gray-800"></span>abc</div>'
         ],
         [
           '`a`bc',
@@ -79,11 +79,11 @@ RSpec.describe Cosensee::TailwindRenderer::ParsedLine do
         ],
         [
           '   12[a`b`c]34',
-          '<div class="relative pl-[6rem]"><span class="absolute left-[5rem] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gray-800"></span>12<span>[a<code class="bg-gray-100 text-red-500 px-1 py-0.5 rounded">b</code>c]</span>34</div>'
+          '<div class="relative pl-[6rem]"><span class="absolute left-[5rem] top-[0.9rem] -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gray-800"></span>12<span>[a<code class="bg-gray-100 text-red-500 px-1 py-0.5 rounded">b</code>c]</span>34</div>'
         ],
         [
           '   12[ https://example.com #foo bar]34',
-          '<div class="relative pl-[6rem]"><span class="absolute left-[5rem] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gray-800"></span>12<span>[ <span><a href="https://example.com" class="text-blue-500 hover:text-blue-700">https://example.com</a></span> <span><a href="foo.html" class="text-blue-500 hover:text-blue-700">#foo</a></span> bar]</span>34</div>'
+          '<div class="relative pl-[6rem]"><span class="absolute left-[5rem] top-[0.9rem] -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gray-800"></span>12<span>[ <span><a href="https://example.com" class="text-blue-500 hover:text-blue-700">https://example.com</a></span> <span><a href="foo.html" class="text-blue-500 hover:text-blue-700">#foo</a></span> bar]</span>34</div>'
         ],
         [
           '>   12[ https://example.com #foo bar]34',
@@ -91,7 +91,7 @@ RSpec.describe Cosensee::TailwindRenderer::ParsedLine do
         ],
         [
           '    >   12[ https://example.com #foo bar]34',
-          '<div class="relative pl-[8rem]"><span class="absolute left-[7rem] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gray-800"></span><blockquote class="border-l-4 border-gray-300 bg-gray-100 px-4 text-gray-800">   12<span>[ <span><a href="https://example.com" class="text-blue-500 hover:text-blue-700">https://example.com</a></span> <span><a href="foo.html" class="text-blue-500 hover:text-blue-700">#foo</a></span> bar]</span>34</blockquote></div>'
+          '<div class="relative pl-[8rem]"><span class="absolute left-[7rem] top-[0.9rem] -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gray-800"></span><blockquote class="border-l-4 border-gray-300 bg-gray-100 px-4 text-gray-800">   12<span>[ <span><a href="https://example.com" class="text-blue-500 hover:text-blue-700">https://example.com</a></span> <span><a href="foo.html" class="text-blue-500 hover:text-blue-700">#foo</a></span> bar]</span>34</blockquote></div>'
         ]
       ]
     end

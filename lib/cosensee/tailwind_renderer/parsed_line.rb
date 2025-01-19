@@ -21,7 +21,7 @@ module Cosensee
         level = content.indent_level * 2
         result = '&nbsp;' if result == ''
         if level > 0
-          %(<div class="relative pl-[#{level}rem]"><span class="absolute left-[#{level - 1}rem] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gray-800"></span>#{result}</div>)
+          %(<div class="relative pl-[#{level}rem]"><span class="absolute left-[#{level - 1}rem] top-[0.9rem] -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gray-800"></span>#{result}</div>)
         else
           %(<div class="relative pl-[#{level}rem]">#{result}</div>)
         end
