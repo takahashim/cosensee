@@ -5,22 +5,23 @@ require 'uri'
 module Cosensee
   # parser of Bracket
   module LinkEncodable
-    UNESCAPED_REGEX = /[A-Za-z0-9!"\$&'\(\)\-\~@+;:*<>,._]/
+    def make_filename(anchor)
+      "#{encode_filename(anchor)}.html"
+    end
 
     def make_link(anchor)
       "#{encode_link(anchor)}.html"
     end
 
+    # NG chars: `/#\?`
+    # escape prefix char: `=`
+    def encode_filename(str)
+      str.gsub(/ /, '_').gsub('=', '=3d').gsub('/', '=2f').gsub('#', '=23').gsub('\\', '=5c').gsub('?', '=3f')
+    end
+
     def encode_link(str)
-      str.chars.map do |char|
-        if char.match?(UNESCAPED_REGEX)
-          char
-        elsif char == ' '
-          '_'
-        else
-          URI.encode_www_form_component(char)
-        end
-      end.join
+      filename_encoded = encode_filename(str)
+      URI.encode_www_form_component(filename_encoded)
     end
   end
 end
