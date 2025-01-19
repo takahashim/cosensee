@@ -70,9 +70,8 @@ module Cosensee
                    .then { line_parser.parse_url(it) }
         if parsed.single_text? && parsed.content == content
           anchor = parsed.first_content
-          link = make_link(anchor)
           raw = raw_string
-          Node::InternalLinkBracket.new(content:, link:, anchor:, raw:)
+          Node::InternalLinkBracket.new(content:, anchor:, raw:)
         else
           parsed = parsed.then { line_parser.parse_hashtag(it) }
           Node::TextBracket.new(content: parsed.content, raw: raw_string)

@@ -97,14 +97,14 @@ RSpec.describe Cosensee::LineParser do
       expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['']))).to eq Cosensee::ParsedLine.new(content: [])
       expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[']))).to eq Cosensee::ParsedLine.new(content: ['['])
       expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::Node::EmptyBracket.new([''], '[]')])
-      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[abc]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::Node::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc', raw: '[abc]')])
-      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['12[abc]34']))).to eq Cosensee::ParsedLine.new(content: ['12', Cosensee::Node::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc', raw: '[abc]'), '34'])
+      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[abc]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::Node::InternalLinkBracket.new(content: ['abc'],  anchor: 'abc', raw: '[abc]')])
+      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['12[abc]34']))).to eq Cosensee::ParsedLine.new(content: ['12', Cosensee::Node::InternalLinkBracket.new(content: ['abc'], anchor: 'abc', raw: '[abc]'), '34'])
       expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[abc]12[xyz]']))).to eq Cosensee::ParsedLine.new(content: [
-                                                                                                                         Cosensee::Node::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc', raw: '[abc]'),
+                                                                                                                         Cosensee::Node::InternalLinkBracket.new(content: ['abc'], anchor: 'abc', raw: '[abc]'),
                                                                                                                          '12',
-                                                                                                                         Cosensee::Node::InternalLinkBracket.new(content: ['xyz'], link: 'xyz.html', anchor: 'xyz', raw: '[xyz]')
+                                                                                                                         Cosensee::Node::InternalLinkBracket.new(content: ['xyz'], anchor: 'xyz', raw: '[xyz]')
                                                                                                                        ])
-      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[abc]12[xyz']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::Node::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc', raw: '[abc]'), '12[xyz'])
+      expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[abc]12[xyz']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::Node::InternalLinkBracket.new(content: ['abc'], anchor: 'abc', raw: '[abc]'), '12[xyz'])
       expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[a', Cosensee::Node::Code.new('b', '`b`'), 'c]']))).to eq Cosensee::ParsedLine.new(content: [Cosensee::Node::TextBracket.new(['a', Cosensee::Node::Code.new('b', '`b`'), 'c'], '[a`b`c]')])
       expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['[a', Cosensee::Node::Code.new('b', '`b`'), 'c']))).to eq Cosensee::ParsedLine.new(content: ['[a', Cosensee::Node::Code.new('b', '`b`'), 'c'])
       expect(parser.parse_bracket(Cosensee::ParsedLine.new(content: ['x[a', Cosensee::Node::Code.new('b', '`b`'), 'c', 'd]e']))).to eq Cosensee::ParsedLine.new(content: ['x', Cosensee::Node::TextBracket.new(['a', Cosensee::Node::Code.new('b', '`b`'), 'cd'], '[a`b`cd]'), 'e'])
@@ -240,7 +240,7 @@ RSpec.describe Cosensee::LineParser do
           '[abc]',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Node::Indent.new,
-            content: [Cosensee::Node::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc', raw: '[abc]')],
+            content: [Cosensee::Node::InternalLinkBracket.new(content: ['abc'], anchor: 'abc', raw: '[abc]')],
             parsed: true
           )
         ],
@@ -256,7 +256,7 @@ RSpec.describe Cosensee::LineParser do
           '12[abc]34',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Node::Indent.new,
-            content: ['12', Cosensee::Node::InternalLinkBracket.new(content: ['abc'], link: 'abc.html', anchor: 'abc', raw: '[abc]'), '34'],
+            content: ['12', Cosensee::Node::InternalLinkBracket.new(content: ['abc'], anchor: 'abc', raw: '[abc]'), '34'],
             parsed: true
           )
         ],
@@ -264,7 +264,7 @@ RSpec.describe Cosensee::LineParser do
           'a[[b[]c]]d[e]f',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Node::Indent.new,
-            content: ['a', Cosensee::Node::DoubleBracket.new(['b[]c'], '[[b[]c]]'), 'd', Cosensee::Node::InternalLinkBracket.new(content: ['e'], link: 'e.html', anchor: 'e', raw: '[e]'), 'f'],
+            content: ['a', Cosensee::Node::DoubleBracket.new(['b[]c'], '[[b[]c]]'), 'd', Cosensee::Node::InternalLinkBracket.new(content: ['e'], anchor: 'e', raw: '[e]'), 'f'],
             parsed: true
           )
         ],
@@ -288,7 +288,7 @@ RSpec.describe Cosensee::LineParser do
           '12[a`bc]34',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Node::Indent.new,
-            content: ['12', Cosensee::Node::InternalLinkBracket.new(content: ['a`bc'], link: 'a%60bc.html', anchor: 'a`bc', raw: '[a`bc]'), '34'],
+            content: ['12', Cosensee::Node::InternalLinkBracket.new(content: ['a`bc'], anchor: 'a`bc', raw: '[a`bc]'), '34'],
             parsed: true
           )
         ],
