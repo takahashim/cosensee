@@ -6,6 +6,8 @@ require 'json'
 module Cosensee
   # for Page
   Page = Data.define(:id, :title, :created, :updated, :views, :lines) do
+    include Cosensee::LinkEncodable
+
     def self.from_array(args_list)
       args_list.map do |args|
         if args.is_a?(Cosensee::Page)
@@ -66,11 +68,12 @@ module Cosensee
       lines.drop(1)
     end
 
-    def link_path
-      # body = URI.encode_www_form_component(title.gsub(/ /, '_'))
-      body = title.gsub(/ /, '_').gsub('=', '=3d').gsub('/', '=2F').gsub('#', '=23')
+    def filename
+      make_filename(title)
+    end
 
-      "#{body}.html"
+    def link_path
+      make_link(title)
     end
 
     def full_url(base_url:)
