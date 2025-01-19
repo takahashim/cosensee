@@ -15,7 +15,7 @@ module Cosensee
         res = export(project_name:, sid:)
 
         begin
-          File.binwrite(filename, res)
+          File.write(filename, res)
         rescue SystemCallError => e
           raise Cosensee::Error, "Failed to write to file '#{filename}': #{e.message}"
         end
