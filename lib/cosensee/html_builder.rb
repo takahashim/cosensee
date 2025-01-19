@@ -40,15 +40,15 @@ module Cosensee
     end
 
     def build_page(page)
-      render_html(src: 'page.html.erb', to: page.link_path, project:, css_dir:, page:, title: page.title, base_url:)
+      render_html(src: 'page.html.erb', to: page.filename, project:, css_dir:, page:, title: page.title, base_url:)
     end
 
     def build_page_only_title(title)
-      path = File.join(output_dir, "#{title.gsub(/ /, '_').gsub('/', '%2F')}.html")
-      return if File.exist?(path)
-
       # make a dummy page
       page = Page.new(title:, id: 0, created: Time.now, updated: Time.now, views: 0, lines: [])
+
+      path = File.join(output_dir, page.filename)
+      return if File.exist?(path)
 
       template = Tilt::ErubiTemplate.new(File.join(templates_dir, 'page.html.erb'), escape_html: true)
       output = template.render(nil, project:, page:, title:, css_dir:, base_url:)
@@ -62,7 +62,8 @@ module Cosensee
     def render_html(src:, to:, **args)
       template = Tilt::ErubiTemplate.new(File.join(templates_dir, src), escape_html: true)
       output = template.render(nil, **args)
-      File.write(File.join(output_dir, to), output)
+      path = File.join(output_dir, to)
+      File.write(path, output)
     end
   end
 end
