@@ -25,6 +25,8 @@ module Cosensee
         Node::IconBracket.new(content:, icon_name: Regexp.last_match(1), raw: Regexp.last_match(0))
       in [%r{\A(https://www\.youtube\.com/watch\?v=([^&]+)(&.*)?)\z}]
         Node::YoutubeBracket.new(content:, video_id: Regexp.last_match(2), raw: "[#{Regexp.last_match(0)}]")
+      in [%r{\A(https://www\.youtube\.com/live/([^?]+))\z}] # rubocop:disable Lint/DuplicateBranch
+        Node::YoutubeBracket.new(content:, video_id: Regexp.last_match(2), raw: "[#{Regexp.last_match(0)}]")
       in [%r{\A(https?://[^\s]+)\s+(https?://[^\s\]]*\.(png|jpe?g|gif|svg|webp)(\?[^\s\]]+)?)\z}]
         Node::ImageBracket.new(content:, link: Regexp.last_match(1), src: Regexp.last_match(2), raw: "[#{Regexp.last_match(0)}]")
       in [%r{\A(https?://[^\s\]]*\.(png|jpe?g|gif|svg|webp)(\?[^\s\]]+)?)\s+(https?://[^\s]+)\z}]
