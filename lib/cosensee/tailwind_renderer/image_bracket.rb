@@ -5,9 +5,9 @@ module Cosensee
     ImageBracket = Data.define(:content, :project) do
       def render
         if content.link
-          %(<span><a href="#{content.link}"><img src="#{content.src}" class="max-w-max max-h-80"></a></span>)
+          %(<span><a href="#{content.link}"><img src="#{content.src}" loading="lazy" class="max-w-max max-h-80"></a></span>)
         else
-          %(<span><img src="#{content.src}" class="max-w-max max-h-80"></span>)
+          %(<span><img src="#{content.src}" loading="lazy" class="max-w-max max-h-80"></span>)
         end
       end
     end
