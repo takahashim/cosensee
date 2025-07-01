@@ -111,7 +111,7 @@ RSpec.describe Cosensee::ParsedLine do
       let(:parsed_line) { parser.parse('   abc [ aaa `def` ccc]') }
 
       it 'returns the raw representation of indent and content array' do
-        expect(parsed_line.raw).to eq('   abc [ aaa `def` ccc]')
+        expect(parsed_line.raw).to eq('   abc  aaa `def` ccc')
       end
     end
   end

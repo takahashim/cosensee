@@ -69,7 +69,7 @@ module Cosensee
     end
 
     def to_s
-      raw
+      content.map(&:to_s).join
     end
 
     def raw

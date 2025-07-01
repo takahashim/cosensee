@@ -118,6 +118,10 @@ RSpec.describe Cosensee::BracketParser do
       it 'has the correct text' do
         expect(result.text).to eq('bold text')
       end
+
+      it 'returns the plain text without decorations with `to_s`' do
+        expect(result.to_s).to eq('bold text')
+      end
     end
 
     context 'when parsing an icon bracket' do

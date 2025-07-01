@@ -5,7 +5,9 @@ require 'json'
 module Cosensee
   # serializer for brackets
   module BracketSerializer
-    def to_s = raw
+    def to_s
+      content.map(&:to_s).join
+    end
 
     def to_obj
       unparsed = content.map do |elem|

@@ -13,6 +13,11 @@ module Cosensee
       :raw
     ) do
       include BracketSerializer
+
+      # override
+      def to_s
+        text
+      end
     end
   end
 end
