@@ -132,7 +132,7 @@ module Cosensee
       line.content.each do |elem|
         if elem.is_a?(String)
           loop do
-            matched = elem.match(%r{(^|\s)(https?://[^\s]+)})
+            matched = elem.match(%r{(^|.*?)(https?://[^\s]+)})
             if matched
               parsed << "#{matched.pre_match}#{matched[1]}"
               parsed << Cosensee::Node::Link.new(matched[2], matched[2])

@@ -277,6 +277,14 @@ RSpec.describe Cosensee::LineParser do
           )
         ],
         [
+          'テストhttps://example.com/foo abc',
+          Cosensee::ParsedLine.new(
+            indent: Cosensee::Node::Indent.new,
+            content: ['テスト', Cosensee::Node::Link.new(content: 'https://example.com/foo', raw: 'https://example.com/foo'), ' abc'],
+            parsed: true
+          )
+        ],
+        [
           '12[a`bc]34',
           Cosensee::ParsedLine.new(
             indent: Cosensee::Node::Indent.new,
