@@ -51,9 +51,5 @@ module Cosensee
       output = template.render(nil, project:, page: nil, title:)
       File.write(path, output)
     end
-
-    def page_title(page)
-      "#{page.title} | #{project.title}"
-    end
   end
 end
